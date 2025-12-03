@@ -1,121 +1,125 @@
-\documentclass[11pt]{article}
+\documentclass[11pt]{report}
 
 % Page Layout
-\usepackage[a4paper, margin=1.1in]{geometry} % Set page size and margins
+\usepackage[a4paper, margin=1.1in]{geometry}
 
 % Typography
-\usepackage[T1]{fontenc} % Font encoding
-\usepackage[utf8]{inputenc} % Input encoding
-\usepackage{microtype} % Better typography
-\usepackage{setspace} % Line spacing
-\usepackage{mathptmx} % Times New Roman font for text and math
-\usepackage{helvet} % Helvetica font for sans-serif
-\usepackage{courier} % Courier font for monospace
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{microtype}
+\usepackage{setspace}
+\usepackage{mathptmx}
+\usepackage{helvet}
+\usepackage{courier}
 
-\usepackage[titles]{tocloft} % For customizing the table of contents
-\usepackage{hyperref} % For hyperlinks in the document
-\usepackage[output-decimal-marker={,},list-final-separator={ en }]{siunitx}          % Voor handige links in je PDF. B.v. urls, referenties, etc.
+\usepackage[titles]{tocloft}
+\usepackage{hyperref}
+\usepackage[output-decimal-marker={,},list-final-separator={ en }]{siunitx}
 \usepackage{varioref}
 \usepackage[nameinlink, capitalise, noabbrev]{cleveref}
 \usepackage{amsmath}
 \usepackage{mathrsfs}
 
 % Header and Footer
-\usepackage{fancyhdr} % Custom headers and footers
+\usepackage{fancyhdr}
 \usepackage{fancyvrb}
 \pagestyle{fancy}
 \fancyhf{}
-\fancyhead[L]{\leftmark} % Chapter name on the left
-\fancyhead[R]{\thepage} % Page number on the right
+\fancyhead[L]{\leftmark}
+\fancyhead[R]{\thepage}
 \fancyfoot[C]{}
 
 % Section Titles
-\usepackage{titlesec} % Customize section titles
+\usepackage{titlesec}
 \titleformat{\chapter}[hang]{\normalfont\huge\bfseries}{\thechapter.}{20pt}{\Huge\bfseries}
 
-% Customize the table of contents appearance
+% TOC appearance
 \renewcommand{\cftchapfont}{\normalfont\bfseries}
 \renewcommand{\cftsecfont}{\normalfont}
 \renewcommand{\cftsubsecfont}{\normalfont}
 \renewcommand{\cftchappagefont}{\normalfont\bfseries}
 \renewcommand{\cftsecpagefont}{\normalfont}
 \renewcommand{\cftsubsecpagefont}{\normalfont}
-\renewcommand{\cftchapleader}{\cftdotfill{\cftdotsep}} % Dotted lines between section titles and page numbers
+\renewcommand{\cftchapleader}{\cftdotfill{\cftdotsep}}
 
 % Figures and Tables
-\usepackage{graphicx} % Including images
-\usepackage{subcaption} % Subfigures
-\usepackage{float} % Improved float placement
-\usepackage{booktabs} % Professional-looking tables
-\usepackage{longtable} % Tables spanning multiple pages
-\usepackage{array} % Extended array and tabular features
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
 
-% References and Bibliography
-
+% Hyperref setup
 \hypersetup{
-colorlinks=true,
-linkcolor=black,
-filecolor=magenta,
-urlcolor=cyan,
-citecolor=blue,
-pdftitle={Your Thesis Title},
-pdfpagemode=FullScreen,
+  colorlinks=true,
+  linkcolor=black,
+  filecolor=magenta,
+  urlcolor=cyan,
+  citecolor=blue,
+  pdftitle={Machine Learning Based Event Classification in Fully Hadronic Vector Boson Scattering Events at the LHC},
+  pdfpagemode=FullScreen,
 }
 
-
 % Miscellaneous
-\usepackage{amsmath, amssymb} % Mathematical symbols and fonts
-\usepackage{enumitem} % Customized lists
+\usepackage{amssymb}
+\usepackage{enumitem}
 \usepackage{csquotes}
-% Context-sensitive quotation facilities
-\usepackage{cleveref}
 
-\linespread{1.2}              
-\author{Caspar van Eck, 12652857} % vul in
-\title{Machine Learning Based Event Classification in Fully Hadronic Vector Boson Scattering Events at the LHC} % Vul in.
+\linespread{1.2}
+
+\author{Caspar van Eck, 12652857}
+\title{Machine Learning Based Event Classification in Fully Hadronic\\
+Vector Boson Scattering Events at the LHC}
 \date{\today}
-
 
 \begin{document}
 
 \begin{titlepage}
+\thispagestyle{empty}
 
-\begin{figure}
-\centering  
-\includegraphics[width=80mm]{figures/Nikhef.png}\\ 
-\vspace{-0ex}
-\end{figure}
+\begin{center}
 
+% Top logo
+\includegraphics[width=80mm]{figures/Nikhef.png}
 
-\maketitle
-\thispagestyle{empty} 
+\vspace{1.5cm}
+
+% Title block
+{\Huge \textbf{Machine Learning Based Event Classification in Fully Hadronic\\[0.3em]
+Vector Boson Scattering Events at the LHC}\par}
+
+\vspace{1.5cm}
+
+{\Large Caspar van Eck, 12652857\par}
+
+\vspace{0.5cm}
+
+{\large \today\par}
 
 \vfill
 
-\begin{table}[h]
-\label{tab:credits}
-\begin{tabular}{l l}
-\textsc{Course}  & Master thesis (60EC) at Nikhef, conducted between 01-09-2025 and 31-06-2026\\ % Vul in
-\textsc{Universities}  & Universiteit van Amsterdam \& Vrije Universiteit Amsterdam \\ % Vul in
-\textsc{Faculty} & Faculteit der Natuurwetenschappen, Wiskunde en Informatica \\ % Vul in
-\textsc{Supervisor} & dr. Flavia de Almeida Dias \\ % Aanpassen
-\textsc{Daily Supervisors} & Samuel Jankových MSc.\\ % Vul in
-\textsc{Examiner} & dr. Clara Nellist\\
+% Credits table (no float)
+\begin{tabular}{ll}
+\textsc{Course}      & Master thesis (60EC) at Nikhef, conducted between 01-09-2025 and 31-06-2026 \\
+\textsc{Universities} & Universiteit van Amsterdam \& Vrije Universiteit Amsterdam \\
+\textsc{Faculty}     & Faculteit der Natuurwetenschappen, Wiskunde en Informatica \\
+\textsc{Supervisor}  & dr. Flavia de Almeida Dias \\
+\textsc{Daily Supervisors} & Samuel Jankových MSc. \\
+\textsc{Examiner}    & dr. Clara Nellist \\
 \end{tabular}
-\vspace{3ex}
-\end{table}
 
-\begin{figure}
-\centering  
-\includegraphics[width=150mm]{figures/logo-combi-vu-uva-nl.png}\\   % UvA logo
-\vspace{-13ex}
-\end{figure}
+\vspace{1.5cm}
+
+% Bottom logo
+\includegraphics[width=150mm]{figures/logo-combi-vu-uva-nl.png}
+
+\end{center}
 
 \end{titlepage}
 
-\clearpage
-\pagenumbering{roman} % Use roman page numbering for TOC, LOF, LOT
 \tableofcontents
+
 \clearpage
 \pagenumbering{arabic} % Switch to arabic numbering for main content
 
