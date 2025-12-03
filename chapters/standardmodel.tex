@@ -30,11 +30,25 @@ Vector boson scattering (VBS) is an electroweak process in which two incoming qu
     \label{fig:vbs}
 \end{figure}
 
-An important feature of VBS is its sensitivity to the electroweak symmetry breaking mechanism. in the SM the longitudinal components of the gauge bosons arise from the Higgs field, and the scattering amplitude for longitudinally polarised bosons exhibits delicate cancellations between diagrams involving the Higgs exchange and those involving triple and quartic gauge interactions. These cancellations preserve perturbative unitarity at high energies. Any modification of the electroweak sector may disrupt these cancellations, leading to an enhanced scattering rate or distortions in kinematic distributions, particularly at high invariant masses.
+An important feature of VBS is its sensitivity to the electroweak symmetry breaking mechanism. In the Standard Model the polarization mode of a gauge boson that points in the direction of its motion originates from the Higgs field, and the scattering amplitude for bosons in this mode shows delicate cancellations between diagrams that contain Higgs exchange and diagrams that contain triple and quartic gauge interactions. These cancellations preserve perturbative unitarity at high energies. Any modification of the electroweak sector may disrupt these cancellations, leading to an enhanced scattering rate or distortions in kinematic distributions.
 
-
-
+VBS can thus be a probe of the electroweak sector and a channel for detecting possible deviations from the SM. In the fully hadronic decay, information from the boosted large-R jets and forward small-R jets together with jet substructure information can help distinguish VBS signal from background. Machine Learning (ML) techniques advantage lies in being able to combine this jet-level and event-level data.
 \section{Beyond the Standard Model}
+Although the SM accurately describes particle interactions at currently accessible energies, it is not a complete theory. It can not account for dark matter, neutrino masses, the baryon asymmetry of the Universe or a quantum description of gravity. Furthermore, the Higgs sector has a hierarchy problem. Quantum corrections drive the Higgs mass towards much higher energy scales.
+
+These shortcomings of the SM suggest the existence of new physics at energies beyond the reach of current experiments. Many theoretical extensions predict modified interactions among electroweak gauge bosons or introduce new heavy states that alter scattering amplitudes. Because direct production of such states may be suppressed, precision measurements of processes that are sensitive to the structure of the electroweak sector, such as VBS, provide an indirect but powerful strategy for probing new physics. Deviations in VBS kinematics, polarisation fractions or cross sections may therefore serve as early indicators of physics beyond the SM.
 \section{Effective Field Theory}
+Effective field theory (EFT) provides a systematic method to describe low energy physics without specifying details of high energy scale degrees of freedom. If new particles exist at a mass scale larger than the energies probed experimentally, their effects can be encoded in a series of operators. The coefficients of these operators capture how the heavy physics influences observable processes.
 \subsection{Standard Model Effective Field Theory}
+The Standard Model Effective Field Theory (SMEFT) is an extension of the SM in which the Lagrangian is expanded in higher dimensional operators that respect the full electroweak gauge symmetry $SU(2)_{L}\times U(1)_{Y}$.
+\\ \\
+The SMEFT Lagrangian is written as
+\begin{equation}
+\mathcal{L}_{\mathrm{SMEFT}} =
+\mathcal{L}_{\mathrm{SM}}
++ \sum_{i} \frac{c_{i}}{\Lambda^{2}} \mathcal{O}^{(6)}_{i}
++ \sum_{j} \frac{d_{j}}{\Lambda^{4}} \mathcal{O}^{(8)}_{j}
++ \cdots ,
+\end{equation}
+where $\Lambda$ denotes the scale of new physics and the Wilson coefficients $c_{i}$ and $d_{j}$ quantify the strength of the corresponding operators. Dimension six operators typically modify triple gauge couplings and Higgs interactions. Dimension 8 operators contribute to quartic gauge couplings.
 \subsection{Anomalous Quartic Gauge Couplings}
