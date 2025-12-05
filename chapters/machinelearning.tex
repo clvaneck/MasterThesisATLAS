@@ -1,7 +1,14 @@
-\chapter{Machine Learning}
+\chapter{Recurrent Neural Networks}
 \label{chap:ml}
-\section{Deep Neural Networks}
-\section{Recurrent Neural Networks}
-\section{Transformers}
-\section{Training}
+Recurrent neural networks (RNN) are an efficient framework for processing collider inputs that naturally form sequences of variable length. In this analysis an RNN architecture is used to classify fully hadronic VBS events using per-constituent jet information.
+\section{VBF-RNN}
+The input to the classifier is constructed from the constituents of the two large-\(R\) jets. Constituents are ordered by decreasing transverse momentum and truncated or padded to a fixed sequence length \(T\). For each constituent a set of low-level observables is used, typically $(p_{T},\;\eta,\;\phi,\;E)\,$, as seen in figure~\ref{fig:vbfrnn}
+
+Jets with fewer than \(T\) constituents are padded with masked entries, and the masking is propagated through the recurrent layers to ensure that padded elements do not contribute to the hidden-state evolution.
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.4]{figures/VBFRNN.png}
+    \caption{Illustration of the VBF-RNN architecture.}
+    \label{fig:vbfrnn}
+\end{figure}
 \section{Testing}
