@@ -1,10 +1,10 @@
 \chapter{Recurrent Neural Networks}
 \label{chap:ml}
-Recurrent neural networks (RNN) are an efficient framework for processing collider inputs that naturally form sequences of variable length. In this analysis an RNN architecture is used to classify fully hadronic VBS events using per-constituent jet information.
+Recurrent neural networks (RNN) are an efficient framework for processing collider inputs that naturally form sequences of variable length. In this analysis an RNN architecture is used to classify fully hadronic VBS events using per-constituent jet information \cite{Sherstinsky_RNNLSTM_2018, ATLAS_Diboson_2020, ATLAS_RNNbtag_2017}.
 \section{VBF-RNN}
 The input to the classifier is constructed from the constituents of the two large-\(R\) jets. Constituents are ordered by decreasing transverse momentum and truncated or padded to a fixed sequence length \(T\). For each constituent a set of low-level observables is used, $(p_{T},\;\eta,\;\phi,\;E)\,$, as seen in figure~\ref{fig:vbfrnn}
 
-Jets with fewer than \(T\) constituents are padded with masked entries, and the masking is propagated through the recurrent layers to ensure that padded elements do not contribute to the hidden-state evolution.
+Jets with fewer than \(T\) constituents are padded with masked entries, and the masking is propagated through the recurrent layers to ensure that padded elements do not contribute to the hidden state evolution.
 \begin{figure}[h]
     \centering
     \includegraphics[scale=0.4]{figures/VBFRNN.png}
@@ -17,4 +17,4 @@ s=1\quad\text{for VBS signal events}.$ Training is performed using a binary cros
 \section{Testing}
 Classifier performance is evaluated on an independent test sample. The primary metric is the receiver operating characteristic (ROC) curve, constructed from the signal efficiency \(\varepsilon_{S}\) and background rejection \(1-\varepsilon_{B}\) as the decision threshold is varied. The area under this curve (AUC) quantifies the separation power of the network and is insensitive to the class imbalance of the dataset.
 
-To verify that the model learns physically meaningful features, the score response is evaluated differential in key VBS-sensitive observables. In particular, the score distributions are examined in bins of dijet invariant mass \(m_{jj}\), rapidity separation \(\Delta y_{jj}\), and large-\(R\) jet transverse momentum.
+To verify that the model learns physically meaningful features, the score response is evaluated differential in VBS sensitive observables. In particular, the score distributions are examined in bins of dijet invariant mass \(m_{jj}\), rapidity separation \(\Delta y_{jj}\), and large-\(R\) jet transverse momentum.

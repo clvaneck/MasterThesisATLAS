@@ -1,24 +1,22 @@
 \chapter{The Standard Model}
 \label{chap:sm}
-The Standard Model, illustrated in figure \ref{fig:SM}, is a quantum field theory describing the known elementary particles and the strong, weak, and electromagnetic interactions. Its structure is determined by the gauge symmetry
+The Standard Model, illustrated in figure \ref{fig:SM}, is a quantum field theory describing the known elementary particles and the strong, weak, and electromagnetic interactions \cite{Thomson_ModernParticlePhysics_2013, Griffiths_IntroParticles_2008}. Its a Yang-Mills gauge theory \cite{YangMills_Symmetry_1954} determined by the gauge symmetry
 \begin{equation}
 SU(3)_{C}\times SU(2)_{L}\times U(1)_{Y},
 \end{equation}
-which contains the interaction terms and fixes the form  of the Lagrangian. The strong interaction is governed by the non-Abelian colour group $SU(3)_{C}$, while the electroweak theory unifies the weak and electromagnetic forces through the groups $SU(2)_{L}$ and $U(1)_{Y}$.
+which contains the interaction terms and fixes the form  of the Lagrangian. The strong interaction is governed by the non-Abelian colour group $SU(3)_{C}$, while the electroweak theory unifies the weak and electromagnetic forces through the groups $SU(2)_{L}$ and $U(1)_{Y}$ \cite{Feynman_QED_1950, Glashow_EW_1961, Salam_EW_1968}.
 \begin{figure}[h]
     \centering
-    \includegraphics[scale=0.15]{figures/Standard.png}
-    \caption{The Standard Model of particle physics. Showing the quarks (purple), leptons (green), gauge bosons (red) and the Higgs boson (yellow).}
+    \includegraphics[scale=0.085]{figures/Standard.png}
+    \caption{The Standard Model of particle physics. Showing the quarks (purple), leptons (green), gauge bosons (red) and the Higgs boson (yellow) \cite{Neutelings_SM_2016}.}
     \label{fig:SM}
 \end{figure}
 
-Fermions, which are spin-$\tfrac{1}{2}$ particles, make up matter. They are arranged into three generations of quark and leptons. Quarks carry colour charge and transform as triples under $SU(3)_{C}$, leading to confinement and the formation of hadrons. Leptons are colourless and interact only through the electroweak sector. The weak interaction is intrinsically chiral, left handed fermions transform as doublets under $SU(2)_{L}$, while right handed fermions are singlets. Fermion masses arise from Yukawa interactions with the Higgs field after electroweak symmetry breaking.
+Fermions, which are spin-$\tfrac{1}{2}$ particles, make up matter. They are arranged into three generations of quark and leptons. Quarks carry colour charge and transform as triples under $SU(3)_{C}$, leading to confinement and the formation of hadrons. Leptons are colourless and interact only through the electroweak sector. The weak interaction is intrinsically chiral, left handed fermions transform as doublets under $SU(2)_{L}$, while right handed fermions are singlets. Fermion masses arise from Yukawa interactions with the Higgs field after electroweak symmetry breaking \cite{Higgs_BEH_A_1964, Higgs_BEH_B_1964, EnglertBrout_BEH_1964}.
 
-Gauge bosons mediate the fundamental forces. Quantum chromodynamics (QCD) contains eight gluons associated with the symmetry of $SU(3)_{C}$. Gluons also carry colour charge and undergo self interaction characteristic of non-Abelian gauge symmetries, leading to phenomena such as Asymptotic freedom. In the electroweak sector, the gauge fields associated with $SU(2)_{L}$ and $U(1)_{Y}$ mix after symmetry breaking to produce the physical gauge bosons, the massless photon and the massive weak bosons $W^{\pm}$ and $Z$.
+Gauge bosons mediate the fundamental forces. Quantum chromodynamics (QCD) contains eight gluons associated with the symmetry of $SU(3)_{C}$ \cite{Politzer_QCD_1973, GrossWilczek_QCD_1973}. Gluons also carry colour charge and undergo self interaction characteristic of non-Abelian gauge symmetries, leading to phenomena such as Asymptotic freedom. In the electroweak sector, the gauge fields associated with $SU(2)_{L}$ and $U(1)_{Y}$ mix after symmetry breaking to produce the physical gauge bosons, the massless photon and the massive weak bosons $W^{\pm}$ and $Z$.
 
-The Higgs field is a scalar $SU(2)_{L}$ doublet whose nonzero vacuum expectation value breaks the electroweak symmetry spontaneously. This mechanism generates masses for the weak gauge bosons and the fermions while preserving gauge invariance. The physical excitation of the field is the Higgs boson, observed at the LHC in 2012, which completed the particle spectrum predicted by the SM.
-
-Although experimentally successful, the SM is incomplete. It does not incorporate a quantum theory of gravity, does not account for dark matter or the observed matter–antimatter asymmetry, and must be extended to accommodate nonzero neutrino masses inferred from neutrino oscillations. Nevertheless, the SM remains the most accurate and extensively tested description of particle interactions at currently accessible energies.
+The Higgs field is a scalar $SU(2)_{L}$ doublet whose nonzero vacuum expectation value breaks the electroweak symmetry spontaneously. This mechanism generates masses for the weak gauge bosons and the fermions while preserving gauge invariance. The physical excitation of the field is the Higgs boson, observed at the LHC in 2012 by the ATLAS and CMS collaborations \cite{ATLAS_Higgs_2012, CMS_Higgs_2012}, which completed the particle spectrum predicted by the SM.
 
 \section{Vector Boson Scattering}
 Vector boson scattering (VBS) is an electroweak process in which two incoming quarks emit weak gauge bosons that subsequently interact, as seen in fig. \ref{fig:vbs}. The characteristic topology consists of two forward jets produced by the scattered quarks and two bosons that decay either leptonically or hadronically. The fully hadronic channel, in which both bosons decay into quarks, has the largest branching fraction but is experimentally challenging due to the overwhelming background, such as from QCD multijet production.
@@ -32,31 +30,45 @@ Vector boson scattering (VBS) is an electroweak process in which two incoming qu
 
 An important feature of VBS is its sensitivity to the electroweak symmetry breaking mechanism. In the Standard Model the polarization mode of a gauge boson that points in the direction of its motion originates from the Higgs field, and the scattering amplitude for bosons in this mode shows delicate cancellations between diagrams that contain Higgs exchange and diagrams that contain triple and quartic gauge interactions. These cancellations preserve perturbative unitarity at high energies. Any modification of the electroweak sector may disrupt these cancellations, leading to an enhanced scattering rate or distortions in kinematic distributions.
 
-VBS can thus be a probe of the electroweak sector and a channel for detecting possible deviations from the SM. In the fully hadronic decay, information from the boosted large-R jets and forward small-R jets together with jet substructure information can help distinguish VBS signal from background. Machine Learning (ML) techniques advantage lies in being able to combine this jet-level and event-level data.
+VBS can thus be a probe of the electroweak sector and a channel for detecting possible deviations from the SM. In the fully hadronic decay, information from the boosted large-R jets and forward small-R jets together with jet substructure information can help distinguish VBS signal from background.
 \section{Beyond the Standard Model}
-Although the SM accurately describes particle interactions at currently accessible energies, it is not a complete theory. It can not account for dark matter, neutrino masses, the baryon asymmetry of the Universe or a quantum description of gravity. Furthermore, the Higgs sector has a hierarchy problem. Quantum corrections drive the Higgs mass towards much higher energy scales.
+Although the SM accurately describes particle interactions at currently accessible energies, it is not a complete theory. It cannot incorporate gravity, for which General Relativity is still our most accurate description \cite{Einstein_GR_1916, vanNieuwenhuizen_Gravity_1981}. It also does not account for dark matter or dark energy \cite{Riess_DE_1998, RubinFordThonnard_DM_1980}, the observed matter–antimatter asymmetry \cite{Gavela_CP_1994}, and must be extended to accommodate nonzero neutrino masses inferred from neutrino oscillations \cite{Fukuda_Nu_1998, Ahmad_SNO_2001, Yanagida_Nu_1980}.
 
 These shortcomings of the SM suggest the existence of new physics at energies beyond the reach of current experiments. Many theoretical extensions predict modified interactions among electroweak gauge bosons or introduce new heavy states that alter scattering amplitudes. Because direct production of such states may be suppressed, precision measurements of processes that are sensitive to the structure of the electroweak sector, such as VBS, provide an indirect but powerful strategy for probing new physics. Deviations in VBS kinematics, polarisation fractions or cross sections may therefore serve as early indicators of physics beyond the SM.
 \section{Effective Field Theory}
-Effective field theory (EFT) provides a systematic method to describe low energy physics without specifying details of high energy scale degrees of freedom. If new particles exist at a mass scale larger than the energies probed experimentally, their effects can be encoded in a series of operators. The coefficients of these operators capture how the heavy physics influences observable processes.
+Effective field theory (EFT) provides a systematic method to describe low energy physics without specifying details of high energy scale degrees of freedom \cite{AppelquistCarazzone_EFT_1975}. If new particles exist at a mass scale larger than the energies probed experimentally, their effects can be encoded in a series of operators. The coefficients of these operators capture how the heavy physics influences observable processes.
 
-A classical example is the Fermi theory of weak interactions. Long before the discovery of the W boson, beta decay and other weak processes were successfully described by a four-fermion interaction. In modern terms this interaction arises from integrating out the W boson at energies far below its mass. Although the Fermi theory is non renormalisable, it is predictive within its domain of validity, and it enabled precise measurements long before the mediator of the weak force was directly observed. In modern particle physics EFT techniques are used widely to study potential deviations from the Standard Model. 
+A classical example is the Fermi theory of weak interactions \cite{Fermi_Beta_1933}. Long before the discovery of the W boson, beta decay and other weak processes were successfully described by a four-fermion interaction. In modern terms this interaction arises from integrating out the W boson at energies far below its mass. Although the Fermi theory is non renormalizable, it is predictive within its domain of validity, and it enabled precise measurements long before the mediator of the weak force was directly observed. In modern particle physics EFT techniques are used widely to study potential deviations from the Standard Model. 
 \subsection{Standard Model Effective Field Theory}
-The Standard Model Effective Field Theory (SMEFT) is an extension of the SM in which the Lagrangian is expanded in higher dimensional operators that respect the full electroweak gauge symmetry $SU(2)_{L}\times U(1)_{Y}$.
-\\ \\
-The SMEFT Lagrangian is written as
+The Standard Model Effective Field Theory (SMEFT) extends the SM by introducing higher-dimensional, gauge-invariant operators constructed from SM fields and respecting the full gauge symmetry \(SU(3)_{C}\times SU(2)_{L}\times U(1)_{Y}\) \cite{BrivioTrott_EFT_2019}.  
+With baryon and lepton number conserved, the Lagrangian takes the form
 \begin{equation}
-\mathcal{L}_{\mathrm{SMEFT}} =
+\mathcal{L}_{\mathrm{SMEFT}}
+=
 \mathcal{L}_{\mathrm{SM}}
-+ \sum_{i} \frac{c_{i}}{\Lambda^{2}} \mathcal{O}^{(6)}_{i}
-+ \sum_{j} \frac{d_{j}}{\Lambda^{4}} \mathcal{O}^{(8)}_{j}
++ \sum_{i}\frac{c_{i}}{\Lambda^{2}}\,\mathcal{O}^{(6)}_{i}
++ \sum_{j}\frac{d_{j}}{\Lambda^{4}}\,\mathcal{O}^{(8)}_{j}
 + \cdots ,
 \end{equation}
-where $\Lambda$ denotes the scale of new physics and the Wilson coefficients $c_{i}$ and $d_{j}$ quantify the strength of the corresponding operators. Dimension six operators typically modify triple gauge couplings and Higgs interactions. Dimension 8 operators contribute to quartic gauge couplings.
+where the suppression of each term is set by \(\Lambda^{4-d}\) for operators of dimension \(d\).  
+Dimension-6 operators modify Higgs gauge and triple gauge interactions, but after EWSB, introduce quartic terms, correlated with triple gauge couplings. Independent quartic gauge structures, arise only at dimension-8.
+\clearpage
+To illustrate how dimension-8 operators enter observables, consider a process with
+\(\mathcal{M}=\mathcal{M}_{\mathrm{SM}}+d\,\mathcal{M}_{8}\), where \(d=d_{j}/\Lambda^{4}\) corresponds to a single dimension-8 operator.  
+The squared matrix element is
+\begin{equation}
+|\mathcal{M}|^{2}
+=
+|\mathcal{M}_{\mathrm{SM}}|^{2}
++ 2d\,\Re\!\left(\mathcal{M}_{\mathrm{SM}}^{*}\mathcal{M}_{8}\right)
++ d^{2}|\mathcal{M}_{8}|^{2},
+\end{equation}
+leading to a linear interference and a pure BSM quadratic term.
 
-SMEFT corrections enter the scattering amplitude through a linear term that interferes with the SM amplitude and through a quadratic term that arises from the squared contribution of the higher dimensional operators. For VBS this interference is often small or absent because the structure of the SM amplitude suppresses it. As a result the quadratic contribution dominates the observable deviation
 \subsection{Anomalous Quartic Gauge Couplings}
-Quartic gauge couplings (QGCs) describe interactions involving four electroweak gauge bosons. In the Standard Model these couplings arise entirely from the gauge structure of the electroweak sector. Physics beyond the SM may modify these couplings, leading to anomalous quartic gauge couplings (aQGCs).
-
-In SMEFT such effects are generated by dimension eight operators. These modifications often enhance the VBS cross section at high energies or alter the angular correlations of the final state particles.
+Quartic gauge interactions are fixed in the SM by electroweak symmetry. Dimension-8 operators introduce new local \(VVVV\) structures that are not constrained by the SM relation between triple and quartic gauge couplings. Leading to anomalous quartic gauge couplings (aQGCs). Their amplitudes grow with energy as
+\[
+\mathcal{M}_{8}\propto \frac{E^{4}}{\Lambda^{4}},
+\]
+which enhances vector boson scattering at high energies and leads to characteristic changes in angular and kinematic distributions.
 
