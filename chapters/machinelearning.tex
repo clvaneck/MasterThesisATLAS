@@ -1,18 +1,32 @@
-\chapter{Recurrent Neural Networks}
+\chapter{Event Classification}
 \label{chap:ml}
-Recurrent neural networks (RNN) are an efficient framework for processing collider inputs that naturally form sequences of variable length. In this analysis an RNN architecture is used to classify fully hadronic VBS events against electroweak background using per-constituent jet information \cite{Sherstinsky_RNNLSTM_2018, ATLAS_Diboson_2020, ATLAS_RNNbtag_2017}.
+\section{Overview}
+
 \section{VBF-RNN}
-The input to the classifier is constructed from the constituents of the two large-\(R\) jets. Constituents are ordered by decreasing transverse momentum and truncated or padded to a fixed sequence length \(T\). For each constituent a set of low-level observables is used, $(p_{T},\;\eta,\;\phi,\;E)\,$, as seen in figure~\ref{fig:vbfrnn}.
+Recurrent neural networks (RNN) are an efficient framework for processing collider inputs that naturally form sequences of variable length. In this analysis an RNN architecture is used to classify fully hadronic VBS events against electroweak background using per-constituent jet information \cite{Sherstinsky_RNNLSTM_2018, ATLAS_Diboson_2020, ATLAS_RNNbtag_2017}. The classification task is formulated within a supervised learning paradigm, where the network is trained on labeled Monte Carlo simulated events and subsequently applied to statistically independent samples.
+
+The input to the classifier is constructed from the constituents of the two large-\(R\) jets. Constituents are ordered by decreasing transverse momentum and truncated or padded to a fixed sequence length \(T\). For each constituent a set of low-level observables is used, $(p_{T},\;\eta,\;\phi,\;E)\,$, as seen in figure~\ref{fig:vbfrnn}. The full input for an event can therefore be represented as a tensor $\mathbf{X}\in\mathbb{R}^{T\times 4}$.
 
 Jets with fewer than \(T\) constituents are padded with masked entries, and the masking is propagated through the recurrent layers to ensure that padded elements do not contribute to the hidden state evolution.
 \begin{figure}[h]
     \centering
-    \includegraphics[scale=0.4]{figures/VBFRNN.png}
+    \includegraphics[scale=0.45]{figures/VBFRNN.png}
     \caption{Illustration of the VBF-RNN architecture \cite{Antonio_VBFRNN_2023}.}
     \label{fig:vbfrnn}
 \end{figure}
 
-The network consists of two stacked long short-term memory layers (LSTM). The first LSTM processes the input sequence and constructs an internal representation that captures correlations among constituents. The second LSTM refines this representation and produces a single hidden-state vector at the final time step. This vector is passed to a dense layer with a sigmoid activation function that yields a scalar output \(s\in[0,1]\). The target is binary: $s=0$ for background events,  $s=1$ for VBS signal events. Training is performed using a binary cross entropy loss function.
+The network consists of two stacked long short-term memory layers (LSTM). The first LSTM processes the input sequence and constructs an internal representation that captures correlations among constituents. The second LSTM refines this representation and produces a single hidden-state vector at the final time step. This vector is passed to a dense layer with a sigmoid activation function that yields a scalar output \(s\in[0,1]\). 
+
+The target is binary: $s=0$ for background events, $s=1$ for VBS signal events. The network is trained by minimizing the binary cross-entropy loss function
+\begin{equation}
+    L(y, s) = -y \log(s) - (1-y)\log(1-s),
+\end{equation}
+where $y$ denotes the true event label. The minimization of the loss is performed using a gradient-based optimizer, and the network parameters are updated iteratively using mini-batches of events.
+
+The available dataset is split into statistically independent training and validation samples. The training sample is used to optimize the network parameters, while the validation sample is used to monitor the classifier performance during training and to detect the onset of overfitting. No information from the validation set is propagated back into the parameter updates. The separation between training and validation samples ensures an unbiased estimate of the generalization performance of the RNN on unseen data.
+
+During training, the evolution of the loss and classification metrics on both samples is monitored, and the final network configuration is selected based on validation performance. The resulting classifier output can be interpreted as the probability for an event to originate from the VBS signal process, and is used as a discriminant in subsequent analysis stages.
+\section{DNN Event Classifier}
 \section{Testing}
 Classifier performance is evaluated on an independent test sample. The primary metric is the receiver operating characteristic (ROC) curve, constructed from the signal efficiency \(\varepsilon_{S}\) and background rejection \(1-\varepsilon_{B}\) as the decision threshold is varied. The area under this curve (AUC) quantifies the separation power of the network and is insensitive to the class imbalance of the dataset.
 
