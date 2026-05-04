@@ -1,0 +1,157 @@
+\documentclass[11pt]{report}
+
+% Page Layout
+\usepackage[a4paper, margin=1.1in]{geometry}
+
+% Typography
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{microtype}
+\usepackage{setspace}
+\usepackage{mathptmx}
+\usepackage{helvet}
+\usepackage{courier}
+\usepackage[compat=1.1.0]{tikz-feynman}
+
+\usepackage[titles]{tocloft}
+\usepackage{hyperref}
+\usepackage[output-decimal-marker={,},list-final-separator={ en }]{siunitx}
+\usepackage{varioref}
+\usepackage{amsmath}
+\usepackage[nameinlink, capitalise, noabbrev]{cleveref}
+\usepackage{cite}
+\usepackage{mathrsfs}
+
+% Header and Footer
+\usepackage{fancyhdr}
+\usepackage{fancyvrb}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\leftmark}
+\fancyhead[R]{\thepage}
+\fancyfoot[C]{}
+
+% Section Titles
+\usepackage{titlesec}
+\titleformat{\chapter}[hang]{\normalfont\huge\bfseries}{\thechapter.}{20pt}{\huge\bfseries}
+\titlespacing{\chapter}{0pt}{-30pt}{12pt}
+
+
+% TOC appearance
+\renewcommand{\cftchapfont}{\normalfont\bfseries}
+\renewcommand{\cftsecfont}{\normalfont}
+\renewcommand{\cftsubsecfont}{\normalfont}
+\renewcommand{\cftchappagefont}{\normalfont\bfseries}
+\renewcommand{\cftsecpagefont}{\normalfont}
+\renewcommand{\cftsubsecpagefont}{\normalfont}
+\renewcommand{\cftchapleader}{\cftdotfill{\cftdotsep}}
+
+% Figures and Tables
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+
+% Hyperref setup
+\hypersetup{
+  colorlinks=true,
+  linkcolor=black,
+  filecolor=magenta,
+  urlcolor=cyan,
+  citecolor=blue,
+  pdftitle={Machine Learning Methods to Probe Anomalous Quartic Gauge Couplings},
+  pdfpagemode=FullScreen,
+}
+
+% Miscellaneous
+\usepackage{amssymb}
+\usepackage{enumitem}
+\usepackage{csquotes}
+
+\linespread{1.2}
+
+\author{Caspar van Eck, 12652857}
+\title{Machine Learning Methods to Probe Anomalous Quartic Gauge Couplings}
+\date{\today}
+
+\begin{document}
+
+\begin{titlepage}
+\thispagestyle{empty}
+
+\begin{center}
+
+% Top logo
+\includegraphics[width=80mm]{figures/Nikhef.png}
+
+\vspace{1.5cm}
+
+% Title block
+{\Huge \textbf{Machine Learning Methods to Probe Anomalous Quartic Gauge Couplings}\par}
+
+\vspace{1.5cm}
+
+{\Large Caspar van Eck, 12652857\par}
+
+\vspace{0.5cm}
+
+{\large June 30, 2026 \par}
+
+\vfill
+
+% Credits table (no float)
+\begin{tabular}{ll}
+\textsc{Course}      & Master thesis (60EC) at Nikhef, conducted between 01-09-2025 and 30-06-2026 \\
+\textsc{Universities} & Universiteit van Amsterdam \& Vrije Universiteit Amsterdam \\
+\textsc{Faculty}     & Faculteit der Natuurwetenschappen, Wiskunde en Informatica \\
+\textsc{Supervisor}  & dr. Flavia de Almeida Dias \\
+\textsc{Daily Supervisor    } & Samuel Jankových MSc. \\
+\textsc{Examiner}    & dr. Clara Nellist \\
+\end{tabular}
+
+\vspace{1.5cm}
+
+% Bottom logo
+\includegraphics[width=150mm]{figures/logo-combi-vu-uva-nl.png}
+
+\end{center}
+
+\end{titlepage}
+
+\pagenumbering{roman}
+
+\tableofcontents
+\clearpage
+\pagenumbering{arabic} % Switch to arabic numbering for main content
+
+\setcounter{page}{2}    
+
+\suppressfloats[t]      
+
+\newpage
+\input{chapters/introduction}
+
+\input{chapters/standardmodel}
+
+\input{chapters/mltheory}
+
+\input{chapters/atlas}
+
+\input{chapters/mlmethods}
+
+
+\input{chapters/results}
+
+\input{chapters/discussion}
+
+\input{chapters/outlook}
+\input{chapters/conclusion}
+
+
+\addcontentsline{toc}{chapter}{Bibliography}
+\bibliographystyle{unsrt}
+\bibliography{bibliography}
+
+\end{document}
