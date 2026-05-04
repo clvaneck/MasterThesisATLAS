@@ -157,7 +157,7 @@ The background sample represents the full expected composition in the BTS65 SR-l
 
 The binary classifier is an MLP with a single sigmoid output node, trained to assign a score $s \in [0,1]$ representing the probability that an event originates from aQGC signal. As discussed in Chapter~\ref{chap:ml}, the sigmoid activation together with the binary cross-entropy loss drives the network output towards the true posterior $P(y=1 \mid \mathbf{x})$.
 
-Two variants of the binary classifier are trained. Specialised models are trained on a single operator family at a time, pairing the two lowest-index operators within each family: $\mathcal{O}_{S,0}+\mathcal{O}_{S,1}$, $\mathcal{O}_{M,0}+\mathcal{O}_{M,1}$, or $\mathcal{O}_{T,0}+\mathcal{O}_{T,1}$. A global model is trained on an ensemble of all available operators spanning the scalar, mixed, and tensor families, $S(0\text{--}1) + M(0\text{--}5,\,7) + T(0\text{--}2,\,5\text{--}9)$, providing broad sensitivity across the full operator space without requiring a separate model for each operator.
+Two variants of the binary classifier are trained. Specialised models are trained on a single operator family at a time, pairing the two lowest-index operators within each family: $\mathcal{O}_{S,0}+\mathcal{O}_{S,1}$, $\mathcal{O}_{M,0}+\mathcal{O}_{M,1}$, or $\mathcal{O}_{T,0}+\mathcal{O}_{T,1}$. A global model is trained on an ensemble of all available operators spanning the scalar, mixed, and tensor families, $S(0\text{--}1) + M(0\text{--}5,\,7) + T(0\text{--}9)$, providing broad sensitivity across the full operator space without requiring a separate model for each operator.
 
 \subsection{Multi-class classifier}
 

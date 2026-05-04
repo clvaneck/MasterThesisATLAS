@@ -365,7 +365,7 @@ in \cite{PhysRevD.101.113003}.
 Tensor-type operators are built entirely from gauge field-strength tensors with no
 Higgs sector content.  Using the shorthand
 $\hat{W}_{\mu\nu}\equiv\tfrac{i}{2}g\tau^a W_{\mu\nu}^a$,
-the eight independent operators are \cite{Eboli_2016}
+the ten operators are \cite{Eboli_2016}
 \begin{align}
 \mathcal{O}_{T,0}
 &= \mathrm{Tr}\!\left[\hat{W}_{\mu\nu}\hat{W}^{\mu\nu}\right]
@@ -376,6 +376,10 @@ the eight independent operators are \cite{Eboli_2016}
 \mathcal{O}_{T,2}
 &= \mathrm{Tr}\!\left[\hat{W}_{\alpha\mu}\hat{W}^{\mu\beta}\right]
    \mathrm{Tr}\!\left[\hat{W}_{\beta\nu}\hat{W}^{\nu\alpha}\right], \\[3pt]
+\mathcal{O}_{T,3}
+&= \mathrm{Tr}\!\left[\hat{W}_{\mu\nu}\hat{W}^{\mu\nu}\hat{W}_{\alpha\beta}\hat{W}^{\alpha\beta}\right], \\[3pt]
+\mathcal{O}_{T,4}
+&= \mathrm{Tr}\!\left[\hat{W}_{\alpha\mu}\hat{W}^{\mu\beta}\hat{W}_{\beta\nu}\hat{W}^{\nu\alpha}\right], \\[3pt]
 \mathcal{O}_{T,5}
 &= \mathrm{Tr}\!\left[\hat{W}_{\mu\nu}\hat{W}^{\mu\nu}\right]
    B_{\alpha\beta}B^{\alpha\beta}, \\[3pt]
@@ -390,14 +394,14 @@ the eight independent operators are \cite{Eboli_2016}
 \mathcal{O}_{T,9}
 &= B_{\alpha\mu}B^{\mu\beta}B_{\beta\nu}B^{\nu\alpha}.
 \end{align}
-Operators $\mathcal{O}_{T,3}$ and $\mathcal{O}_{T,4}$ are not independent: the
-Cayley--Hamilton identity for $SU(2)$ matrices expresses them as linear combinations
-of $\mathcal{O}_{T,0}$, $\mathcal{O}_{T,1}$, and $\mathcal{O}_{T,2}$
-\cite{Eboli_2016}.  The tensor-sector Lagrangian is
+Some bases use the Cayley--Hamilton identity for $SU(2)$ matrices to rewrite
+$\mathcal{O}_{T,3}$ and $\mathcal{O}_{T,4}$ in terms of $\mathcal{O}_{T,0}$,
+$\mathcal{O}_{T,1}$, and $\mathcal{O}_{T,2}$.  Here they are kept explicitly to
+track all $T_{0\ldots 9}$ coefficients.  The tensor-sector Lagrangian is
 \begin{equation}
 \mathcal{L}_{T}
-= \sum_{\substack{i=0\\i\neq 3,4}}^{9}
-  \frac{f_{T,i}}{\Lambda^{4}}\,\mathcal{O}_{T,i}.
+= \sum_{i=0}^{9}
+   \frac{f_{T,i}}{\Lambda^{4}}\,\mathcal{O}_{T,i}.
 \end{equation}
 The absence of Higgs derivatives means these operators couple exclusively to
 transversely polarised gauge bosons.  Since the SM quartic amplitude is dominated
