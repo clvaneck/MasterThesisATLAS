@@ -17,8 +17,8 @@ Stage & Requirements \\
 \midrule
 Pre-selection
 & $\geq 2$ large-$R$ jets \\
-& Single large-$R$ jet trigger \\
-& Leading jet $p_T > 560$~GeV \\
+& Leading signal jet $p_T > 560$~GeV \\
+& Sub-leading signal jet $p_T > 200$~GeV \\
 & $m_{JJ} > 1.3$~TeV \\
 \bottomrule
 \end{tabular}
@@ -151,7 +151,7 @@ The MLP takes twelve event-level features as input: the transverse momentum, pse
 \label{fig:input_distributions_extra}
 \end{figure}
 
-The background sample represents the full expected composition in the BTS65 SR-like selection, dominated by QCD dijet production ($\sim\!96\%$), with subdominant contributions from $V$+jets ($\sim\!3\%$), $t\bar{t}$ ($\sim\!1\%$), QCD diboson, and electroweak $VV$+$jj$ production. Only the pure EFT (QUAD) contribution to the signal cross section is used during training, as the interference term between the SM and EFT amplitudes is neglected in this analysis. To avoid the training being dominated by operators with large production cross sections, the aQGC signal samples are reweighted during training so that each operator contributes equally, effectively equalising their cross sections; the correct physical cross sections are restored when evaluating sensitivity. Physical Monte Carlo weights are applied throughout.
+The background sample represents the full expected composition in the BTS65 SR-like selection, dominated by QCD dijet production ($\sim\!96\%$), with subdominant contributions from $V$+jets ($\sim\!3\%$), $t\bar{t}$ ($\sim\!1\%$), QCD diboson, and electroweak $VV$+$jj$ production. Only the pure EFT (QUAD) contribution to the signal cross section is used during training, as the interference term between the SM and EFT amplitudes is neglected in this analysis. To avoid the training being dominated by operators with large production cross sections, the aQGC signal samples are reweighted during training so that each operator contributes equally, effectively equalising their cross sections; the correct physical cross sections are restored when evaluating sensitivity.
 
 \subsection{Binary classifier}
 
