@@ -16,7 +16,14 @@ A common nonlinearity for hidden layers is the rectified linear unit,
 \mathrm{ReLU}(z) = \max(0,z),
 \end{equation}
 which preserves positive activations unchanged and maps negative ones to zero.  Its piecewise-linear form avoids the vanishing-gradient problem that afflicts saturating activations such as $\tanh$, while remaining a universal approximator when composed across multiple layers \cite{Hornik_Universal_1989}.
+\subsection{Input normalisation}
+\label{sec:normalisation}
 
+Before training, input features are standardised to zero mean and unit variance across the training set.  For each feature $x_j$ with empirical mean $\mu_j$ and standard deviation $\sigma_j$, the standardised value is
+\begin{equation}
+\tilde{x}_{j} = \frac{x_{j} - \mu_{j}}{\sigma_{j}}.
+\end{equation}
+Standardisation ensures that features with different physical scales contribute equally to the gradient updates and prevents large-magnitude inputs from dominating the loss landscape.
 \subsection{Binary classification}
 \label{sec:binary}
 
@@ -55,14 +62,7 @@ Parameters are updated by stochastic gradient descent.  At each step a mini-batc
 \end{equation}
 where $\eta$ is the learning rate and $\ell$ is the per-example loss from either \eqref{eq:bce} or \eqref{eq:cce}.  The gradients are computed efficiently by backpropagation, which applies the chain rule layer by layer from the output back to the input \cite{Rumelhart_Backprop_1986}.
 
-\subsection{Input normalisation}
-\label{sec:normalisation}
 
-Before training, input features are standardised to zero mean and unit variance across the training set.  For each feature $x_j$ with empirical mean $\mu_j$ and standard deviation $\sigma_j$, the standardised value is
-\begin{equation}
-\tilde{x}_{j} = \frac{x_{j} - \mu_{j}}{\sigma_{j}}.
-\end{equation}
-Standardisation ensures that features with different physical scales contribute equally to the gradient updates and prevents large-magnitude inputs from dominating the loss landscape.
 
 \section{Recurrent Neural Network}
 
