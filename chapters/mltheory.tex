@@ -1,7 +1,7 @@
 \chapter{Theory of machine learning}
 \label{chap:ml}
 
-Machine learning provides a framework for constructing functions that map inputs to outputs by optimising a parametric model against labelled examples.  In high-energy physics the canonical task is classification: given a set of measured quantities describing an event, assign it to one of $K$ classes.  The theoretical tools introduced in this chapter, feedforward networks, recurrent networks, and transformers, address this task with increasing architectural complexity.  Throughout, the mathematical objects that are common to all architectures, activation functions, loss functionals, and gradient-based optimisation, are introduced as they first arise.
+Machine learning provides a framework for constructing functions that map inputs to outputs by optimising a parametric model against labelled examples.  In high-energy physics the canonical task is classification: given a set of measured quantities describing an event, assign it to one of $K$ classes.  The theoretical tools introduced in this chapter, multi-layer perceptrons, recurrent networks and transformers, address this task with increasing architectural complexity.
 
 \section{Multi-layer Perceptron}
 
@@ -47,7 +47,7 @@ where $z_k$ are the pre-activations of the final layer.  By construction $\hat{y
 \end{equation}
 where $y_{ik}\in\{0,1\}$ is the one-hot encoded true label ($y_{ik}=1$ if example $i$ belongs to class $k$, zero otherwise).  Only the term corresponding to the true class contributes to the sum for each example, so minimising $\mathcal{L}_{\mathrm{CCE}}$ drives the network to concentrate probability mass on the correct class.
 
-In the context of aQGC searches, the multi-class formulation is particularly natural.  Each operator family, or individual operator within a family, defines a distinct signal class, and the softmax output $\hat{y}_k$ provides a per-event estimate of the posterior probability for operator $k$.  A single multi-class network can therefore simultaneously discriminate among all operator types, replacing the combination of multiple binary classifiers that would otherwise be required.
+In the context of aQGC searches, the multi-class formulation is particularly natural.  Each operator family, or individual operator within a family, defines a distinct signal class and the softmax output $\hat{y}_k$ provides a per-event estimate of the posterior probability for operator $k$.  A single multi-class network can therefore simultaneously discriminate among all operator types, replacing the combination of multiple binary classifiers that would otherwise be required.
 
 Parameters are updated by stochastic gradient descent.  At each step a mini-batch $\mathcal{B}\subset\{1,\dots,N\}$ is drawn and the parameter vector updated as
 \begin{equation}
@@ -62,7 +62,7 @@ Before training, input features are standardised to zero mean and unit variance 
 \begin{equation}
 \tilde{x}_{j} = \frac{x_{j} - \mu_{j}}{\sigma_{j}}.
 \end{equation}
-Standardisation ensures that features with different physical scales contribute equally to the gradient updates and prevents large-magnitude inputs from dominating the loss landscape.  The statistics $\mu_j$ and $\sigma_j$ are computed on the training set and applied unchanged to validation and test sets to avoid information leakage.
+Standardisation ensures that features with different physical scales contribute equally to the gradient updates and prevents large-magnitude inputs from dominating the loss landscape.
 
 \section{Recurrent Neural Network}
 
@@ -83,12 +83,12 @@ The cell state and hidden state are then updated by
 \mathbf{c}_{t} &= \mathbf{f}_{t}\odot\mathbf{c}_{t-1} + \mathbf{i}_{t}\odot\tilde{\mathbf{c}}_{t}, \label{eq:lstm_cell}\\[3pt]
 \mathbf{h}_{t} &= \mathbf{o}_{t}\odot\tanh(\mathbf{c}_{t}), \label{eq:lstm_hidden}
 \end{align}
-where $\odot$ denotes elementwise multiplication.  The forget gate $\mathbf{f}_t$ controls what fraction of the previous cell state is retained; when its entries are close to one the cell state is preserved unchanged across the step, allowing gradients to flow back through equation \eqref{eq:lstm_cell} without attenuation.  The input gate $\mathbf{i}_t$ controls how much of the candidate update $\tilde{\mathbf{c}}_t$ is written into the cell state, and the output gate $\mathbf{o}_t$ determines what portion of the updated cell state is exposed as the hidden state.  The gating structure is illustrated in Figure~\ref{fig:lstm_cell}.
+where $\odot$ denotes elementwise multiplication.  The forget gate $\mathbf{f}_t$ controls what fraction of the previous cell state is retained, when its entries are close to one the cell state is preserved unchanged across the step, allowing gradients to flow back through equation \eqref{eq:lstm_cell} without attenuation.  The input gate $\mathbf{i}_t$ controls how much of the candidate update $\tilde{\mathbf{c}}_t$ is written into the cell state and the output gate $\mathbf{o}_t$ determines what portion of the updated cell state is exposed as the hidden state.  The gating structure is illustrated in Figure~\ref{fig:lstm_cell}.
 
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=0.65\textwidth]{figures/LSTMcell.png}
-  \caption{Unrolled LSTM cell showing three consecutive time steps.  The expanded central cell exposes the internal gating structure: the forget gate ($\sigma$), input gate ($\sigma$), candidate cell update ($\tanh$), and output gate ($\sigma$) each receive the concatenation of the previous hidden state $\mathbf{h}_{t-1}$ and the current input $\mathbf{x}_t$.  The cell state $\mathbf{c}_t$ flows along the horizontal additive path (upper horizontal line), enabling long-range gradient propagation; the hidden state $\mathbf{h}_t$ is derived from it via the output gate and a $\tanh$ squashing, as described by equations~\eqref{eq:lstm_cell} and~\eqref{eq:lstm_hidden}.  Diagram adapted from Olah~\cite{Olah_LSTM_2015}.}
+  \caption{LSTM cell showing three consecutive time steps.  The expanded cell shows the internal gating structure: the forget gate, input gate, candidate cell update and output gate each receive the concatenation of the previous hidden state $\mathbf{h}_{t-1}$ and the current input $\mathbf{x}_t$.  The cell state $\mathbf{c}_t$ flows along the horizontal additive path (upper horizontal line), enabling long-range gradient propagation, the hidden state $\mathbf{h}_t$ is derived from it via the output gate and a $\tanh$ squashing, as described by equations~\eqref{eq:lstm_cell} and~\eqref{eq:lstm_hidden}. ~\cite{Olah_LSTM_2015}.}
   \label{fig:lstm_cell}
 \end{figure}
 
@@ -96,7 +96,7 @@ After processing all $T$ steps, the final hidden state $\mathbf{h}_T$ encodes a 
 
 \section{Transformer architecture}
 
-The transformer \cite{Vaswani_Attention_2017} abandons recurrent processing in favour of a fully parallel architecture built around the scaled dot-product attention mechanism.  Given a sequence of $T$ input vectors assembled as rows of a matrix $X\in\mathbb{R}^{T\times d}$, three linear projections produce queries, keys, and values,
+The transformer \cite{Vaswani_Attention_2017} abandons recurrent processing in favour of a fully parallel architecture built around the scaled dot-product attention mechanism.  Given a sequence of $T$ input vectors assembled as rows of a matrix $X\in\mathbb{R}^{T\times d}$, three linear projections produce queries, keys and values,
 \begin{equation}
 Q = XW^{Q},\quad K = XW^{K},\quad V = XW^{V}, \qquad W^{Q},W^{K},W^{V}\in\mathbb{R}^{d\times d_k}.
 \end{equation}

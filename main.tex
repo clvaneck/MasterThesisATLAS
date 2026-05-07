@@ -35,7 +35,16 @@
 \usepackage{titlesec}
 \titleformat{\chapter}[hang]{\normalfont\huge\bfseries}{\thechapter.}{20pt}{\huge\bfseries}
 \titlespacing{\chapter}{0pt}{-30pt}{12pt}
+% Section Titles
+\usepackage{titlesec}
+\titleformat{\chapter}[hang]{\normalfont\huge\bfseries}{\thechapter.}{20pt}{\huge\bfseries}
+\titlespacing{\chapter}{0pt}{-30pt}{12pt}
+\titleformat{\section}{\normalfont\large\bfseries}{\thesection}{1em}{}
+\titlespacing{\section}{0pt}{4pt}{4pt}
 
+\makeatletter
+\let\@afterindenttrue\@afterindentfalse
+\makeatother
 
 % TOC appearance
 \renewcommand{\cftchapfont}{\normalfont\bfseries}

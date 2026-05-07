@@ -5,7 +5,7 @@
 
 This chapter describes the machine learning methods developed to maximise sensitivity to anomalous quartic gauge couplings in the fully hadronic VBS analysis. The analysis targets the electroweak production of two vector bosons in association with two forward jets, $pp \to VVjj$, where both bosons decay hadronically. The signal topology consists of two large-$R$ UFO jets from the boosted vector boson decays and two small-$R$ forward PFlow tagging jets. The dominant background is QCD multijet production, which exceeds the EWK signal cross section by approximately eight orders of magnitude in the analysis phase space, making dedicated event classification essential.
 
-Events are selected through a sequential pipeline. First, a pre-selection is applied requiring at least two large-$R$ jets, a single large-$R$ jet trigger, a leading jet $p_T > 560$~GeV, and a dijet invariant mass $m_{JJ} > 1.3$~TeV. The pre-selection criteria are summarised in Table~\ref{tab:analysis_selection}.
+Events are selected through a sequential pipeline. First, a pre-selection is applied requiring at least two large-$R$ jets, a single large-$R$ jet trigger, a leading jet $p_T > 560$~GeV and a dijet invariant mass $m_{JJ} > 1.3$~TeV. The pre-selection criteria are summarised in Table~\ref{tab:analysis_selection}.
 
 \begin{table}[h]
 \centering
@@ -26,20 +26,20 @@ Pre-selection
 
 The VBF-RNN tagger, described in detail in Section~\ref{sec:vbfrnn}, assigns a score reflecting the probability that an event originates from a VBS topology based on the kinematics of the forward tagging jets and signal jets. The VBF-RNN tagger is trained and evaluated directly on the pre-selected sample without any additional boson tagger requirement. A further signal-region-like selection, described in Section~\ref{sec:mldiscriminant}, is applied when training and evaluating the MLP-based aQGC discriminant.
 
-The full dataset corresponds to the full Run~2 MC simulation at $\sqrt{s} = 13$~TeV with an integrated luminosity of $140~\text{fb}^{-1}$. The background composition in the signal region is dominated by QCD dijet production ($\sim\!96\%$), with subdominant contributions from $V$+jets ($\sim\!3\%$), $t\bar{t}$ ($\sim\!1\%$), QCD diboson, and electroweak $VV$+$jj$ production. The signal samples consist of aQGC EFT operators from the scalar ($S$), mixed ($M$), and tensor ($T$) families in the Éboli basis, with only the pure EFT (QUAD) contribution used in the analysis.
+The full dataset corresponds to the full Run~2 MC simulation at $\sqrt{s} = 13$~TeV with an integrated luminosity of $140~\text{fb}^{-1}$. The background composition in the signal region is dominated by QCD dijet production ($\sim\!96\%$), with subdominant contributions from $V$+jets ($\sim\!3\%$), $t\bar{t}$ ($\sim\!1\%$), QCD diboson and electroweak $VV$+$jj$ production. The signal samples consist of aQGC EFT operators from the scalar ($S$), mixed ($M$) and tensor ($T$) families in the Éboli basis, with only the pure EFT (QUAD) contribution used in the analysis.
 
 The chapter is organised as follows. Section~\ref{sec:vbfrnn} describes the VBF-RNN tagger and its adaptation for the fully hadronic VBS channel. Section~\ref{sec:mldiscriminant} presents the MLP-based aQGC discriminant, covering the binary and multiclass classifiers and the sensitivity results.
 
 \section{Vector boson scattering topology identification}
 \label{sec:vbfrnn}
 
-The physical process targeted by this analysis is the electroweak production of two vector bosons in association with two jets, $pp \to VVjj$~(EWK). This inclusive EWK process contains both VBS and non-VBS contributions: the VBS subprocess proceeds via a genuine quartic gauge vertex in the $t$-channel and exhibits the characteristic forward-jet topology that distinguishes it from other EWK diagrams contributing to the same final state. Extracting the VBS component from the broader EWK $VVjj$ production is therefore a necessary step before searching for anomalous couplings.
+The physical process targeted by this analysis is the electroweak production of two vector bosons in association with two jets, $pp \to VVjj$~(EWK). This inclusive EWK process contains both VBS and non-VBS contributions: the VBS subprocess exhibits the characteristic forward-jet topology that distinguishes it from other EWK diagrams contributing to the same final state. Extracting the VBS component from the broader EWK $VVjj$ production is therefore a necessary step before searching for anomalous couplings.
 
-The VBF-RNN tagger was originally developed to identify the characteristic forward-jet topology of vector boson fusion and vector boson scattering processes, and has been deployed in previous ATLAS measurements including the semi-leptonic VBS analysis~\cite{Antonio_VBFRNN_2023}. In this analysis the tagger is adapted and re-optimised for the fully hadronic VBS channel, where both the tagging jets and the signal jets from the hadronically decaying bosons are available as inputs.
+The VBF-RNN tagger was originally developed to identify the characteristic forward-jet topology of vector boson fusion and vector boson scattering processes and has been deployed in previous ATLAS measurements including the semi-leptonic VBS analysis~\cite{Antonio_VBFRNN_2023}. In this analysis the tagger is adapted and re-optimised for the fully hadronic VBS channel, where both the tagging jets and the signal jets from the hadronically decaying bosons are available as inputs.
 
-The classification task is formulated as a supervised binary problem: each event is assigned a label $y = 1$ if it originates from a VBS process and $y = 0$ if it originates from a non-VBS EWK process. To define these labels at the truth level, jets in the training sample are matched to their underlying hard-scatter particles. Boson matching is performed using a $\Delta R$ criterion of $\Delta R < 1.0$ for large-$R$ jets and $\Delta R < 0.4$ for small-$R$ jets. Jets are identified by a subtraction strategy: a jet is labelled as a VBS tagging jet if it is not boson-matched, not gluon-initiated, and not consistent with pileup.
+The classification task is formulated as a supervised binary problem: each event is assigned a label $y = 1$ if it originates from a VBS process and $y = 0$ if it originates from a non-VBS EWK process. To define these labels at the truth level, jets in the training sample are matched to their underlying hard-scatter particles. Boson matching is performed using a $\Delta R$ criterion of $\Delta R < 1.0$ for large-$R$ jets and $\Delta R < 0.4$ for small-$R$ jets. Jets are identified by a subtraction strategy: a jet is labelled as a VBS tagging jet if it is not boson-matched, not gluon-initiated and not consistent with pileup.
 
-Three versions of the tagger are developed for this analysis, differing in the set of jets provided as input and the training sample used, and are summarised in Table~\ref{tab:vbfrnn_versions}.
+Three versions of the tagger are developed for this analysis, differing in the set of jets provided as input and the training sample used and are summarised in Table~\ref{tab:vbfrnn_versions}.
 
 \begin{table}[h]
 \centering
@@ -56,11 +56,11 @@ v3 & Up to 6 jets (tagging + signal)  & VBS vs.\ non-VBS (EWK) \\
 \end{tabular}
 \end{table}
 
-Version~1 corresponds to the configuration used in earlier analyses, trained to separate resonance VBF production from gluon-fusion production using only the forward tagging jets. This version provides a useful baseline and demonstrates that the topological characteristics of VBF-like events are captured by the tagging-jet kinematics alone. Version~2 retrains the same four-jet architecture directly on the VBS versus non-VBS (EWK) classification task relevant to this analysis. Version~3 extends the input to six jets by including the two large-$R$ signal jets alongside the tagging jets, giving the network access to the full reconstructed final state.
+Version~1 corresponds to the configuration used in earlier analyses, trained to separate resonance VBF production from gluon-fusion production using only the potential tagging jets. This version provides a useful baseline and demonstrates that the topological characteristics of VBF-like events are captured by the tagging-jet kinematics alone. Version~2 retrains the same four-jet architecture directly on the VBS versus non-VBS (EWK) classification task relevant to this analysis. Version~3 extends the input to six jets by including the two large-$R$ signal jets alongside the tagging jets, giving the network access to the full reconstructed final state.
 
 \subsection{Input representation}
 
-For each jet, the observables $(p_T,\,\eta,\,\phi,\,E)$ are used as input features, forming a tensor $\mathbf{X} \in \mathbb{R}^{T \times 4}$ for a sequence of $T$ jets ordered by decreasing transverse momentum. Events with fewer than $T$ jets are zero-padded to the fixed sequence length, and the padding is masked during the forward pass so that padded steps do not contribute to the hidden-state evolution, as described in Chapter~\ref{chap:ml}.
+For each jet, the observables $(p_T,\,\eta,\,\phi,\,E)$ are used as input features, forming a tensor $\mathbf{X} \in \mathbb{R}^{T \times 4}$ for a sequence of $T$ jets ordered by decreasing transverse momentum. Events with fewer than $T$ jets are zero-padded to the fixed sequence length and the padding is masked during the forward pass so that padded steps do not contribute to the hidden-state evolution, as described in Chapter~\ref{chap:ml}.
 
 \subsection{Architecture and training}
 
@@ -69,11 +69,11 @@ The network consists of two stacked LSTM layers. The first layer processes the j
 \begin{figure}[h]
 \centering
 \includegraphics[scale=0.45]{figures/VBFRNN.png}
-\caption{Illustration of the VBF-RNN architecture \cite{Antonio_VBFRNN_2023}. The input sequence of jet four-vectors is processed by two stacked LSTM layers, and the final hidden state is passed to a sigmoid output node.}
+\caption{Illustration of the VBF-RNN architecture \cite{Antonio_VBFRNN_2023}. The input sequence of jet four-vectors is processed by two stacked LSTM layers and the final hidden state is passed to a sigmoid output node.}
 \label{fig:vbfrnn}
 \end{figure}
 
-The network is trained by minimising the binary cross-entropy loss over mini-batches of labelled Monte Carlo events. The available dataset is partitioned into statistically independent training and validation samples; only the training sample contributes to parameter updates, while the validation sample is used to monitor performance and select the final network configuration. The VBF-RNN score is used both as a pre-selection requirement to enrich the sample in VBS-topology events, and as one of the input features to the aQGC discriminant described in Section~\ref{sec:mldiscriminant}.
+The network is trained by minimising the binary cross-entropy loss over mini-batches of labelled Monte Carlo events. The available dataset is partitioned into statistically independent training and validation samples; only the training sample contributes to parameter updates, while the validation sample is used to monitor performance and select the final network configuration. The VBF-RNN score is used both as a pre-selection requirement to enrich the sample in VBS-topology events and as one of the input features to the aQGC discriminant described in Section~\ref{sec:mldiscriminant}.
 
 \section{Machine learning based aQGC discriminant}
 \label{sec:mldiscriminant}
@@ -101,7 +101,7 @@ BTS65 SR-like selection
 
 \subsection{Input features and training samples}
 
-The MLP takes twelve event-level features as input: the transverse momentum, pseudorapidity, azimuthal angle, and invariant mass of each of the two leading large-$R$ signal jets, the VBF-RNN score from version~3 of the tagger, and three multiplicity variables: the number of tagging jets provided to the RNN, the total number of small-$R$ jets, and the number of large-$R$ jets. All features are standardised to zero mean and unit variance prior to training, as discussed in Chapter~\ref{chap:ml}. Normalised distributions of the input variables for representative S0, M0, and T0 aQGC signal samples and the composite background are shown in Figures~\ref{fig:input_distributions} and~\ref{fig:input_distributions_extra}.
+The MLP takes twelve event-level features as input: the transverse momentum, pseudorapidity, azimuthal angle and invariant mass of each of the two leading large-$R$ signal jets, the VBF-RNN score from version~3 of the tagger and three multiplicity variables: the number of tagging jets provided to the RNN, the total number of small-$R$ jets and the number of large-$R$ jets. All features are standardised to zero mean and unit variance prior to training, as discussed in Chapter~\ref{chap:ml}. Normalised distributions of the input variables for representative S0, M0 and T0 aQGC signal samples and the composite background are shown in Figures~\ref{fig:input_distributions} and~\ref{fig:input_distributions_extra}.
 
 \begin{figure}[h]
 \centering
@@ -129,7 +129,7 @@ The MLP takes twelve event-level features as input: the transverse momentum, pse
 \begin{subfigure}[b]{0.24\textwidth}
 \includegraphics[width=\textwidth]{figures/SigJet2_phi_NOSYS.png}
 \end{subfigure}
-\caption{Normalised distributions of the eight kinematic MLP input features in the BTS65 SR-like selection. Top row (left to right): leading signal jet $p_T$, mass, $\eta$, and $\phi$. Bottom row: sub-leading signal jet $p_T$, mass, $\eta$, and $\phi$. Distributions are shown for representative S0 (red), M0 (green), and T0 (orange) aQGC signal samples and the composite background (blue). The signal jets are significantly harder and more central than the background, and both jet masses peak near the $W/Z$ boson mass window for signal. The $\phi$ distributions are approximately uniform for all samples, as expected from the azimuthal symmetry of the detector.}
+\caption{Normalised distributions of the eight kinematic MLP input features in the BTS65 SR-like selection. Top row (left to right): leading signal jet $p_T$, mass, $\eta$ and $\phi$. Bottom row: sub-leading signal jet $p_T$, mass, $\eta$ and $\phi$. Distributions are shown for representative S0 (red), M0 (green) and T0 (orange) aQGC signal samples and the composite background (blue). The signal jets are significantly harder and more central than the background and both jet masses peak near the $W/Z$ boson mass window for signal. The $\phi$ distributions are approximately uniform for all samples, as expected from the azimuthal symmetry of the detector.}
 \label{fig:input_distributions}
 \end{figure}
 
@@ -147,23 +147,23 @@ The MLP takes twelve event-level features as input: the transverse momentum, pse
 \begin{subfigure}[b]{0.24\textwidth}
 \includegraphics[width=\textwidth]{figures/RNNScore_NOSYS.png}
 \end{subfigure}
-\caption{Normalised distributions of the jet multiplicity and VBF-RNN input features in the BTS65 SR-like selection. From left to right: total number of small-$R$ jets, number of large-$R$ jets, number of RNN tagging jets, and VBF-RNN score. Distributions are shown for representative S0 (red), M0 (green), and T0 (orange) aQGC signal samples and the composite background (blue). Signal events tend to have higher jet multiplicities and are strongly peaked at high VBF-RNN scores, reflecting their characteristic VBS topology.}
+\caption{Normalised distributions of the jet multiplicity and VBF-RNN input features in the BTS65 SR-like selection. From left to right: total number of small-$R$ jets, number of large-$R$ jets, number of RNN tagging jets and VBF-RNN score. Distributions are shown for representative S0 (red), M0 (green) and T0 (orange) aQGC signal samples and the composite background (blue). Signal events tend to have higher jet multiplicities and are strongly peaked at high VBF-RNN scores, reflecting their characteristic VBS topology.}
 \label{fig:input_distributions_extra}
 \end{figure}
 
-The background sample represents the full expected composition in the BTS65 SR-like selection, dominated by QCD dijet production ($\sim\!96\%$), with subdominant contributions from $V$+jets ($\sim\!3\%$), $t\bar{t}$ ($\sim\!1\%$), QCD diboson, and electroweak $VV$+$jj$ production. Only the pure EFT (QUAD) contribution to the signal cross section is used during training, as the interference term between the SM and EFT amplitudes is neglected in this analysis. To avoid the training being dominated by operators with large production cross sections, the aQGC signal samples are reweighted during training so that each operator contributes equally, effectively equalising their cross sections; the correct physical cross sections are restored when evaluating sensitivity.
+The background sample represents the full expected composition in the BTS65 SR-like selection, dominated by QCD dijet production ($\sim\!96\%$), with subdominant contributions from $V$+jets ($\sim\!3\%$), $t\bar{t}$ ($\sim\!1\%$), QCD diboson and electroweak $VV$+$jj$ production. Only the pure EFT (QUAD) contribution to the signal cross section is used during training, as the interference term between the SM and EFT amplitudes is neglected in this analysis. To avoid the training being dominated by operators with large production cross sections, the aQGC signal samples are reweighted during training so that each operator contributes equally, effectively equalising their cross sections; the correct physical cross sections are restored when evaluating sensitivity.
 
 \subsection{Binary classifier}
 
 The binary classifier is an MLP with a single sigmoid output node, trained to assign a score $s \in [0,1]$ representing the probability that an event originates from aQGC signal. As discussed in Chapter~\ref{chap:ml}, the sigmoid activation together with the binary cross-entropy loss drives the network output towards the true posterior $P(y=1 \mid \mathbf{x})$.
 
-Two variants of the binary classifier are trained. Specialised models are trained on a single operator family at a time, pairing the two lowest-index operators within each family: $\mathcal{O}_{S,0}+\mathcal{O}_{S,1}$, $\mathcal{O}_{M,0}+\mathcal{O}_{M,1}$, or $\mathcal{O}_{T,0}+\mathcal{O}_{T,1}$. A global model is trained on an ensemble of all available operators spanning the scalar, mixed, and tensor families, $S(0\text{--}1) + M(0\text{--}5,\,7) + T(0\text{--}9)$, providing broad sensitivity across the full operator space without requiring a separate model for each operator.
+Two variants of the binary classifier are trained. Specialised models are trained on a single operator family at a time, pairing the two lowest-index operators within each family: $\mathcal{O}_{S,0}+\mathcal{O}_{S,1}$, $\mathcal{O}_{M,0}+\mathcal{O}_{M,1}$, or $\mathcal{O}_{T,0}+\mathcal{O}_{T,1}$. A global model is trained on an ensemble of all available operators spanning the scalar, mixed and tensor families, $S(0\text{--}1) + M(0\text{--}5,\,7) + T(0\text{--}9)$, providing broad sensitivity across the full operator space without requiring a separate model for each operator.
 
 \subsection{Multi-class classifier}
 
 The binary approach assigns a single signal probability without distinguishing between operator families. Since the three operator families produce distinct kinematic signatures, as discussed in Chapter~\ref{chap:sm}, a natural extension is to train a single model that simultaneously identifies both the presence of aQGC signal and its operator family.
 
-The multi-class classifier extends the output layer to $K=4$ nodes corresponding to background, scalar, mixed, and tensor classes. A softmax activation is applied to produce a valid probability distribution $(\hat{y}_1,\dots,\hat{y}_K)$ over the four classes, and the network is trained by minimising the categorical cross-entropy loss, following the multi-class formulation described in Chapter~\ref{chap:ml}. The network is trained on all available operators across all three families simultaneously, with class balancing applied to account for the differing numbers of operators per family.
+The multi-class classifier extends the output layer to $K=4$ nodes corresponding to background, scalar, mixed and tensor classes. A softmax activation is applied to produce a valid probability distribution $(\hat{y}_1,\dots,\hat{y}_K)$ over the four classes and the network is trained by minimising the categorical cross-entropy loss, following the multi-class formulation described in Chapter~\ref{chap:ml}. The network is trained on all available operators across all three families simultaneously, with class balancing applied to account for the differing numbers of operators per family.
 
 \subsection{Final discriminant and significance estimation}
 
