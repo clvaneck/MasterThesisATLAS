@@ -6,16 +6,31 @@ This chapter evaluates the VBF-RNN tagger introduced in Section~\ref{sec:vbfrnn}
 \section{Evaluation sample and figure of merit}
 \label{sec:vbfrnn_eval}
 
-The tagger is evaluated on the statistically independent validation sample of electroweak $VVjj$ events described in Section~\ref{sec:vbfrnn}, using the truth-level VBS / non-VBS labels obtained from the boson- and tagging-jet matching procedure. The combined $WW$, $WZ$ and $ZZ$ final states are merged into a single sample, so that the quoted performance reflects the inclusive diboson channel relevant to the fully hadronic analysis; the individual per-channel results are consistent and are reported in Figure~\ref{fig:vbfrnn_roc_channels}.
+The tagger is evaluated on the statistically independent validation sample of electroweak $VVjj$ events described in Section~\ref{sec:vbfrnn}, using the truth-level VBS / non-VBS labels obtained from the boson- and tagging-jet matching procedure. The combined $WW$, $WZ$ and $ZZ$ final states are merged into a single sample, so that the quoted performance reflects the inclusive diboson channel relevant to the fully hadronic analysis, with consistent behaviour across the individual channels.
 
 Because the tagger output is a continuous score $s\in[0,1]$, its discriminating power is quantified with the receiver operating characteristic (ROC) curve. For a given threshold $s_{\mathrm{cut}}$, events with $s>s_{\mathrm{cut}}$ are tagged as VBS. The true-positive rate (the VBS efficiency, or VBS positive rate) is the fraction of true VBS events that are tagged, while the false-positive rate (the non-VBS positive rate) is the fraction of non-VBS EWK events that are also tagged. Sweeping $s_{\mathrm{cut}}$ from $1$ to $0$ traces out the ROC curve in the (false-positive rate, true-positive rate) plane. A perfect classifier reaches the top-left corner, whereas a random classifier lies on the diagonal. The area under this curve (AUC) condenses the curve into a single scalar: it equals the probability that a randomly chosen VBS event is assigned a higher score than a randomly chosen non-VBS event, so that $\mathrm{AUC}=1$ is perfect separation and $\mathrm{AUC}=0.5$ is no separation. The AUC is used throughout this chapter as the primary figure of merit.
 
 \section{Performance comparison of the RNN versions}
 \label{sec:vbfrnn_perf}
 
-The three RNN versions are compared on the combined diboson validation sample in Figure~\ref{fig:vbfrnn_roc}. Version~1, trained to separate resonant VBF from gluon-fusion production using only the four leading tagging jets, generalises poorly to the VBS versus non-VBS EWK task it is applied to here, reaching an AUC of only $0.629$ and lying close to the diagonal. Retraining the identical four-jet architecture directly on the VBS versus non-VBS EWK objective (version~2) raises the AUC substantially to $0.760$, confirming that the relevant topological information is accessible from the tagging-jet kinematics once the network is optimised for the correct target. Extending the input to six jets by adding the two large-$R$ signal jets (version~3) improves the AUC further to $0.801$.
+The three RNN versions are compared on the combined diboson validation sample in Figure~\ref{fig:vbfrnn_roc} and summarised in Table~\ref{tab:vbfrnn_auc}. Version~1, trained to separate resonant VBF from gluon-fusion production using only the four leading tagging jets, generalises poorly to the VBS versus non-VBS EWK task it is applied to here, reaching an AUC of only $0.629$ and lying close to the diagonal. Retraining the identical four-jet architecture directly on the VBS versus non-VBS EWK objective (version~2) raises the AUC substantially to $0.760$, confirming that the relevant topological information is accessible from the tagging-jet kinematics once the network is optimised for the correct target. Extending the input to six jets by adding the two large-$R$ signal jets (version~3) improves the AUC further to $0.801$.
 
 The motivation for adding the signal jets is shown in Figure~\ref{fig:vbfrnn_sigjet}: the dijet invariant mass of the two large-$R$ signal jets retains discriminating power between the VBS and non-VBS EWK topologies that is not captured by the tagging jets alone. Exploiting this information yields a relative AUC improvement of $+5.4\%$ from version~2 to version~3. The corresponding score distributions, shown in Figure~\ref{fig:vbfrnn_scores}, illustrate the effect directly: for the four-jet tagger the VBS and non-VBS EWK distributions overlap substantially, whereas for the six-jet tagger the non-VBS EWK events are pushed towards low scores and the VBS events towards high scores, giving a markedly cleaner separation. Version~3 is therefore adopted as the baseline tagger for the remainder of the analysis.
+
+\begin{table}[h]
+\centering
+\caption{Discrimination performance of the three VBF-RNN versions on the combined $WW+WZ+ZZ$ EWK validation sample, quantified by the AUC for separating VBS from non-VBS EWK events. The relative improvement is given with respect to the preceding configuration.}
+\label{tab:vbfrnn_auc}
+\begin{tabular}{llcc}
+\toprule
+Version & Configuration & AUC & Relative improvement \\
+\midrule
+v1 & 4 jets, VBF vs.\ ggF         & 0.629 & --- \\
+v2 & 4 jets, VBS vs.\ non-VBS EWK & 0.760 & $+20.8\%$ \\
+v3 & 6 jets, VBS vs.\ non-VBS EWK & 0.801 & $+5.4\%$ \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 \begin{figure}[h]
 \centering
@@ -69,9 +84,23 @@ The version~2 score distributions in Figure~\ref{fig:vbfrnn_scores} exhibit a lo
 \section{Transformer architecture}
 \label{sec:vbfrnn_transformer}
 
-The recurrent architecture propagates information sequentially through the jet collection and may lose distant context for longer input sequences. A transformer encoder, which computes pairwise interactions between all input jets simultaneously through the self-attention mechanism described in Chapter~\ref{chap:ml}, was trained on the identical six-jet input and VBS versus non-VBS EWK target as version~3 to test whether the global attention structure offers a tangible benefit
+The recurrent architecture propagates information sequentially through the jet collection and may lose distant context for longer input sequences. A transformer encoder, which computes pairwise interactions between all input jets simultaneously through the self-attention mechanism described in Chapter~\ref{chap:ml}, was trained on the identical six-jet input and VBS versus non-VBS EWK target as version~3 to test whether the global attention structure offers a tangible benefit.
 
-Adding the transformer curve to the ROC comparison, shown in Figure~\ref{fig:vbfrnn_roc_transformer}, yields an AUC of $0.806$, a marginal improvement of less than one per mille over the version~3 RNN ($0.801$). The two curves are essentially indistinguishable and, in particular, the transformer offers no gain in the high-VBS-efficiency regime relevant to the analysis. Given the negligible performance difference and the higher computational cost of the attention mechanism for the short jet sequences used here, the recurrent version~3 tagger is retained as the baseline.
+Adding the transformer curve to the ROC comparison, shown in Figure~\ref{fig:vbfrnn_roc_transformer} and summarised in Table~\ref{tab:vbfrnn_transformer_auc}, yields an AUC of $0.806$, a marginal improvement of $+0.6\%$ over the version~3 RNN ($0.801$). The two curves are essentially indistinguishable and, in particular, the transformer offers no gain in the high-VBS-efficiency regime relevant to the analysis. Given the negligible performance difference and the higher computational cost of the attention mechanism for the short jet sequences used here, the recurrent version~3 tagger is retained as the baseline.
+
+\begin{table}[h]
+\centering
+\caption{AUC of the recurrent version~3 tagger and the transformer encoder trained on the identical six-jet input and VBS versus non-VBS EWK target, with the relative improvement of the transformer over the RNN.}
+\label{tab:vbfrnn_transformer_auc}
+\begin{tabular}{lcc}
+\toprule
+Model & AUC & Relative improvement \\
+\midrule
+RNN v3 (6 jets)      & 0.801 & --- \\
+Transformer (6 jets) & 0.806 & $+0.6\%$ \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 \begin{figure}[h]
 \centering
