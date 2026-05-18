@@ -58,6 +58,15 @@ v3 & Up to 6 jets (tagging + signal)  & VBS vs.\ non-VBS (EWK) \\
 
 Version~1 corresponds to the configuration used in earlier analyses, trained to separate resonance VBF production from gluon-fusion production using only the potential tagging jets. This version provides a useful baseline and demonstrates that the topological characteristics of VBF-like events are captured by the tagging-jet kinematics alone. Version~2 retrains the same four-jet architecture directly on the VBS versus non-VBS (EWK) classification task relevant to this analysis. Version~3 extends the input to six jets by including the two large-$R$ signal jets alongside the tagging jets, giving the network access to the full reconstructed final state.
 
+The four tagging jets constrain only the production side of the event, but the VBS and non-VBS EWK subprocesses also differ in the diboson system they produce: the genuine $VV\to VV$ scattering of the VBS subprocess yields a harder, higher-mass central diboson pair than the radiative non-VBS EWK topologies that share the same final state. Figure~\ref{fig:vbfrnn_sigjet} exposes this residual difference through the dijet invariant mass of the two large-$R$ signal jets, which retains discriminating power between the two classes that the tagging jets do not capture and which is largely statistically independent of the production-side information. This is the motivation for the six-jet configuration of version~3. The separation is shown for the $WZjj\to4q$ channel, but it originates in the diboson scattering kinematics rather than in the specific boson decay and is therefore representative of all diboson channels; the combined-channel performance reported in Chapter~\ref{chap:vbfrnn_results} confirms that it carries over to the inclusive sample.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.6\textwidth]{figures/vbfrnn_sigjet_mjj.png}
+\caption{Normalised distribution of the dijet invariant mass of the two large-$R$ signal jets at the training pre-selection, for VBS (blue) and non-VBS EWK (red) $WZjj\to 4q$ events. The difference between the two distributions, quantified by the ratio panel, demonstrates the additional discriminating information that motivates including the signal jets in version~3 of the tagger.}
+\label{fig:vbfrnn_sigjet}
+\end{figure}
+
 \subsection{Input representation}
 
 For each jet, the observables $(p_T,\,\eta,\,\phi,\,E)$ are used as input features, forming a tensor $\mathbf{X} \in \mathbb{R}^{T \times 4}$ for a sequence of $T$ jets ordered by decreasing transverse momentum. Events with fewer than $T$ jets are zero-padded to the fixed sequence length and the padding is masked during the forward pass so that padded steps do not contribute to the hidden-state evolution, as described in Chapter~\ref{chap:ml}.
