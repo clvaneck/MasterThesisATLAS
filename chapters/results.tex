@@ -114,7 +114,7 @@ Transformer (6 jets) & 0.806 & $+0.6\%$ \\
 
 The tagger is trained on inclusive electroweak $VVjj$ production rather than on any specific anomalous coupling, so it is essential to verify that it identifies the VBS topology consistently across the scalar, mixed and tensor aQGC operator families introduced in Chapter~\ref{chap:sm}, since these families excite different gauge-boson polarisation modes and could in principle populate the score differently.
 
-Figure~\ref{fig:vbfrnn_aqgc_v1} shows the response of version~1 to representative scalar ($S_{0,1}$), tensor ($T_{0,1}$) and mixed ($M_{0,1}$) operators. While the scalar operators are pushed to high scores, the tensor and mixed operators peak at low scores: the resonance-trained tagger fails to recognise the VBS topology of the transverse-polarisation-dominated operators, mirroring its poor inclusive AUC. Figure~\ref{fig:vbfrnn_aqgc_v23} shows the same operators for version~2 and version~3. Version~2 already yields broad responses peaking at intermediate-to-high scores for all three families, with the multiplicity artefact discussed in Section~\ref{sec:vbfrnn_multiplicity} still visible. Version~3 produces a clean response strongly peaked near $s\approx1$ for every operator family, demonstrating that the six-jet tagger identifies the VBS topology uniformly regardless of the underlying operator, without being biased towards any particular polarisation structure. This operator-independent response is what justifies using a single tagger, trained on inclusive EWK production, as a pre-selection requirement and as an input feature to the aQGC discriminant of Chapter~\ref{chap:analysismethods}.
+Figure~\ref{fig:vbfrnn_aqgc_v1} shows the response of version~1 to representative scalar ($S_{0,1}$), tensor ($T_{0,1}$) and mixed ($M_{0,1}$) operators. While the scalar operators are pushed to high scores, the tensor and mixed operators peak at low scores: the resonance-trained tagger fails to recognise the VBS topology of the transverse-polarisation-dominated operators, mirroring its poor inclusive AUC. Figures~\ref{fig:vbfrnn_aqgc_v2} and~\ref{fig:vbfrnn_aqgc_v3} show the same operators for version~2 and version~3 respectively. Version~2 already yields broad responses peaking at intermediate-to-high scores for all three families, with the multiplicity artefact discussed in Section~\ref{sec:vbfrnn_multiplicity} still visible. Version~3 produces a clean response strongly peaked near $s\approx1$ for every operator family, demonstrating that the six-jet tagger identifies the VBS topology uniformly regardless of the underlying operator, without being biased towards any particular polarisation structure. This operator-independent response is what justifies using a single tagger, trained on inclusive EWK production, as a pre-selection requirement and as an input feature to the aQGC discriminant of Chapter~\ref{chap:analysismethods}.
 
 \begin{figure}[h]
 \centering
@@ -138,33 +138,36 @@ Figure~\ref{fig:vbfrnn_aqgc_v1} shows the response of version~1 to representativ
 \centering
 \begin{subfigure}[b]{0.32\textwidth}
 \includegraphics[width=\textwidth]{figures/vbfrnn_aqgc_v2_S.pdf}
-\caption{v2 -- Scalar}
+\caption{Scalar}
 \end{subfigure}
 \begin{subfigure}[b]{0.32\textwidth}
 \includegraphics[width=\textwidth]{figures/vbfrnn_aqgc_v2_T.pdf}
-\caption{v2 -- Tensor}
+\caption{Tensor}
 \end{subfigure}
 \begin{subfigure}[b]{0.32\textwidth}
 \includegraphics[width=\textwidth]{figures/vbfrnn_aqgc_v2_M.pdf}
-\caption{v2 -- Mixed}
+\caption{Mixed}
 \end{subfigure}
+\caption{Normalised version~2 (4 jets, VBS vs.\ non-VBS EWK) RNN score for representative scalar, tensor and mixed aQGC operators. The response peaks at intermediate-to-high scores for all three families, with the input-multiplicity artefact of Section~\ref{sec:vbfrnn_multiplicity} still visible.}
+\label{fig:vbfrnn_aqgc_v2}
+\end{figure}
 
-\vspace{0.6em}
-
+\begin{figure}[h]
+\centering
 \begin{subfigure}[b]{0.32\textwidth}
 \includegraphics[width=\textwidth]{figures/vbfrnn_aqgc_v3_S.pdf}
-\caption{v3 -- Scalar}
+\caption{Scalar}
 \end{subfigure}
 \begin{subfigure}[b]{0.32\textwidth}
 \includegraphics[width=\textwidth]{figures/vbfrnn_aqgc_v3_T.pdf}
-\caption{v3 -- Tensor}
+\caption{Tensor}
 \end{subfigure}
 \begin{subfigure}[b]{0.32\textwidth}
 \includegraphics[width=\textwidth]{figures/vbfrnn_aqgc_v3_M.pdf}
-\caption{v3 -- Mixed}
+\caption{Mixed}
 \end{subfigure}
-\caption{Normalised RNN score for representative scalar, tensor and mixed aQGC operators, for version~2 (top row, 4 jets, VBS vs.\ non-VBS EWK) and version~3 (bottom row, 6 jets, VBS vs.\ non-VBS EWK). Version~3 yields a clean response peaked near $s\approx1$ for every operator family, confirming an operator-independent identification of the VBS topology.}
-\label{fig:vbfrnn_aqgc_v23}
+\caption{Normalised version~3 (6 jets, VBS vs.\ non-VBS EWK) RNN score for representative scalar, tensor and mixed aQGC operators. The response is cleanly peaked near $s\approx1$ for every operator family, confirming an operator-independent identification of the VBS topology.}
+\label{fig:vbfrnn_aqgc_v3}
 \end{figure}
 
 
