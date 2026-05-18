@@ -64,21 +64,31 @@ v3 & 6 jets, VBS vs.\ non-VBS EWK & 0.801 & $+5.4\%$ \\
 \section{Effect of the input jet multiplicity}
 \label{sec:vbfrnn_multiplicity}
 
-The version~2 score distributions in Figure~\ref{fig:vbfrnn_scores} exhibit a localised artefact, a sharp dip in the distribution near high score values, that is absent in the cleaner version~3 distributions. This structure is traced to the number of jets actually available as input to the RNN. Figure~\ref{fig:vbfrnn_njets} shows the RNN score as a function of the number of input jets for the four-jet EWK model. Events in which only a single jet is passed to the network, which occurs when the remaining jets fall outside the detector acceptance or fail reconstruction, are structurally unable to be assigned high scores, since the topological correlations the network relies on require at least two jets. These low-multiplicity events accumulate at intermediate scores and are responsible for the discontinuities seen in the version~2 distribution. Splitting the score distribution into events with exactly one input jet and events with two or more confirms that the artefact originates entirely from the single-jet population. Adding the two large-$R$ signal jets in version~3 guarantees a minimum input multiplicity for every event, which removes the artefact and is a further reason to prefer version~3.
+The version~2 score distributions in Figure~\ref{fig:vbfrnn_scores} exhibit a localised artefact, a sharp dip in the distribution near high score values, that is absent in the cleaner version~3 distributions. This structure is traced to the number of jets actually available as input to the RNN. Figure~\ref{fig:vbfrnn_njets} shows the RNN score as a function of the number of input jets for the four-jet EWK model. Events in which only a single jet is passed to the network, which occurs when the remaining jets fall outside the detector acceptance or fail reconstruction, are structurally unable to be assigned high scores, since the topological correlations the network relies on require at least two jets. These low-multiplicity events accumulate at intermediate scores and are responsible for the discontinuities seen in the version~2 distribution. Splitting the score distribution into events with exactly one input jet and events with two or more, shown for each aQGC operator family in Figure~\ref{fig:vbfrnn_njets_split}, confirms that the artefact originates entirely from the single-jet population. Adding the two large-$R$ signal jets in version~3 guarantees a minimum input multiplicity for every event, which removes the artefact and is a further reason to prefer version~3.
 
 \begin{figure}[h]
 \centering
-\begin{subfigure}[b]{0.48\textwidth}
-\includegraphics[width=\textwidth]{figures/vbfrnn_njets_vs_score.pdf}
-\caption{Score vs.\ number of input jets}
-\end{subfigure}
-\hfill
-\begin{subfigure}[b]{0.48\textwidth}
-\includegraphics[width=\textwidth]{figures/vbfrnn_score_njet_split.pdf}
-\caption{Score split by input multiplicity}
-\end{subfigure}
-\caption{(a) Two-dimensional distribution of the number of input jets versus the VBF-RNN score for the four-jet EWK (version~2) model. (b) VBF-RNN score for events with exactly one input jet (red) and with two or more input jets (black). Single-jet events fail to be assigned high scores and produce the artefacts visible in the version~2 score distribution of Figure~\ref{fig:vbfrnn_scores}.}
+\includegraphics[width=0.55\textwidth]{figures/vbfrnn_njets_vs_score.pdf}
+\caption{Two-dimensional distribution of the number of input jets versus the VBF-RNN score for the four-jet EWK (version~2) model. Single-jet events fail to be assigned high scores and produce the artefacts visible in the version~2 score distribution of Figure~\ref{fig:vbfrnn_scores}.}
 \label{fig:vbfrnn_njets}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\begin{subfigure}[b]{0.32\textwidth}
+\includegraphics[width=\textwidth]{figures/vbfrnn_aqgc_v2_S_njets.pdf}
+\caption{Scalar}
+\end{subfigure}
+\begin{subfigure}[b]{0.32\textwidth}
+\includegraphics[width=\textwidth]{figures/vbfrnn_aqgc_v2_T_njets.pdf}
+\caption{Tensor}
+\end{subfigure}
+\begin{subfigure}[b]{0.32\textwidth}
+\includegraphics[width=\textwidth]{figures/vbfrnn_aqgc_v2_M_njets.pdf}
+\caption{Mixed}
+\end{subfigure}
+\caption{Version~2 (4 jets) VBF-RNN score for events with exactly one input jet (red) and with two or more input jets (black), shown separately for representative scalar, tensor and mixed aQGC operators. Across all three families the single-jet population fails to reach high scores, confirming that the artefact in the version~2 score distribution originates entirely from low-multiplicity events.}
+\label{fig:vbfrnn_njets_split}
 \end{figure}
 
 \section{Transformer architecture}
