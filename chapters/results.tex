@@ -34,7 +34,7 @@ v3 & 6 jets, VBS vs.\ non-VBS EWK & 0.801 & $+5.4\%$ \\
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.7\textwidth]{figures/vbfrnn_roc_versions.pdf}
+\includegraphics[width=0.7\textwidth]{figures/vbfrnn_roc_versions.png}
 \caption{ROC curves for the three VBF-RNN versions evaluated on the combined $WW+WZ+ZZ$ EWK validation sample, separating VBS from non-VBS EWK events. The vertical axis is the VBS positive rate (true-positive rate) and the horizontal axis the non-VBS positive rate (false-positive rate). Curves are shown for version~1 (4 jets, VBF vs.\ ggF, $\mathrm{AUC}=0.629$), version~2 (4 jets, VBS vs.\ non-VBS EWK, $\mathrm{AUC}=0.760$) and version~3 (6 jets, VBS vs.\ non-VBS EWK, $\mathrm{AUC}=0.801$). The dashed diagonal indicates a random classifier.}
 \label{fig:vbfrnn_roc}
 \end{figure}
@@ -68,7 +68,7 @@ The version~2 score distributions in Figure~\ref{fig:vbfrnn_scores} exhibit a lo
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.55\textwidth]{figures/vbfrnn_njets_vs_score.pdf}
+\includegraphics[width=0.55\textwidth]{figures/vbfrnn_njets_vs_score.png}
 \caption{Two-dimensional distribution of the number of input jets versus the VBF-RNN score for the four-jet EWK (version~2) model. Single-jet events fail to be assigned high scores and produce the artefacts visible in the version~2 score distribution of Figure~\ref{fig:vbfrnn_scores}.}
 \label{fig:vbfrnn_njets}
 \end{figure}
@@ -76,15 +76,15 @@ The version~2 score distributions in Figure~\ref{fig:vbfrnn_scores} exhibit a lo
 \begin{figure}[h]
 \centering
 \begin{subfigure}[b]{0.32\textwidth}
-\includegraphics[width=\textwidth]{figures/vbfrnn_aqgc_v2_S_njets.pdf}
+\includegraphics[width=\textwidth]{figures/vbfrnn_aqgc_v2_S_njets.png}
 \caption{Scalar}
 \end{subfigure}
 \begin{subfigure}[b]{0.32\textwidth}
-\includegraphics[width=\textwidth]{figures/vbfrnn_aqgc_v2_T_njets.pdf}
+\includegraphics[width=\textwidth]{figures/vbfrnn_aqgc_v2_T_njets.png}
 \caption{Tensor}
 \end{subfigure}
 \begin{subfigure}[b]{0.32\textwidth}
-\includegraphics[width=\textwidth]{figures/vbfrnn_aqgc_v2_M_njets.pdf}
+\includegraphics[width=\textwidth]{figures/vbfrnn_aqgc_v2_M_njets.png}
 \caption{Mixed}
 \end{subfigure}
 \caption{Version~2 (4 jets) VBF-RNN score for events with exactly one input jet (red) and with two or more input jets (black), shown separately for representative scalar, tensor and mixed aQGC operators. Across all three families the single-jet population fails to reach high scores, confirming that the artefact in the version~2 score distribution originates entirely from low-multiplicity events.}
@@ -129,15 +129,15 @@ Figure~\ref{fig:vbfrnn_aqgc_v1} shows the response of version~1 to representativ
 \begin{figure}[h]
 \centering
 \begin{subfigure}[b]{0.32\textwidth}
-\includegraphics[width=\textwidth]{figures/vbfrnn_aqgc_v1_S.pdf}
+\includegraphics[width=\textwidth]{figures/vbfrnn_aqgc_v1_S.png}
 \caption{Scalar}
 \end{subfigure}
 \begin{subfigure}[b]{0.32\textwidth}
-\includegraphics[width=\textwidth]{figures/vbfrnn_aqgc_v1_T.pdf}
+\includegraphics[width=\textwidth]{figures/vbfrnn_aqgc_v1_T.png}
 \caption{Tensor}
 \end{subfigure}
 \begin{subfigure}[b]{0.32\textwidth}
-\includegraphics[width=\textwidth]{figures/vbfrnn_aqgc_v1_M.pdf}
+\includegraphics[width=\textwidth]{figures/vbfrnn_aqgc_v1_M.png}
 \caption{Mixed}
 \end{subfigure}
 \caption{Normalised version~1 (4 jets, VBF vs.\ ggF) RNN score for representative scalar ($S_0$, $S_1$), tensor ($T_0$, $T_1$) and mixed ($M_0$, $M_1$) aQGC operators. The resonance-trained tagger separates the scalar operators well but assigns low scores to the tensor and mixed operators.}
@@ -147,15 +147,15 @@ Figure~\ref{fig:vbfrnn_aqgc_v1} shows the response of version~1 to representativ
 \begin{figure}[h]
 \centering
 \begin{subfigure}[b]{0.32\textwidth}
-\includegraphics[width=\textwidth]{figures/vbfrnn_aqgc_v2_S.pdf}
+\includegraphics[width=\textwidth]{figures/vbfrnn_aqgc_v2_S.png}
 \caption{Scalar}
 \end{subfigure}
 \begin{subfigure}[b]{0.32\textwidth}
-\includegraphics[width=\textwidth]{figures/vbfrnn_aqgc_v2_T.pdf}
+\includegraphics[width=\textwidth]{figures/vbfrnn_aqgc_v2_T.png}
 \caption{Tensor}
 \end{subfigure}
 \begin{subfigure}[b]{0.32\textwidth}
-\includegraphics[width=\textwidth]{figures/vbfrnn_aqgc_v2_M.pdf}
+\includegraphics[width=\textwidth]{figures/vbfrnn_aqgc_v2_M.png}
 \caption{Mixed}
 \end{subfigure}
 \caption{Normalised version~2 (4 jets, VBS vs.\ non-VBS EWK) RNN score for representative scalar, tensor and mixed aQGC operators. The response peaks at intermediate-to-high scores for all three families, with the input-multiplicity artefact of Section~\ref{sec:vbfrnn_multiplicity} still visible.}
@@ -165,15 +165,15 @@ Figure~\ref{fig:vbfrnn_aqgc_v1} shows the response of version~1 to representativ
 \begin{figure}[h]
 \centering
 \begin{subfigure}[b]{0.32\textwidth}
-\includegraphics[width=\textwidth]{figures/vbfrnn_aqgc_v3_S.pdf}
+\includegraphics[width=\textwidth]{figures/vbfrnn_aqgc_v3_S.png}
 \caption{Scalar}
 \end{subfigure}
 \begin{subfigure}[b]{0.32\textwidth}
-\includegraphics[width=\textwidth]{figures/vbfrnn_aqgc_v3_T.pdf}
+\includegraphics[width=\textwidth]{figures/vbfrnn_aqgc_v3_T.png}
 \caption{Tensor}
 \end{subfigure}
 \begin{subfigure}[b]{0.32\textwidth}
-\includegraphics[width=\textwidth]{figures/vbfrnn_aqgc_v3_M.pdf}
+\includegraphics[width=\textwidth]{figures/vbfrnn_aqgc_v3_M.png}
 \caption{Mixed}
 \end{subfigure}
 \caption{Normalised version~3 (6 jets, VBS vs.\ non-VBS EWK) RNN score for representative scalar, tensor and mixed aQGC operators. The response is cleanly peaked near $s\approx1$ for every operator family, confirming an operator-independent identification of the VBS topology.}
