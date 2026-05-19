@@ -134,37 +134,41 @@ The MLP takes twelve event-level features as input: the transverse momentum, pse
 
 \begin{figure}[h]
 \centering
-\begin{subfigure}[b]{0.24\textwidth}
+\begin{subfigure}[b]{0.4\textwidth}
 \includegraphics[width=\textwidth]{figures/SigJet1_pT_NOSYS.png}
 \end{subfigure}
 \hfill
-\begin{subfigure}[b]{0.24\textwidth}
+\begin{subfigure}[b]{0.4\textwidth}
 \includegraphics[width=\textwidth]{figures/SigJet1_M_NOSYS.png}
 \end{subfigure}
-\hfill
-\begin{subfigure}[b]{0.24\textwidth}
+
+\medskip
+
+\begin{subfigure}[b]{0.4\textwidth}
 \includegraphics[width=\textwidth]{figures/SigJet1_eta_NOSYS.png}
 \end{subfigure}
 \hfill
-\begin{subfigure}[b]{0.24\textwidth}
+\begin{subfigure}[b]{0.4\textwidth}
 \includegraphics[width=\textwidth]{figures/SigJet1_phi_NOSYS.png}
 \end{subfigure}
 
 \medskip
 
-\begin{subfigure}[b]{0.24\textwidth}
+\begin{subfigure}[b]{0.4\textwidth}
 \includegraphics[width=\textwidth]{figures/SigJet2_pT_NOSYS.png}
 \end{subfigure}
 \hfill
-\begin{subfigure}[b]{0.24\textwidth}
+\begin{subfigure}[b]{0.4\textwidth}
 \includegraphics[width=\textwidth]{figures/SigJet2_M_NOSYS.png}
 \end{subfigure}
-\hfill
-\begin{subfigure}[b]{0.24\textwidth}
+
+\medskip
+
+\begin{subfigure}[b]{0.4\textwidth}
 \includegraphics[width=\textwidth]{figures/SigJet2_eta_NOSYS.png}
 \end{subfigure}
 \hfill
-\begin{subfigure}[b]{0.24\textwidth}
+\begin{subfigure}[b]{0.4\textwidth}
 \includegraphics[width=\textwidth]{figures/SigJet2_phi_NOSYS.png}
 \end{subfigure}
 \caption{Normalised distributions of the eight kinematic MLP input features in the BTS65 SR-like selection. Top row (left to right): leading signal jet $p_T$, mass, $\eta$ and $\phi$. Bottom row: sub-leading signal jet $p_T$, mass, $\eta$ and $\phi$. Distributions are shown for representative S0 (red), M0 (green) and T0 (orange) aQGC signal samples and the composite background (blue). The signal jets are significantly harder and more central than the background and both jet masses peak near the $W/Z$ boson mass window for signal. The $\phi$ distributions are approximately uniform for all samples, as expected from the azimuthal symmetry of the detector.}
@@ -173,21 +177,21 @@ The MLP takes twelve event-level features as input: the transverse momentum, pse
 
 \begin{figure}[h]
 \centering
-\begin{subfigure}[b]{0.45\textwidth}
+\begin{subfigure}[b]{0.4\textwidth}
 \includegraphics[width=\textwidth]{figures/nJets_NOSYS.png}
 \end{subfigure}
 \hfill
-\begin{subfigure}[b]{0.45\textwidth}
+\begin{subfigure}[b]{0.4\textwidth}
 \includegraphics[width=\textwidth]{figures/nLargeRJets_NOSYS.png}
 \end{subfigure}
 
 \medskip
 
-\begin{subfigure}[b]{0.45\textwidth}
+\begin{subfigure}[b]{0.4\textwidth}
 \includegraphics[width=\textwidth]{figures/nRNNJets_NOSYS.png}
 \end{subfigure}
 \hfill
-\begin{subfigure}[b]{0.45\textwidth}
+\begin{subfigure}[b]{0.4\textwidth}
 \includegraphics[width=\textwidth]{figures/RNNScore_NOSYS.png}
 \end{subfigure}
 \caption{Normalised distributions of the jet multiplicity and VBF-RNN input features in the BTS65 SR-like selection. Top row: total number of small-$R$ jets and number of large-$R$ jets; bottom row: number of RNN tagging jets and VBF-RNN score. Distributions are shown for representative S0 (red), M0 (green) and T0 (orange) aQGC signal samples and the composite background (blue). Signal events tend to have higher jet multiplicities and are strongly peaked at high VBF-RNN scores, reflecting their characteristic VBS topology.}
