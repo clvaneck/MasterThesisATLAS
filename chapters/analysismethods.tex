@@ -23,7 +23,7 @@ Events are selected through a sequential pipeline. First, a pre-selection is app
   \end{tabular}
 \end{table}
 
-The VBF-RNN tagger, described in detail in Section~\ref{sec:vbfrnn}, assigns a score reflecting the probability that an event originates from a VBS topology based on the kinematics of the forward tagging jets and signal jets. The VBF-RNN tagger is trained and evaluated directly on the pre-selected sample without any additional boson tagger requirement. A further signal-region-like selection, described in Section~\ref{sec:mldiscriminant}, is applied when training and evaluating the MLP-based aQGC discriminant.
+The VBF-RNN tagger, described in detail in Section~\ref{sec:vbfrnn}, assigns a score reflecting the probability that an event originates from a VBS topology based on the kinematics of the forward tagging jets and signal jets. The VBF-RNN tagger is trained and evaluated directly on the pre-selected sample without any additional boson tagger requirement. A further training selection, which moves the phase space close to the analysis signal region and is described in Section~\ref{sec:mldiscriminant}, is applied when training and evaluating the MLP-based aQGC discriminant.
 
 The full dataset corresponds to the full Run~2 MC simulation at $\sqrt{s} = 13$~TeV with an integrated luminosity of $140~\text{fb}^{-1}$. The background composition in the signal region is dominated by QCD dijet production ($\sim\!96\%$), with subdominant contributions from $V$+jets ($\sim\!3\%$), $t\bar{t}$ ($\sim\!1\%$), QCD diboson and electroweak $VV$+$jj$ production. The signal samples consist of aQGC EFT operators from the scalar ($S$), mixed ($M$) and tensor ($T$) families in the Éboli basis, with only the pure EFT (QUAD) contribution used in the analysis.
 
@@ -110,19 +110,19 @@ Each LSTM layer has a hidden dimension of $25$, with a dropout and recurrent dro
 
 While the VBF-RNN identifies the characteristic topology of VBS events, the primary goal of this analysis is to maximise sensitivity to anomalous quartic gauge couplings. The discriminating information between aQGC signal and background is distributed across several event-level observables, motivating the use of an MLP to combine them optimally into a single discriminant.
 
-To define a signal-region-like selection for MLP training, a dedicated boson tagger is applied to the large-$R$ jets. The DisCoJet tagger is an ATLAS machine learning based classifier trained to identify large-$R$ jets consistent with hadronic $W$ or $Z$ boson decays using jet substructure observables. A key property of DisCoJet is that it is explicitly decorrelated from the jet mass, achieved by applying the distance correlation (DisCo) technique during training to minimise the statistical dependence between the tagger score and the jet mass. This decorrelation ensures that the tagger score does not sculpt the jet mass distribution, preserving the latter as a useful observable in the analysis.
+To define a training selection that moves the phase space close to the analysis signal region, a dedicated boson tagger is applied to the large-$R$ jets. The DisCoJet tagger is an ATLAS machine learning based classifier trained to identify large-$R$ jets consistent with hadronic $W$ or $Z$ boson decays using jet substructure observables. A key property of DisCoJet is that it is explicitly decorrelated from the jet mass, achieved by applying the distance correlation (DisCo) technique during training to minimise the statistical dependence between the tagger score and the jet mass. This decorrelation ensures that the tagger score does not sculpt the jet mass distribution, preserving the latter as a useful observable in the analysis.
 
-A signal-region-like selection, referred to as the BTS65 SR-like selection, is defined by requiring a VBF-RNN v3 score above 0.3 and a DisCoJet score above 0.65 for both large-$R$ jets, as summarised in Table~\ref{tab:mlp_selection}; the MLP-based discriminant is trained and evaluated within this selection.
+A training selection, designed to bring the phase space close to the analysis signal region without yet defining it exactly, is obtained by requiring a VBF-RNN v3 score above 0.3 and a DisCoJet score above 0.65 for both large-$R$ jets, as summarised in Table~\ref{tab:mlp_selection}; the MLP-based discriminant is trained and evaluated within this selection.
 
 \begin{table}[htbp]
   \centering
-  \caption{Signal-region-like selection applied for MLP training and evaluation.}
+  \caption{Training selection applied for MLP training and evaluation; it moves the phase space close to the analysis signal region.}
   \label{tab:mlp_selection}
   \begin{tabular}{|c|c|}
     \hline
     \textbf{Stage} & \textbf{Requirements} \\
     \hline
-    BTS65 SR-like selection & VBF-RNN v3 score $> 0.3$ \\
+    Training selection & VBF-RNN v3 score $> 0.3$ \\
                             & DisCoJet score $> 0.65$ for both large-$R$ jets \\
     \hline
   \end{tabular}
@@ -171,7 +171,7 @@ The MLP takes twelve event-level features as input: the transverse momentum, pse
 \begin{subfigure}[b]{0.4\textwidth}
 \includegraphics[width=\textwidth]{figures/SigJet2_phi_NOSYS.png}
 \end{subfigure}
-\caption{Normalised distributions of the eight kinematic MLP input features in the BTS65 SR-like selection. Top row (left to right): leading signal jet $p_T$, mass, $\eta$ and $\phi$. Bottom row: sub-leading signal jet $p_T$, mass, $\eta$ and $\phi$. Distributions are shown for representative S0 (red), M0 (green) and T0 (orange) aQGC signal samples and the composite background (blue). The signal jets are significantly harder and more central than the background and both jet masses peak near the $W/Z$ boson mass window for signal. The $\phi$ distributions are approximately uniform for all samples, as expected from the azimuthal symmetry of the detector.}
+\caption{Normalised distributions of the eight kinematic MLP input features in the training selection. Top row (left to right): leading signal jet $p_T$, mass, $\eta$ and $\phi$. Bottom row: sub-leading signal jet $p_T$, mass, $\eta$ and $\phi$. Distributions are shown for representative S0 (red), M0 (green) and T0 (orange) aQGC signal samples and the composite background (blue). The signal jets are significantly harder and more central than the background and both jet masses peak near the $W/Z$ boson mass window for signal. The $\phi$ distributions are approximately uniform for all samples, as expected from the azimuthal symmetry of the detector.}
 \label{fig:input_distributions}
 \end{figure}
 
@@ -194,11 +194,11 @@ The MLP takes twelve event-level features as input: the transverse momentum, pse
 \begin{subfigure}[b]{0.4\textwidth}
 \includegraphics[width=\textwidth]{figures/RNNScore_NOSYS.png}
 \end{subfigure}
-\caption{Normalised distributions of the jet multiplicity and VBF-RNN input features in the BTS65 SR-like selection. Top row: total number of small-$R$ jets and number of large-$R$ jets; bottom row: number of RNN tagging jets and VBF-RNN score. Distributions are shown for representative S0 (red), M0 (green) and T0 (orange) aQGC signal samples and the composite background (blue). Signal events tend to have higher jet multiplicities and are strongly peaked at high VBF-RNN scores, reflecting their characteristic VBS topology.}
+\caption{Normalised distributions of the jet multiplicity and VBF-RNN input features in the training selection. Top row: total number of small-$R$ jets and number of large-$R$ jets; bottom row: number of RNN tagging jets and VBF-RNN score. Distributions are shown for representative S0 (red), M0 (green) and T0 (orange) aQGC signal samples and the composite background (blue). Signal events tend to have higher jet multiplicities and are strongly peaked at high VBF-RNN scores, reflecting their characteristic VBS topology.}
 \label{fig:input_distributions_extra}
 \end{figure}
 
-The background sample represents the full expected composition in the BTS65 SR-like selection, dominated by QCD dijet production ($\sim\!96\%$), with subdominant contributions from $V$+jets ($\sim\!3\%$), $t\bar{t}$ ($\sim\!1\%$), QCD diboson and electroweak $VV$+$jj$ production. Only the pure EFT (QUAD) contribution to the signal cross section is used during training, as the interference term between the SM and EFT amplitudes is neglected in this analysis. To avoid the training being dominated by operators with large production cross sections, the aQGC signal samples are reweighted during training so that each operator contributes equally, effectively equalising their cross sections; the correct physical cross sections are restored when evaluating sensitivity.
+The background sample represents the full expected composition in the training selection, dominated by QCD dijet production ($\sim\!96\%$), with subdominant contributions from $V$+jets ($\sim\!3\%$), $t\bar{t}$ ($\sim\!1\%$), QCD diboson and electroweak $VV$+$jj$ production. Only the pure EFT (QUAD) contribution to the signal cross section is used during training, as the interference term between the SM and EFT amplitudes is neglected in this analysis. To avoid the training being dominated by operators with large production cross sections, the aQGC signal samples are reweighted during training so that each operator contributes equally, effectively equalising their cross sections; the correct physical cross sections are restored when evaluating sensitivity.
 
 \subsection{Binary classifier}
 

@@ -6,7 +6,7 @@ This chapter evaluates the VBF-RNN tagger introduced in Section~\ref{sec:vbfrnn}
 \section{Evaluation sample and figure of merit}
 \label{sec:vbfrnn_eval}
 
-The tagger is evaluated on the statistically independent validation sample of electroweak $VVjj$ events described in Section~\ref{sec:vbfrnn}, using the truth-level VBS / non-VBS labels obtained from the boson- and tagging-jet matching procedure. The combined $WW$, $WZ$ and $ZZ$ final states are merged into a single sample, so that the quoted performance reflects the inclusive diboson channel relevant to the fully hadronic analysis, with consistent behaviour across the individual channels.
+The tagger is evaluated on the statistically independent validation sample of electroweak $VVjj$ events described in Section~\ref{sec:vbfrnn}, using the truth-level VBS / non-VBS labels obtained from the boson- and tagging-jet matching procedure. The combined $WW$, $WZ$ and $ZZ$ final states are merged into a single sample, so that the quoted performance reflects the inclusive diboson channel relevant to the fully hadronic analysis; the channel-by-channel breakdown is given in Section~\ref{sec:vbfrnn_perf}.
 
 Because the tagger output is a continuous score $s\in[0,1]$, its discriminating power is quantified with the receiver operating characteristic (ROC) curve. For a given threshold $s_{\mathrm{cut}}$, events with $s>s_{\mathrm{cut}}$ are tagged as VBS. The true-positive rate (the VBS efficiency, or VBS positive rate) is the fraction of true VBS events that are tagged, while the false-positive rate (the non-VBS positive rate) is the fraction of non-VBS EWK events that are also tagged. Sweeping $s_{\mathrm{cut}}$ from $1$ to $0$ traces out the ROC curve in the (false-positive rate, true-positive rate) plane. A perfect classifier reaches the top-left corner, whereas a random classifier lies on the diagonal. The area under this curve (AUC) condenses the curve into a single scalar: it equals the probability that a randomly chosen VBS event is assigned a higher score than a randomly chosen non-VBS event, so that $\mathrm{AUC}=1$ is perfect separation and $\mathrm{AUC}=0.5$ is no separation. The AUC is used throughout this chapter as the primary figure of merit.
 
@@ -21,7 +21,9 @@ These expectations are borne out on the combined diboson validation sample, show
 
 Version~3 is therefore adopted as the baseline tagger for the remainder of the analysis. Beyond the inclusive AUC, this choice is reinforced by the response to the individual aQGC operator families discussed in Section~\ref{sec:vbfrnn_aqgc}: version~1 does not merely underperform inclusively but, as shown there, fails entirely to recognise the tensor- and mixed-operator topologies, whereas version~3 responds uniformly across all families --- an operator independence that is essential given that a single tagger is applied to every signal hypothesis.
 
-The inclusive figures of merit translate directly into the operating point used downstream. Table~\ref{tab:vbfrnn_workingpoint} reports the VBS efficiency and non-VBS EWK rejection at the score threshold $s>0.3$ that defines the BTS65 signal-region-like selection (Table~\ref{tab:mlp_selection}). At this threshold versions~2 and~3 both retain $\approx\!90\%$ of VBS events, whereas version~1 keeps only $57\%$: trained on a different objective, its VBS score is not pushed high enough for the loose threshold to be efficient, which alone disqualifies it as the analysis pre-selection. Comparing the two correctly trained taggers at their matched $\approx\!90\%$ VBS efficiency, version~3 rejects $20.8\%$ more non-VBS EWK background than version~2 in relative terms --- equivalently, it accepts $12.5\%$ fewer background events --- consistent with its higher AUC and its cleaner, more bimodal score distribution.
+The inclusive figures of merit translate directly into the operating point used downstream. Table~\ref{tab:vbfrnn_workingpoint} reports the VBS efficiency and non-VBS EWK rejection at the score threshold $s>0.3$ that defines the training selection (Table~\ref{tab:mlp_selection}), which moves the phase space close to the analysis signal region. At this threshold versions~2 and~3 both retain $\approx\!90\%$ of VBS events, whereas version~1 keeps only $57\%$: trained on a different objective, its VBS score is not pushed high enough for the loose threshold to be efficient, which alone disqualifies it as the analysis pre-selection. Comparing the two correctly trained taggers at their matched $\approx\!90\%$ VBS efficiency, version~3 rejects $20.8\%$ more non-VBS EWK background than version~2 in relative terms --- equivalently, it accepts $12.5\%$ fewer background events --- consistent with its higher AUC and its cleaner, more bimodal score distribution.
+
+The combined AUC masks some channel dependence, which Table~\ref{tab:vbfrnn_auc_channels} and Figure~\ref{fig:vbfrnn_roc_channels} resolve by diboson final state. The $WWjj$ and $WZjj$ channels follow the expected version ordering and account for most of the gain, version~3 improving on the version~1 baseline by $+30.6\%$ and $+19.5\%$ respectively. The $ZZjj$ channel behaves differently: version~1 already reaches $\mathrm{AUC}=0.790$, far above its $WW/WZ$ values, because the heavy scalar $H\to q\bar{q}q\bar{q}$ resonance on which version~1 was trained (Section~\ref{sec:vbfrnn}) most closely resembles the $ZZjj$ final state, so retraining adds little and the six-jet version~3 is in fact marginally worse ($-0.9\%$). This is consistent with two effects: the combined six-jet model is optimised on the full sample, which is dominated by the higher-rate $WW$ and $WZ$ channels, and the additional signal-jet inputs carry little extra VBS-versus-non-VBS information for $ZZjj$ while slightly raising the model capacity. Because the analysis combines all three channels and is dominated by $WW$ and $WZ$, the combined version~3 tagger remains the appropriate choice; the $ZZjj$ behaviour is a known caveat rather than a problem for the inclusive selection.
 
 \begin{table}[htbp]
   \centering
@@ -40,7 +42,7 @@ The inclusive figures of merit translate directly into the operating point used 
 
 \begin{table}[htbp]
   \centering
-  \caption{VBF-RNN performance at the $s>0.3$ working point that defines the BTS65 signal-region-like selection (Table~\ref{tab:mlp_selection}), on the combined $WW+WZ+ZZ$ EWK validation sample; version definitions are as in Table~\ref{tab:vbfrnn_auc}. The relative improvement is the gain in non-VBS rejection of version~3 over version~2 at their matched VBS efficiency; version~1 operates at a much lower VBS efficiency and is not directly comparable.}
+  \caption{VBF-RNN performance at the $s>0.3$ working point that defines the training selection (Table~\ref{tab:mlp_selection}), on the combined $WW+WZ+ZZ$ EWK validation sample; version definitions are as in Table~\ref{tab:vbfrnn_auc}. The relative improvement is the gain in non-VBS rejection of version~3 over version~2 at their matched VBS efficiency; version~1 operates at a much lower VBS efficiency and is not directly comparable.}
   \label{tab:vbfrnn_workingpoint}
   \begin{tabular}{|c|c|c|c|c|}
     \hline
@@ -53,11 +55,48 @@ The inclusive figures of merit translate directly into the operating point used 
   \end{tabular}
 \end{table}
 
+\begin{table}[htbp]
+  \centering
+  \caption{Per-channel AUC of the three VBF-RNN versions for separating VBS from non-VBS EWK events, with the relative AUC improvement over the version~1 (VBF vs.\ ggF) baseline. The combined row reproduces Table~\ref{tab:vbfrnn_auc}.}
+  \label{tab:vbfrnn_auc_channels}
+  \begin{tabular}{|c|c|c|c|c|c|}
+    \hline
+    \textbf{Channel} & \textbf{v1} & \textbf{v2} & \textbf{v3} & \textbf{v1$\to$v2} & \textbf{v1$\to$v3} \\
+    \hline
+    $WWjj$   & 0.628 & 0.775 & 0.820 & $+23.4\%$ & $+30.6\%$ \\
+    $WZjj$   & 0.632 & 0.712 & 0.755 & $+12.7\%$ & $+19.5\%$ \\
+    $ZZjj$   & 0.790 & 0.829 & 0.783 & $+4.9\%$  & $-0.9\%$ \\
+    \hline
+    Combined & 0.629 & 0.760 & 0.801 & $+20.8\%$ & $+27.3\%$ \\
+    \hline
+  \end{tabular}
+\end{table}
+
 \begin{figure}[h]
 \centering
 \includegraphics[width=0.7\textwidth]{figures/vbfrnn_roc_versions.png}
 \caption{ROC curves for the three VBF-RNN versions evaluated on the combined $WW+WZ+ZZ$ EWK validation sample, separating VBS from non-VBS EWK events. The vertical axis is the VBS positive rate (true-positive rate) and the horizontal axis the non-VBS positive rate (false-positive rate). Curves are shown for version~1 (4 jets, VBF vs.\ ggF, $\mathrm{AUC}=0.629$), version~2 (4 jets, VBS vs.\ non-VBS EWK, $\mathrm{AUC}=0.760$) and version~3 (6 jets, VBS vs.\ non-VBS EWK, $\mathrm{AUC}=0.801$). The dashed diagonal indicates a random classifier.}
 \label{fig:vbfrnn_roc}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\begin{subfigure}[b]{0.32\textwidth}
+\includegraphics[width=\textwidth]{figures/vbfrnn_aqgc_roc_vbftagger_WWjj.png}
+\caption{$WWjj$}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.32\textwidth}
+\includegraphics[width=\textwidth]{figures/vbfrnn_aqgc_roc_vbftagger_WZjj.png}
+\caption{$WZjj$}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.32\textwidth}
+\includegraphics[width=\textwidth]{figures/vbfrnn_aqgc_roc_vbftagger_ZZjj.png}
+\caption{$ZZjj$}
+\end{subfigure}
+\caption{Per-channel ROC curves for the three VBF-RNN versions, separating VBS from non-VBS EWK events in the $WWjj$ (left), $WZjj$ (centre) and $ZZjj$ (right) channels, with AUCs as quoted in Table~\ref{tab:vbfrnn_auc_channels}. The $WWjj$ and $WZjj$ channels follow the expected version ordering (v1 $<$ v2 $<$ v3), whereas in $ZZjj$ version~1 is already strong and the six-jet version~3 yields no improvement.}
+\label{fig:vbfrnn_roc_channels}
 \end{figure}
 
 \begin{figure}[h]
