@@ -109,7 +109,10 @@ where the $\sqrt{d_k}$ factor prevents the dot products from entering the satura
 
 In practice $H$ independent attention heads are computed in parallel on lower-dimensional projections and their outputs concatenated,
 \begin{equation}
-\mathrm{MultiHead}(Q,K,V) = \mathrm{Concat}(\mathrm{head}_1,\dots,\mathrm{head}_H)\,W^{O}, \qquad \mathrm{head}_h = \mathrm{Attention}(QW_h^Q,\,KW_h^K,\,VW_h^V).
+\begin{aligned}
+\mathrm{MultiHead}(Q,K,V) &= \mathrm{Concat}(\mathrm{head}_1,\dots,\mathrm{head}_H)\,W^{O}, \\
+\mathrm{head}_h &= \mathrm{Attention}(QW_h^Q,\,KW_h^K,\,VW_h^V).
+\end{aligned}
 \end{equation}
 Each head can attend to different structural features of the sequence simultaneously.  The attention block is followed by a position-wise feedforward network applied identically at each position, together forming a transformer encoder layer.  Residual connections and layer normalisation \cite{Ba_LayerNorm_2016} stabilise training.
 

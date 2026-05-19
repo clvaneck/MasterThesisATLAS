@@ -7,21 +7,20 @@ This chapter describes the machine learning methods developed to maximise sensit
 
 Events are selected through a sequential pipeline. First, a pre-selection is applied requiring at least two large-$R$ jets, a single large-$R$ jet trigger, a leading jet $p_T > 560$~GeV and a dijet invariant mass $m_{JJ} > 1.3$~TeV. The pre-selection criteria are summarised in Table~\ref{tab:analysis_selection}.
 
-\begin{table}[h]
-\centering
-\caption{Pre-selection applied in the analysis.}
-\label{tab:analysis_selection}
-\begin{tabular}{ll}
-\toprule
-Stage & Requirements \\
-\midrule
-Pre-selection
-& $\geq 2$ large-$R$ jets \\
-& Leading signal jet $p_T > 560$~GeV \\
-& Sub-leading signal jet $p_T > 200$~GeV \\
-& $m_{JJ} > 1.3$~TeV \\
-\bottomrule
-\end{tabular}
+\begin{table}[htbp]
+  \centering
+  \caption{Pre-selection applied in the analysis.}
+  \label{tab:analysis_selection}
+  \begin{tabular}{|c|c|}
+    \hline
+    \textbf{Stage} & \textbf{Requirements} \\
+    \hline
+    Pre-selection & $\geq 2$ large-$R$ jets \\
+                  & Leading signal jet $p_T > 560$~GeV \\
+                  & Sub-leading signal jet $p_T > 200$~GeV \\
+                  & $m_{JJ} > 1.3$~TeV \\
+    \hline
+  \end{tabular}
 \end{table}
 
 The VBF-RNN tagger, described in detail in Section~\ref{sec:vbfrnn}, assigns a score reflecting the probability that an event originates from a VBS topology based on the kinematics of the forward tagging jets and signal jets. The VBF-RNN tagger is trained and evaluated directly on the pre-selected sample without any additional boson tagger requirement. A further signal-region-like selection, described in Section~\ref{sec:mldiscriminant}, is applied when training and evaluating the MLP-based aQGC discriminant.
@@ -41,22 +40,22 @@ The classification task is formulated as a supervised binary problem: each event
 
 Three versions of the tagger are developed for this analysis, differing in the set of jets provided as input and the training sample used and are summarised in Table~\ref{tab:vbfrnn_versions}.
 
-\begin{table}[h]
-\centering
-\caption{Summary of the three VBF-RNN versions developed for this analysis. All versions use jet four-momenta $(p_T, \eta, \phi, E)$ as input features.}
-\label{tab:vbfrnn_versions}
-\begin{tabular}{lll}
-\toprule
-Version & Input jets & Training task \\
-\midrule
-v1 & Up to 4 tagging jets             & Resonance VBF vs.\ ggF \\
-v2 & Up to 4 tagging jets             & VBS vs.\ non-VBS (EWK) \\
-v3 & Up to 6 jets (tagging + signal)  & VBS vs.\ non-VBS (EWK) \\
-\bottomrule
-\end{tabular}
+\begin{table}[htbp]
+  \centering
+  \caption{Summary of the three VBF-RNN versions developed for this analysis. All versions use jet four-momenta $(p_T, \eta, \phi, E)$ as input features.}
+  \label{tab:vbfrnn_versions}
+  \begin{tabular}{|c|c|c|}
+    \hline
+    \textbf{Version} & \textbf{Input jets} & \textbf{Training task} \\
+    \hline
+    v1 & Up to 4 tagging jets            & Resonance VBF vs.\ ggF \\
+    v2 & Up to 4 tagging jets            & VBS vs.\ non-VBS (EWK) \\
+    v3 & Up to 6 jets (tagging + signal) & VBS vs.\ non-VBS (EWK) \\
+    \hline
+  \end{tabular}
 \end{table}
 
-Version~1 corresponds to the configuration used in earlier analyses, trained to separate resonance VBF production from gluon-fusion production using only the potential tagging jets. This version provides a useful baseline and demonstrates that the topological characteristics of VBF-like events are captured by the tagging-jet kinematics alone. Version~2 retrains the same four-jet architecture directly on the VBS versus non-VBS (EWK) classification task relevant to this analysis. Version~3 extends the input to six jets by including the two large-$R$ signal jets alongside the tagging jets, giving the network access to the full reconstructed final state.
+Version~1 corresponds to the configuration used in earlier analyses~\cite{Antonio_VBFRNN_2023}, trained to separate a heavy scalar resonance produced through vector boson fusion from the same resonance produced through gluon fusion (here $H\to q\bar{q}q\bar{q}$ at $m_H = 3$~TeV), using only the potential tagging jets. Because its training signal is a spin-0 resonance whose decay bosons are predominantly longitudinally polarised, version~1 effectively learns a longitudinal, scalar-like topology --- a point that becomes important when its response to the aQGC operator families is examined in Chapter~\ref{chap:vbfrnn_results}. This version provides a useful baseline and demonstrates that the topological characteristics of VBF-like events are captured by the tagging-jet kinematics alone. Version~2 retrains the same four-jet architecture directly on the VBS versus non-VBS (EWK) classification task relevant to this analysis. Version~3 extends the input to six jets by including the two large-$R$ signal jets alongside the tagging jets, giving the network access to the full reconstructed final state.
 
 The four tagging jets constrain only the production side of the event, but the VBS and non-VBS EWK subprocesses also differ in the diboson system they produce: the genuine $VV\to VV$ scattering of the VBS subprocess yields a harder, higher-mass central diboson pair than the radiative non-VBS EWK topologies that share the same final state. Figure~\ref{fig:vbfrnn_sigjet} exposes this residual difference through the dijet invariant mass of the two large-$R$ signal jets, which retains discriminating power between the two classes that the tagging jets do not capture and which is largely statistically independent of the production-side information. This is the motivation for the six-jet configuration of version~3. The separation is shown for the $WZjj\to4q$ channel, but it originates in the diboson scattering kinematics rather than in the specific boson decay and is therefore representative of all diboson channels; the combined-channel performance reported in Chapter~\ref{chap:vbfrnn_results} confirms that it carries over to the inclusive sample.
 
@@ -82,7 +81,29 @@ The network consists of two stacked LSTM layers. The first layer processes the j
 \label{fig:vbfrnn}
 \end{figure}
 
-The network is trained by minimising the binary cross-entropy loss over mini-batches of labelled Monte Carlo events. The available dataset is partitioned into statistically independent training and validation samples; only the training sample contributes to parameter updates, while the validation sample is used to monitor performance and select the final network configuration. The VBF-RNN score is used both as a pre-selection requirement to enrich the sample in VBS-topology events and as one of the input features to the aQGC discriminant described in Section~\ref{sec:mldiscriminant}.
+Each LSTM layer has a hidden dimension of $25$, with a dropout and recurrent dropout of $0.3$ applied for regularisation. The network is trained for up to $200$ epochs by minimising a per-event-weighted binary cross-entropy loss over mini-batches of labelled Monte Carlo events, with the Monte Carlo event weight used as the per-example weight so that the optimisation reflects the physical sample composition. The available dataset is partitioned into statistically independent training and validation samples in an $80/20$ split; only the training sample contributes to parameter updates, while the validation sample is used to monitor performance and select the final network configuration. The hyperparameters, common to all three versions, are summarised in Table~\ref{tab:rnn_hyperparams}. The VBF-RNN score is used both as a pre-selection requirement to enrich the sample in VBS-topology events and as one of the input features to the aQGC discriminant described in Section~\ref{sec:mldiscriminant}.
+
+\begin{table}[htbp]
+  \centering
+  \caption{Architecture and training hyperparameters of the VBF-RNN, common to all three versions. The number of input jets is the only structural difference: four for versions~1 and~2, six for version~3.}
+  \label{tab:rnn_hyperparams}
+  \begin{tabular}{|c|c|}
+    \hline
+    \textbf{Hyperparameter} & \textbf{Value} \\
+    \hline
+    Stacked LSTM layers          & 2 \\
+    Hidden dimension per layer   & 25 \\
+    Dropout                      & 0.3 \\
+    Recurrent dropout            & 0.3 \\
+    Output activation            & sigmoid \\
+    Loss                         & weighted binary cross-entropy \\
+    Training epochs              & 200 \\
+    Train\,/\,validation split   & 80\,/\,20 \\
+    Input features per jet       & 4 ($p_T,\eta,\phi,E$) \\
+    Input jets                   & 4 (v1, v2) / 6 (v3) \\
+    \hline
+  \end{tabular}
+\end{table}
 
 \section{Machine learning based aQGC discriminant}
 \label{sec:mldiscriminant}
@@ -93,19 +114,18 @@ To define a signal-region-like selection for MLP training, a dedicated boson tag
 
 A signal-region-like selection, referred to as the BTS65 SR-like selection, is defined by requiring a VBF-RNN v3 score above 0.3 and a DisCoJet score above 0.65 for both large-$R$ jets, as summarised in Table~\ref{tab:mlp_selection}; the MLP-based discriminant is trained and evaluated within this selection.
 
-\begin{table}[h]
-\centering
-\caption{Signal-region-like selection applied for MLP training and evaluation.}
-\label{tab:mlp_selection}
-\begin{tabular}{ll}
-\toprule
-Stage & Requirements \\
-\midrule
-BTS65 SR-like selection
-& VBF-RNN v3 score $> 0.3$ \\
-& DisCoJet score $> 0.65$ for both large-$R$ jets \\
-\bottomrule
-\end{tabular}
+\begin{table}[htbp]
+  \centering
+  \caption{Signal-region-like selection applied for MLP training and evaluation.}
+  \label{tab:mlp_selection}
+  \begin{tabular}{|c|c|}
+    \hline
+    \textbf{Stage} & \textbf{Requirements} \\
+    \hline
+    BTS65 SR-like selection & VBF-RNN v3 score $> 0.3$ \\
+                            & DisCoJet score $> 0.65$ for both large-$R$ jets \\
+    \hline
+  \end{tabular}
 \end{table}
 
 \subsection{Input features and training samples}
@@ -117,24 +137,33 @@ The MLP takes twelve event-level features as input: the transverse momentum, pse
 \begin{subfigure}[b]{0.24\textwidth}
 \includegraphics[width=\textwidth]{figures/SigJet1_pT_NOSYS.png}
 \end{subfigure}
+\hfill
 \begin{subfigure}[b]{0.24\textwidth}
 \includegraphics[width=\textwidth]{figures/SigJet1_M_NOSYS.png}
 \end{subfigure}
+\hfill
 \begin{subfigure}[b]{0.24\textwidth}
 \includegraphics[width=\textwidth]{figures/SigJet1_eta_NOSYS.png}
 \end{subfigure}
+\hfill
 \begin{subfigure}[b]{0.24\textwidth}
 \includegraphics[width=\textwidth]{figures/SigJet1_phi_NOSYS.png}
 \end{subfigure}
+
+\medskip
+
 \begin{subfigure}[b]{0.24\textwidth}
 \includegraphics[width=\textwidth]{figures/SigJet2_pT_NOSYS.png}
 \end{subfigure}
+\hfill
 \begin{subfigure}[b]{0.24\textwidth}
 \includegraphics[width=\textwidth]{figures/SigJet2_M_NOSYS.png}
 \end{subfigure}
+\hfill
 \begin{subfigure}[b]{0.24\textwidth}
 \includegraphics[width=\textwidth]{figures/SigJet2_eta_NOSYS.png}
 \end{subfigure}
+\hfill
 \begin{subfigure}[b]{0.24\textwidth}
 \includegraphics[width=\textwidth]{figures/SigJet2_phi_NOSYS.png}
 \end{subfigure}
@@ -144,19 +173,24 @@ The MLP takes twelve event-level features as input: the transverse momentum, pse
 
 \begin{figure}[h]
 \centering
-\begin{subfigure}[b]{0.24\textwidth}
+\begin{subfigure}[b]{0.45\textwidth}
 \includegraphics[width=\textwidth]{figures/nJets_NOSYS.png}
 \end{subfigure}
-\begin{subfigure}[b]{0.24\textwidth}
+\hfill
+\begin{subfigure}[b]{0.45\textwidth}
 \includegraphics[width=\textwidth]{figures/nLargeRJets_NOSYS.png}
 \end{subfigure}
-\begin{subfigure}[b]{0.24\textwidth}
+
+\medskip
+
+\begin{subfigure}[b]{0.45\textwidth}
 \includegraphics[width=\textwidth]{figures/nRNNJets_NOSYS.png}
 \end{subfigure}
-\begin{subfigure}[b]{0.24\textwidth}
+\hfill
+\begin{subfigure}[b]{0.45\textwidth}
 \includegraphics[width=\textwidth]{figures/RNNScore_NOSYS.png}
 \end{subfigure}
-\caption{Normalised distributions of the jet multiplicity and VBF-RNN input features in the BTS65 SR-like selection. From left to right: total number of small-$R$ jets, number of large-$R$ jets, number of RNN tagging jets and VBF-RNN score. Distributions are shown for representative S0 (red), M0 (green) and T0 (orange) aQGC signal samples and the composite background (blue). Signal events tend to have higher jet multiplicities and are strongly peaked at high VBF-RNN scores, reflecting their characteristic VBS topology.}
+\caption{Normalised distributions of the jet multiplicity and VBF-RNN input features in the BTS65 SR-like selection. Top row: total number of small-$R$ jets and number of large-$R$ jets; bottom row: number of RNN tagging jets and VBF-RNN score. Distributions are shown for representative S0 (red), M0 (green) and T0 (orange) aQGC signal samples and the composite background (blue). Signal events tend to have higher jet multiplicities and are strongly peaked at high VBF-RNN scores, reflecting their characteristic VBS topology.}
 \label{fig:input_distributions_extra}
 \end{figure}
 

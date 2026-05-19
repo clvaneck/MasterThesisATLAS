@@ -21,19 +21,36 @@ These expectations are borne out on the combined diboson validation sample, show
 
 Version~3 is therefore adopted as the baseline tagger for the remainder of the analysis. Beyond the inclusive AUC, this choice is reinforced by the response to the individual aQGC operator families discussed in Section~\ref{sec:vbfrnn_aqgc}: version~1 does not merely underperform inclusively but, as shown there, fails entirely to recognise the tensor- and mixed-operator topologies, whereas version~3 responds uniformly across all families --- an operator independence that is essential given that a single tagger is applied to every signal hypothesis.
 
-\begin{table}[h]
-\centering
-\caption{Discrimination performance of the three VBF-RNN versions on the combined $WW+WZ+ZZ$ EWK validation sample, quantified by the AUC for separating VBS from non-VBS EWK events. The relative improvement is given with respect to the version~1 (VBF vs.\ ggF) baseline.}
-\label{tab:vbfrnn_auc}
-\begin{tabular}{llcc}
-\toprule
-Version & Configuration & AUC & Relative improvement \\
-\midrule
-v1 & 4 jets, VBF vs.\ ggF         & 0.629 & --- \\
-v2 & 4 jets, VBS vs.\ non-VBS EWK & 0.760 & $+20.8\%$ \\
-v3 & 6 jets, VBS vs.\ non-VBS EWK & 0.801 & $+27.3\%$ \\
-\bottomrule
-\end{tabular}
+The inclusive figures of merit translate directly into the operating point used downstream. Table~\ref{tab:vbfrnn_workingpoint} reports the VBS efficiency and non-VBS EWK rejection at the score threshold $s>0.3$ that defines the BTS65 signal-region-like selection (Table~\ref{tab:mlp_selection}). At this threshold versions~2 and~3 both retain $\approx\!90\%$ of VBS events, whereas version~1 keeps only $57\%$: trained on a different objective, its VBS score is not pushed high enough for the loose threshold to be efficient, which alone disqualifies it as the analysis pre-selection. Comparing the two correctly trained taggers at their matched $\approx\!90\%$ VBS efficiency, version~3 rejects $20.8\%$ more non-VBS EWK background than version~2 in relative terms --- equivalently, it accepts $12.5\%$ fewer background events --- consistent with its higher AUC and its cleaner, more bimodal score distribution.
+
+\begin{table}[htbp]
+  \centering
+  \caption{Discrimination performance of the three VBF-RNN versions on the combined $WW+WZ+ZZ$ EWK validation sample, quantified by the AUC for separating VBS from non-VBS EWK events. The relative improvement is given with respect to the version~1 (VBF vs.\ ggF) baseline.}
+  \label{tab:vbfrnn_auc}
+  \begin{tabular}{|c|c|c|c|}
+    \hline
+    \textbf{Version} & \textbf{Configuration} & \textbf{AUC} & \textbf{Relative improvement} \\
+    \hline
+    v1 & 4 jets, VBF vs.\ ggF         & 0.629 & --- \\
+    v2 & 4 jets, VBS vs.\ non-VBS EWK & 0.760 & $+20.8\%$ \\
+    v3 & 6 jets, VBS vs.\ non-VBS EWK & 0.801 & $+27.3\%$ \\
+    \hline
+  \end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+  \centering
+  \caption{VBF-RNN performance at the $s>0.3$ working point that defines the BTS65 signal-region-like selection (Table~\ref{tab:mlp_selection}), on the combined $WW+WZ+ZZ$ EWK validation sample; version definitions are as in Table~\ref{tab:vbfrnn_auc}. The relative improvement is the gain in non-VBS rejection of version~3 over version~2 at their matched VBS efficiency; version~1 operates at a much lower VBS efficiency and is not directly comparable.}
+  \label{tab:vbfrnn_workingpoint}
+  \begin{tabular}{|c|c|c|c|c|}
+    \hline
+    \textbf{Version} & \textbf{VBS eff.} & \textbf{non-VBS acc.} & \textbf{non-VBS rej.} & \textbf{Rel.\ impr.} \\
+    \hline
+    v1 & 56.9\% & 40.5\% & 59.5\% & --- \\
+    v2 & 90.0\% & 62.5\% & 37.5\% & --- \\
+    v3 & 89.8\% & 54.7\% & 45.3\% & $+20.8\%$ \\
+    \hline
+  \end{tabular}
 \end{table}
 
 \begin{figure}[h]
@@ -70,6 +87,8 @@ The version~2 score distribution in Figure~\ref{fig:vbfrnn_scores} exhibits a lo
 
 This also explains why version~3 is immune to the effect. The analysis pre-selection requires at least two large-$R$ signal jets (Table~\ref{tab:analysis_selection}), so these two jets are always available as input to the six-jet tagger; the single-jet configuration that produces the artefact therefore cannot occur for version~3 by construction, independently of the additional discriminating power that the signal jets provide. The removal of the artefact is thus a second, distinct reason --- alongside the AUC gain --- to prefer version~3.
 
+The single-jet population responsible for the artefact is not a negligible tail. Across the aQGC operator families it accounts for $21$--$23\%$ of version~2 events (Table~\ref{tab:vbfrnn_njets_frac}), roughly one event in five, and its fraction is essentially independent of the operator. Guaranteeing a minimum input multiplicity in version~3 therefore recovers a substantial part of the sample from the uninformative intermediate-score band, which is reflected in the cleaner version~3 score distribution.
+
 \begin{figure}[h]
 \centering
 \includegraphics[width=0.55\textwidth]{figures/vbfrnn_njets_vs_score.png}
@@ -95,6 +114,24 @@ This also explains why version~3 is immune to the effect. The analysis pre-selec
 \label{fig:vbfrnn_njets_split}
 \end{figure}
 
+\begin{table}[htbp]
+  \centering
+  \caption{Fraction of version~2 (4-jet) events reaching the network with exactly one input jet and with two or more input jets, for representative aQGC operators. The single-jet fraction responsible for the score artefact is $\approx\!21$--$23\%$ and is essentially independent of the operator.}
+  \label{tab:vbfrnn_njets_frac}
+  \begin{tabular}{|c|c|c|}
+    \hline
+    \textbf{Operator} & \textbf{1 input jet} & \textbf{$\geq 2$ input jets} \\
+    \hline
+    $S_0$ & 23.0\% & 77.0\% \\
+    $S_1$ & 22.8\% & 77.2\% \\
+    $M_0$ & 21.9\% & 78.1\% \\
+    $M_1$ & 23.2\% & 76.8\% \\
+    $T_0$ & 20.8\% & 79.2\% \\
+    $T_1$ & 20.6\% & 79.4\% \\
+    \hline
+  \end{tabular}
+\end{table}
+
 \section{Response to the aQGC operator families}
 \label{sec:vbfrnn_aqgc}
 
@@ -103,6 +140,8 @@ The tagger is trained on inclusive electroweak $VVjj$ production rather than on 
 Figure~\ref{fig:vbfrnn_aqgc_v1} shows the response of version~1. The scalar operators are pushed to high scores, but the tensor and mixed operators peak at low scores. This is the operator-level manifestation of the train/target mismatch identified in Section~\ref{sec:vbfrnn_perf}: version~1 learned a boundary specific to the resonant VBF topology it was trained on, which resembles the scalar-operator kinematics but not the harder, transverse-polarisation-dominated configurations enhanced by the tensor and mixed operators. Version~1 has therefore learned a polarisation-specific proxy rather than the generic VBS topology, and its inclusive AUC deficit is seen here to be driven almost entirely by the tensor and mixed families.
 
 Figures~\ref{fig:vbfrnn_aqgc_v2} and~\ref{fig:vbfrnn_aqgc_v3} show the same operators for version~2 and version~3. Version~2 already yields broad responses peaking at intermediate-to-high scores for all three families, with the input-multiplicity artefact of Section~\ref{sec:vbfrnn_multiplicity} still visible. Version~3 shifts the response strongly towards high scores for every family: sharply peaked near $s\approx1$ for the scalar operators and broadly populating the high-score region for the tensor and mixed operators. The reason version~2 and version~3 are operator-independent where version~1 is not is that they were trained on the VBS production topology itself. The anomalous quartic vertex modifies the central diboson system, not the forward tagging jets that define VBS production; a tagger that keys on the production-side topology is therefore largely insensitive to the operator-dependent polarisation structure, which is exactly the behaviour observed. The residual difference --- a sharp $s\approx1$ peak for the scalar operators versus a broader high-score distribution for the tensor and mixed operators --- is consistent with the harder central kinematics of the transverse operators feeding into the signal-jet inputs, but it is immaterial for the analysis, since a loose score requirement retains all three families with high efficiency. This operator independence is what justifies using a single tagger, trained on inclusive EWK production, both as a pre-selection requirement and as an input feature to the aQGC discriminant of Chapter~\ref{chap:analysismethods}.
+
+The visual impression is made quantitative in Tables~\ref{tab:vbfrnn_aqgc_meanscore} and~\ref{tab:vbfrnn_aqgc_eff}. For version~1 the mean score and the VBS-tag efficiency at $s>0.3$ are strongly operator-dependent: the scalar operators are tagged with $\approx\!91\%$ efficiency --- unsurprisingly, since version~1 was itself trained on a scalar (Higgs) resonance whose decay bosons are longitudinally polarised, exactly the polarisation structure of the scalar operators --- while the tensor and mixed operators are retained with only $36$--$43\%$ efficiency. Version~2 already removes most of this dependence and version~3 renders it negligible: every family is tagged with $94$--$98\%$ efficiency at a mean score of $0.74$--$0.87$. The relative gain from version~1 to version~3 is correspondingly modest for the scalar operators ($\approx\!8\%$) but exceeds $120\%$ for the tensor and mixed operators, so the improvement is concentrated exactly where version~1 failed. This quantitatively establishes the operator independence that justifies a single, inclusively trained tagger.
 
 \begin{figure}[h]
 \centering
@@ -158,29 +197,88 @@ Figures~\ref{fig:vbfrnn_aqgc_v2} and~\ref{fig:vbfrnn_aqgc_v3} show the same oper
 \label{fig:vbfrnn_aqgc_v3}
 \end{figure}
 
+\begin{table}[htbp]
+  \centering
+  \caption{Mean VBF-RNN score per representative aQGC operator for the three tagger versions, on the pre-selected sample. Version~3 shifts every operator family to a high mean score, in contrast to the strongly operator-dependent response of version~1.}
+  \label{tab:vbfrnn_aqgc_meanscore}
+  \begin{tabular}{|c|c|c|c|}
+    \hline
+    \textbf{Operator} & \textbf{v1} & \textbf{v2} & \textbf{v3} \\
+    \hline
+    $S_0$ & 0.76 & 0.65 & 0.87 \\
+    $S_1$ & 0.76 & 0.65 & 0.86 \\
+    $M_0$ & 0.31 & 0.62 & 0.74 \\
+    $M_1$ & 0.34 & 0.62 & 0.74 \\
+    $T_0$ & 0.28 & 0.62 & 0.74 \\
+    $T_1$ & 0.28 & 0.62 & 0.74 \\
+    \hline
+  \end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+  \centering
+  \caption{VBS-tag efficiency at $s>0.3$ per representative aQGC operator for the three tagger versions, on the pre-selected sample. The final column is the relative improvement from version~1 to version~3: small for the scalar operators that version~1 already handled and very large for the tensor and mixed operators it did not, demonstrating the operator-independent response of version~3.}
+  \label{tab:vbfrnn_aqgc_eff}
+  \begin{tabular}{|c|c|c|c|c|}
+    \hline
+    \textbf{Operator} & \textbf{v1} & \textbf{v2} & \textbf{v3} & \textbf{Rel.\ impr.\ (v1$\to$v3)} \\
+    \hline
+    $S_0$ & 91.2\% & 96.7\% & 98.5\% & $+7.9\%$ \\
+    $S_1$ & 90.8\% & 96.6\% & 98.4\% & $+8.3\%$ \\
+    $M_0$ & 39.0\% & 90.0\% & 94.3\% & $+141.6\%$ \\
+    $M_1$ & 43.1\% & 90.5\% & 94.4\% & $+119.0\%$ \\
+    $T_0$ & 36.1\% & 89.3\% & 94.2\% & $+160.8\%$ \\
+    $T_1$ & 36.2\% & 89.4\% & 94.0\% & $+160.1\%$ \\
+    \hline
+  \end{tabular}
+\end{table}
+
 \section{Alternative architecture: the transformer encoder}
 \label{sec:vbfrnn_transformer}
 
-Having fixed version~3 as the baseline, it is natural to ask whether the recurrent architecture itself limits the performance. The LSTM propagates information sequentially through the jet collection and can, in principle, lose distant context for long input sequences. A transformer encoder removes this sequential bottleneck by computing pairwise interactions between all input jets simultaneously through the self-attention mechanism described in Chapter~\ref{chap:ml}. To test whether this global structure offers a tangible benefit, a transformer encoder was trained on the identical six-jet input and VBS versus non-VBS EWK target as version~3.
+Having fixed version~3 as the baseline, it is natural to ask whether the recurrent architecture itself limits the performance. The LSTM propagates information sequentially through the jet collection and can, in principle, lose distant context for long input sequences. A transformer encoder removes this sequential bottleneck by computing pairwise interactions between all input jets simultaneously through the self-attention mechanism described in Chapter~\ref{chap:ml}. To test whether this global structure offers a tangible benefit, a transformer encoder was trained on the identical six-jet input and VBS versus non-VBS EWK target as version~3. Its configuration, summarised in Table~\ref{tab:transformer_hyperparams}, comprises four stacked self-attention blocks with four heads each, a $64$-dimensional jet embedding and a two-layer classifier head --- a substantially higher-capacity model than the two-layer, width-$25$ LSTM of version~3.
 
 The result is shown in Figure~\ref{fig:vbfrnn_roc_transformer} and Table~\ref{tab:vbfrnn_transformer_auc}. The transformer reaches an AUC of $0.806$, a marginal $+0.6\%$ relative to the version~3 RNN ($0.801$); the two ROC curves are essentially indistinguishable and, in particular, coincide in the high-VBS-efficiency regime that is operationally relevant for the analysis.
 
-Several factors explain why the more expressive architecture does not translate into better discrimination here. First, the input sequence is very short --- at most six jets. The only structural weakness of the recurrent network, the degradation of information flow across many time steps, does not arise over five intermediate steps: a two-layer LSTM already couples every jet to the event summary without meaningful loss, so self-attention's defining advantage, direct all-to-all coupling that bypasses sequential propagation, has almost nothing to act on. Second, the discriminating information is low-dimensional and largely additive. The VBS topology is encoded in a few robust global quantities --- a forward tagging-jet pair with a large rapidity gap and large invariant mass, together with a central, hard diboson system --- which a recurrent summary state already captures. When the optimal decision boundary is essentially a function of a handful of aggregate event variables, the higher-order relational modelling that attention provides cannot extract information that is not present in the inputs. Third, and as a consequence, the performance is limited by the intrinsic overlap between the VBS and non-VBS EWK classes rather than by model capacity: both architectures plateau at $\mathrm{AUC}\approx0.80$ because they already sit close to the Bayes-optimal boundary achievable from these observables. The $\approx0.5\%$ difference is of the order of the statistical and training-procedure noise and is not reproduced in the high-efficiency regime, so it cannot be interpreted as a genuine architectural gain. Finally, transformers typically require larger training samples and more careful regularisation to realise their capacity advantage; with only four features per jet and the available statistics, the additional attention parameters add variance without a compensating reduction in bias.
+Several factors explain why the more expressive architecture does not translate into better discrimination here. First, the input sequence is very short --- at most six jets. The only structural weakness of the recurrent network, the degradation of information flow across many time steps, does not arise over five intermediate steps: a two-layer LSTM already couples every jet to the event summary without meaningful loss, so self-attention's defining advantage, direct all-to-all coupling that bypasses sequential propagation, has almost nothing to act on. Second, the discriminating information is low-dimensional and largely additive. The VBS topology is encoded in a few robust global quantities --- a forward tagging-jet pair with a large rapidity gap and large invariant mass, together with a central, hard diboson system --- which a recurrent summary state already captures. When the optimal decision boundary is essentially a function of a handful of aggregate event variables, the higher-order relational modelling that attention provides cannot extract information that is not present in the inputs. Third, and as a consequence, the performance is limited by the intrinsic overlap between the VBS and non-VBS EWK classes rather than by model capacity: despite the substantially larger parameter count of the transformer (Table~\ref{tab:transformer_hyperparams}), both architectures plateau at $\mathrm{AUC}\approx0.80$ because they already sit close to the Bayes-optimal boundary achievable from these observables. The $\approx0.5\%$ difference is of the order of the statistical and training-procedure noise and is not reproduced in the high-efficiency regime, so it cannot be interpreted as a genuine architectural gain. Finally, transformers typically require larger training samples and more careful regularisation to realise their capacity advantage; with only four features per jet and the available statistics, the additional attention parameters add variance without a compensating reduction in bias.
 
 Given the absence of a measurable benefit, and the additional model and inference complexity of the attention mechanism for the short jet sequences used here, the recurrent version~3 tagger is retained as the baseline for the analysis.
 
-\begin{table}[h]
-\centering
-\caption{AUC of the recurrent version~3 tagger and the transformer encoder trained on the identical six-jet input and VBS versus non-VBS EWK target, with the relative improvement of the transformer over the RNN.}
-\label{tab:vbfrnn_transformer_auc}
-\begin{tabular}{lcc}
-\toprule
-Model & AUC & Relative improvement \\
-\midrule
-RNN v3 (6 jets)      & 0.801 & --- \\
-Transformer (6 jets) & 0.806 & $+0.6\%$ \\
-\bottomrule
-\end{tabular}
+\begin{table}[htbp]
+  \centering
+  \caption{AUC of the recurrent version~3 tagger and the transformer encoder trained on the identical six-jet input and VBS versus non-VBS EWK target, with the relative improvement of the transformer over the RNN.}
+  \label{tab:vbfrnn_transformer_auc}
+  \begin{tabular}{|c|c|c|}
+    \hline
+    \textbf{Model} & \textbf{AUC} & \textbf{Relative improvement} \\
+    \hline
+    RNN v3 (6 jets)      & 0.801 & --- \\
+    Transformer (6 jets) & 0.806 & $+0.6\%$ \\
+    \hline
+  \end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+  \centering
+  \caption{Architecture and training hyperparameters of the transformer encoder, trained on the same six-jet input and VBS versus non-VBS EWK target as version~3.}
+  \label{tab:transformer_hyperparams}
+  \begin{tabular}{|c|c|}
+    \hline
+    \textbf{Hyperparameter} & \textbf{Value} \\
+    \hline
+    Self-attention blocks                       & 4 \\
+    Attention heads                             & 4 \\
+    Head size                                   & 32 \\
+    Jet embedding dimension                     & 64 \\
+    Embedding MLP units                         & [64, 64] \\
+    Feed-forward dimension                      & 128 \\
+    Classifier MLP units                        & [128, 64] \\
+    Dropout (embedding / block / classifier)    & 0.15 / 0.25 / 0.20 \\
+    Output activation                           & sigmoid \\
+    Training epochs                             & 200 \\
+    Input                                       & 6 jets $\times$ 4 features \\
+    \hline
+  \end{tabular}
 \end{table}
 
 \begin{figure}[h]
