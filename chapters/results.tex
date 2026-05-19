@@ -1,4 +1,4 @@
-\chapter{Performance of a VBS topology identifier}
+\chapter{Performance of the VBF-RNN vector boson scattering tagger}
 \label{chap:vbfrnn_results}
 
 This chapter evaluates the VBF-RNN tagger introduced in Section~\ref{sec:vbfrnn} on its ability to isolate the vector boson scattering topology from the inclusive electroweak $VVjj$ production. The three RNN versions of Table~\ref{tab:vbfrnn_versions} are first compared on a common figure of merit, after which the artefacts introduced by the jet multiplicity are discussed and the response of the tagger to the different aQGC operator families is studied; finally an alternative transformer-based architecture is evaluated. The performance reported here motivates the choice of the version~3 score as both a pre-selection requirement and an input feature to the aQGC discriminant of Chapter~\ref{chap:analysismethods}.
@@ -12,7 +12,7 @@ Because the tagger output is a continuous score $s\in[0,1]$, its discriminating 
 
 Although the AUC provides a convenient scalar summary, it weights all score thresholds equally, whereas the tagger is not used as a hard classifier in the analysis. The score enters both as a loose pre-selection requirement and as a continuous input feature to the aQGC discriminant of Chapter~\ref{chap:analysismethods}. The operationally relevant region of the ROC curve is therefore the high-VBS-efficiency, low-threshold regime, where the signal is retained almost in full while the non-VBS EWK component is only mildly suppressed, and the full shape of the score distribution --- not the AUC alone --- is what ultimately propagates into the discriminant. Both the AUC and the score distributions are consequently reported in what follows.
 
-\section{Performance comparison of the RNN versions}
+\section{Comparison of the tagger versions}
 \label{sec:vbfrnn_perf}
 
 The three VBF-RNN versions of Table~\ref{tab:vbfrnn_versions} differ both in their training target and in the set of input jets, and the comparison below is constructed to disentangle the impact of each. Version~1 was trained on a different objective --- resonant VBF against gluon-fusion production --- so the decision boundary it learned reflects that problem rather than the VBS versus non-VBS EWK separation required here. When the negative class changes from gluon-fusion jets to the other electroweak $VVjj$ diagrams, whose forward tagging-jet kinematics are far more VBS-like, that boundary is not expected to transfer. Retraining the identical four-jet architecture on the correct target (version~2) isolates whether the limitation is one of training objective or of input information, while version~3 additionally includes the two large-$R$ signal jets, whose complementary discriminating power is established in Section~\ref{sec:vbfrnn} (Figure~\ref{fig:vbfrnn_sigjet}), to test how much the decay-side information improves on the tagging jets alone.
@@ -72,14 +72,14 @@ The combined AUC masks some channel dependence, which Table~\ref{tab:vbfrnn_auc_
   \end{tabular}
 \end{table}
 
-\begin{figure}[h]
+\begin{figure}[htbp]
 \centering
 \includegraphics[width=0.7\textwidth]{figures/vbfrnn_roc_versions.png}
 \caption{ROC curves for the three VBF-RNN versions evaluated on the combined $WW+WZ+ZZ$ EWK validation sample, separating VBS from non-VBS EWK events. The vertical axis is the VBS positive rate (true-positive rate) and the horizontal axis the non-VBS positive rate (false-positive rate). Curves are shown for version~1 (4 jets, VBF vs.\ ggF, $\mathrm{AUC}=0.629$), version~2 (4 jets, VBS vs.\ non-VBS EWK, $\mathrm{AUC}=0.760$) and version~3 (6 jets, VBS vs.\ non-VBS EWK, $\mathrm{AUC}=0.801$). The dashed diagonal indicates a random classifier.}
 \label{fig:vbfrnn_roc}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[htbp]
 \centering
 \begin{subfigure}[b]{0.32\textwidth}
 \includegraphics[width=\textwidth]{figures/vbfrnn_aqgc_roc_vbftagger_WWjj.png}
@@ -99,7 +99,7 @@ The combined AUC masks some channel dependence, which Table~\ref{tab:vbfrnn_auc_
 \label{fig:vbfrnn_roc_channels}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[htbp]
 \centering
 \begin{subfigure}[b]{0.32\textwidth}
 \includegraphics[width=\textwidth]{figures/vbfrnn_score_v1.png}
@@ -119,7 +119,7 @@ The combined AUC masks some channel dependence, which Table~\ref{tab:vbfrnn_auc_
 \label{fig:vbfrnn_scores}
 \end{figure}
 
-\section{Effect of the input jet multiplicity}
+\section{Input jet multiplicity}
 \label{sec:vbfrnn_multiplicity}
 
 The version~2 score distribution in Figure~\ref{fig:vbfrnn_scores} exhibits a localised artefact --- a dip followed by a secondary peak near high score values --- that is absent from the cleaner version~3 distribution. This structure is not of physical origin but reflects the number of jets actually available as input to the network. Figure~\ref{fig:vbfrnn_njets} shows the version~2 score as a function of the input-jet multiplicity. A fraction of events reach the network with only a single tagging jet, because the remaining tagging jets fall outside the tracking and calorimeter acceptance or fail reconstruction. With a single jet the network has access to none of the inter-jet observables --- the dijet mass, the rapidity gap, the relative angles --- that carry the VBS information; it can place such events neither at the VBS nor at the non-VBS extreme and instead defaults to an uninformative band of intermediate scores. The pile-up of this single-jet population is precisely the structure seen in the version~2 distribution. Splitting the score by input multiplicity for each aQGC operator family, Figure~\ref{fig:vbfrnn_njets_split}, confirms that the artefact originates entirely from the single-jet events: the $\geq2$-jet population is smoothly distributed and peaks at high score, while the single-jet curve is sharply confined to intermediate values for every family.
@@ -128,14 +128,14 @@ This also explains why version~3 is immune to the effect. The analysis pre-selec
 
 The single-jet population responsible for the artefact is not a negligible tail. Across the aQGC operator families it accounts for $21$--$23\%$ of version~2 events (Table~\ref{tab:vbfrnn_njets_frac}), roughly one event in five, and its fraction is essentially independent of the operator. Guaranteeing a minimum input multiplicity in version~3 therefore recovers a substantial part of the sample from the uninformative intermediate-score band, which is reflected in the cleaner version~3 score distribution.
 
-\begin{figure}[h]
+\begin{figure}[htbp]
 \centering
 \includegraphics[width=0.55\textwidth]{figures/vbfrnn_njets_vs_score.png}
 \caption{Two-dimensional distribution of the number of input jets versus the VBF-RNN score for the four-jet EWK (version~2) model. Single-jet events fail to be assigned high scores and produce the artefacts visible in the version~2 score distribution of Figure~\ref{fig:vbfrnn_scores}.}
 \label{fig:vbfrnn_njets}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[htbp]
 \centering
 \begin{subfigure}[b]{0.32\textwidth}
 \includegraphics[width=\textwidth]{figures/vbfrnn_aqgc_v2_S_njets.png}
@@ -171,7 +171,7 @@ The single-jet population responsible for the artefact is not a negligible tail.
   \end{tabular}
 \end{table}
 
-\section{Response to the aQGC operator families}
+\section{Response to the aQGC operators}
 \label{sec:vbfrnn_aqgc}
 
 The tagger is trained on inclusive electroweak $VVjj$ production rather than on any specific anomalous coupling, so it is essential to verify that it identifies the VBS topology consistently across the scalar, mixed and tensor aQGC operator families introduced in Chapter~\ref{chap:sm}. These families excite different gauge-boson polarisation modes and modify the central diboson system differently, so they could in principle populate the tagger score differently even though they share the same VBS production topology.
@@ -182,7 +182,7 @@ Figures~\ref{fig:vbfrnn_aqgc_v2} and~\ref{fig:vbfrnn_aqgc_v3} show the same oper
 
 The visual impression is made quantitative in Tables~\ref{tab:vbfrnn_aqgc_meanscore} and~\ref{tab:vbfrnn_aqgc_eff}. For version~1 the mean score and the VBS-tag efficiency at $s>0.3$ are strongly operator-dependent: the scalar operators are tagged with $\approx\!91\%$ efficiency --- unsurprisingly, since version~1 was itself trained on a scalar (Higgs) resonance whose decay bosons are longitudinally polarised, exactly the polarisation structure of the scalar operators --- while the tensor and mixed operators are retained with only $36$--$43\%$ efficiency. Version~2 already removes most of this dependence and version~3 renders it negligible: every family is tagged with $94$--$98\%$ efficiency at a mean score of $0.74$--$0.87$. The relative gain from version~1 to version~3 is correspondingly modest for the scalar operators ($\approx\!8\%$) but exceeds $120\%$ for the tensor and mixed operators, so the improvement is concentrated exactly where version~1 failed. This quantitatively establishes the operator independence that justifies a single, inclusively trained tagger.
 
-\begin{figure}[h]
+\begin{figure}[htbp]
 \centering
 \begin{subfigure}[b]{0.32\textwidth}
 \includegraphics[width=\textwidth]{figures/vbfrnn_aqgc_v1_S.png}
@@ -200,7 +200,7 @@ The visual impression is made quantitative in Tables~\ref{tab:vbfrnn_aqgc_meansc
 \label{fig:vbfrnn_aqgc_v1}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[htbp]
 \centering
 \begin{subfigure}[b]{0.32\textwidth}
 \includegraphics[width=\textwidth]{figures/vbfrnn_aqgc_v2_S.png}
@@ -218,7 +218,7 @@ The visual impression is made quantitative in Tables~\ref{tab:vbfrnn_aqgc_meansc
 \label{fig:vbfrnn_aqgc_v2}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[htbp]
 \centering
 \begin{subfigure}[b]{0.32\textwidth}
 \includegraphics[width=\textwidth]{figures/vbfrnn_aqgc_v3_S.png}
@@ -272,10 +272,10 @@ The visual impression is made quantitative in Tables~\ref{tab:vbfrnn_aqgc_meansc
   \end{tabular}
 \end{table}
 
-\section{Alternative architecture: the transformer encoder}
+\section{Alternative transformer architecture}
 \label{sec:vbfrnn_transformer}
 
-Having fixed version~3 as the baseline, it is natural to ask whether the recurrent architecture itself limits the performance. The LSTM propagates information sequentially through the jet collection and can, in principle, lose distant context for long input sequences. A transformer encoder removes this sequential bottleneck by computing pairwise interactions between all input jets simultaneously through the self-attention mechanism described in Chapter~\ref{chap:ml}. To test whether this global structure offers a tangible benefit, a transformer encoder was trained on the identical six-jet input and VBS versus non-VBS EWK target as version~3. Its configuration, summarised in Table~\ref{tab:transformer_hyperparams}, comprises four stacked self-attention blocks with four heads each, a $64$-dimensional jet embedding and a two-layer classifier head --- a substantially higher-capacity model than the two-layer, width-$25$ LSTM of version~3.
+Having fixed version~3 as the baseline, it is natural to ask whether the recurrent architecture itself limits the performance. The LSTM propagates information sequentially through the jet collection and can, in principle, lose distant context for long input sequences. A transformer encoder removes this sequential bottleneck by computing pairwise interactions between all input jets simultaneously through the self-attention mechanism described in Chapter~\ref{chap:ml}. To test whether this global structure offers a tangible benefit, a transformer encoder was trained on the identical six-jet input and VBS versus non-VBS EWK target as version~3. The transformer is a substantially higher-capacity model than the two-layer, width-$25$ LSTM of version~3; its architecture and hyperparameters are given in Section~\ref{sec:vbfrnn} (Table~\ref{tab:transformer_hyperparams}).
 
 The result is shown in Figure~\ref{fig:vbfrnn_roc_transformer} and Table~\ref{tab:vbfrnn_transformer_auc}. The transformer reaches an AUC of $0.806$, a marginal $+0.6\%$ relative to the version~3 RNN ($0.801$); the two ROC curves are essentially indistinguishable and, in particular, coincide in the high-VBS-efficiency regime that is operationally relevant for the analysis.
 
@@ -296,31 +296,7 @@ Given the absence of a measurable benefit, and the additional model and inferenc
     \hline
   \end{tabular}
 \end{table}
-
-\begin{table}[htbp]
-  \centering
-  \caption{Architecture and training hyperparameters of the transformer encoder, trained on the same six-jet input and VBS versus non-VBS EWK target as version~3.}
-  \label{tab:transformer_hyperparams}
-  \begin{tabular}{|c|c|}
-    \hline
-    \textbf{Hyperparameter} & \textbf{Value} \\
-    \hline
-    Self-attention blocks                       & 4 \\
-    Attention heads                             & 4 \\
-    Head size                                   & 32 \\
-    Jet embedding dimension                     & 64 \\
-    Embedding MLP units                         & [64, 64] \\
-    Feed-forward dimension                      & 128 \\
-    Classifier MLP units                        & [128, 64] \\
-    Dropout (embedding / block / classifier)    & 0.15 / 0.25 / 0.20 \\
-    Output activation                           & sigmoid \\
-    Training epochs                             & 200 \\
-    Input                                       & 6 jets $\times$ 4 features \\
-    \hline
-  \end{tabular}
-\end{table}
-
-\begin{figure}[h]
+\begin{figure}[htbp]
 \centering
 \includegraphics[width=0.7\textwidth]{figures/vbfrnn_roc_transformer.png}
 \caption{ROC curves on the combined $WW+WZ+ZZ$ EWK validation sample, repeating the three RNN versions of Figure~\ref{fig:vbfrnn_roc} with the transformer added: version~1 ($\mathrm{AUC}=0.629$), version~2 ($\mathrm{AUC}=0.760$), version~3 ($\mathrm{AUC}=0.801$) and the six-jet transformer ($\mathrm{AUC}=0.806$). The transformer curve lies on top of the version~3 curve, confirming that the marginal AUC gain is not significant at high VBS efficiency.}
@@ -328,7 +304,7 @@ Given the absence of a measurable benefit, and the additional model and inferenc
 \end{figure}
 
 
-\chapter{Sensitivity of a machine learning based aQGC discriminant}
+\chapter{Estimating the aQGC sensitivity using a machine-learning discriminant}
 \section{Event selection}
 \section{Binary classification}
 \subsection{Specialised model}

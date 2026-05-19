@@ -1,7 +1,5 @@
-\chapter{Analysis methods for vector boson scattering event classification}
+\chapter{Analysis methods for the fully hadronic VBS aQGC search}
 \label{chap:analysismethods}
-
-\section{Overview}
 
 This chapter describes the machine learning methods developed to maximise sensitivity to anomalous quartic gauge couplings in the fully hadronic VBS analysis. The analysis targets the electroweak production of two vector bosons in association with two forward jets, $pp \to VVjj$, where both bosons decay hadronically. The signal topology consists of two large-$R$ UFO jets from the boosted vector boson decays and two small-$R$ forward PFlow tagging jets. The dominant background is QCD multijet production, which exceeds the EWK signal cross section by approximately eight orders of magnitude in the analysis phase space, making dedicated event classification essential.
 
@@ -59,7 +57,7 @@ Version~1 corresponds to the configuration used in earlier analyses~\cite{Antoni
 
 The four tagging jets constrain only the production side of the event, but the VBS and non-VBS EWK subprocesses also differ in the diboson system they produce: the genuine $VV\to VV$ scattering of the VBS subprocess yields a harder, higher-mass central diboson pair than the radiative non-VBS EWK topologies that share the same final state. Figure~\ref{fig:vbfrnn_sigjet} exposes this residual difference through the dijet invariant mass of the two large-$R$ signal jets, which retains discriminating power between the two classes that the tagging jets do not capture and which is largely statistically independent of the production-side information. This is the motivation for the six-jet configuration of version~3. The separation is shown for the $WZjj\to4q$ channel, but it originates in the diboson scattering kinematics rather than in the specific boson decay and is therefore representative of all diboson channels; the combined-channel performance reported in Chapter~\ref{chap:vbfrnn_results} confirms that it carries over to the inclusive sample.
 
-\begin{figure}[h]
+\begin{figure}[htbp]
 \centering
 \includegraphics[width=0.6\textwidth]{figures/vbfrnn_sigjet_mjj.png}
 \caption{Normalised distribution of the dijet invariant mass of the two large-$R$ signal jets at the training pre-selection, for VBS (blue) and non-VBS EWK (red) $WZjj\to 4q$ events. The difference between the two distributions, quantified by the ratio panel, demonstrates the additional discriminating information that motivates including the signal jets in version~3 of the tagger.}
@@ -74,7 +72,7 @@ For each jet, the observables $(p_T,\,\eta,\,\phi,\,E)$ are used as input featur
 
 The network consists of two stacked LSTM layers. The first layer processes the jet sequence and produces an intermediate hidden-state sequence encoding inter-jet correlations. The second layer refines this representation and returns the hidden state at the final time step, $\mathbf{h}_T \in \mathbb{R}^d$, which constitutes a fixed-length summary of the entire event. This vector is passed to a dense output layer with sigmoid activation, yielding a scalar score $s \in [0,1]$ interpreted as the posterior probability $P(y=1 \mid \mathbf{X})$ that the event originates from a VBS process. The architecture is illustrated in Figure~\ref{fig:vbfrnn}.
 
-\begin{figure}[h]
+\begin{figure}[htbp]
 \centering
 \includegraphics[scale=0.45]{figures/VBFRNN.png}
 \caption{Illustration of the VBF-RNN architecture \cite{Antonio_VBFRNN_2023}. The input sequence of jet four-vectors is processed by two stacked LSTM layers and the final hidden state is passed to a sigmoid output node.}
@@ -105,7 +103,34 @@ Each LSTM layer has a hidden dimension of $25$, with a dropout and recurrent dro
   \end{tabular}
 \end{table}
 
-\section{Machine learning based aQGC discriminant}
+\subsection{Alternative transformer architecture}
+
+As an alternative to the recurrent architecture, a transformer encoder was also trained on the identical six-jet input and VBS versus non-VBS EWK target as version~3. Instead of propagating information sequentially, it computes pairwise interactions between all input jets simultaneously through the self-attention mechanism described in Chapter~\ref{chap:ml}. The configuration, summarised in Table~\ref{tab:transformer_hyperparams}, comprises four stacked self-attention blocks with four heads each, a $64$-dimensional jet embedding and a two-layer classifier head; it is a substantially higher-capacity model than the two-layer, width-$25$ LSTM of the VBF-RNN. Its performance relative to version~3 is evaluated in Chapter~\ref{chap:vbfrnn_results}.
+
+\begin{table}[htbp]
+  \centering
+  \caption{Architecture and training hyperparameters of the transformer encoder, trained on the same six-jet input and VBS versus non-VBS EWK target as version~3.}
+  \label{tab:transformer_hyperparams}
+  \begin{tabular}{|c|c|}
+    \hline
+    \textbf{Hyperparameter} & \textbf{Value} \\
+    \hline
+    Self-attention blocks                       & 4 \\
+    Attention heads                             & 4 \\
+    Head size                                   & 32 \\
+    Jet embedding dimension                     & 64 \\
+    Embedding MLP units                         & [64, 64] \\
+    Feed-forward dimension                      & 128 \\
+    Classifier MLP units                        & [128, 64] \\
+    Dropout (embedding / block / classifier)    & 0.15 / 0.25 / 0.20 \\
+    Output activation                           & sigmoid \\
+    Training epochs                             & 200 \\
+    Input                                       & 6 jets $\times$ 4 features \\
+    \hline
+  \end{tabular}
+\end{table}
+
+\section{Machine-learning aQGC discriminant}
 \label{sec:mldiscriminant}
 
 While the VBF-RNN identifies the characteristic topology of VBS events, the primary goal of this analysis is to maximise sensitivity to anomalous quartic gauge couplings. The discriminating information between aQGC signal and background is distributed across several event-level observables, motivating the use of an MLP to combine them optimally into a single discriminant.
@@ -132,7 +157,7 @@ A training selection, designed to bring the phase space close to the analysis si
 
 The MLP takes twelve event-level features as input: the transverse momentum, pseudorapidity, azimuthal angle and invariant mass of each of the two leading large-$R$ signal jets, the VBF-RNN score from version~3 of the tagger and three multiplicity variables: the number of tagging jets provided to the RNN, the total number of small-$R$ jets and the number of large-$R$ jets. All features are standardised to zero mean and unit variance prior to training, as discussed in Chapter~\ref{chap:ml}. Normalised distributions of the input variables for representative S0, M0 and T0 aQGC signal samples and the composite background are shown in Figures~\ref{fig:input_distributions} and~\ref{fig:input_distributions_extra}.
 
-\begin{figure}[h]
+\begin{figure}[htbp]
 \centering
 \begin{subfigure}[b]{0.4\textwidth}
 \includegraphics[width=\textwidth]{figures/SigJet1_pT_NOSYS.png}
@@ -175,7 +200,7 @@ The MLP takes twelve event-level features as input: the transverse momentum, pse
 \label{fig:input_distributions}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[htbp]
 \centering
 \begin{subfigure}[b]{0.4\textwidth}
 \includegraphics[width=\textwidth]{figures/nJets_NOSYS.png}

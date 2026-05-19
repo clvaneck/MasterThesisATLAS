@@ -1,9 +1,9 @@
-\chapter{Theory of machine learning}
+\chapter{Machine learning}
 \label{chap:ml}
 
 Machine learning provides a framework for constructing functions that map inputs to outputs by optimising a parametric model against labelled examples.  In high-energy physics the canonical task is classification: given a set of measured quantities describing an event, assign it to one of $K$ classes.  The theoretical tools introduced in this chapter, multi-layer perceptrons, recurrent networks and transformers, address this task with increasing architectural complexity.
 
-\section{Multi-layer Perceptron}
+\section{Multi-layer perceptron}
 
 A multi-layer perceptron (MLP) is a directed acyclic graph of parametric transformations organised into $L$ sequential layers.  Each layer $\ell$ maps an input vector $\mathbf{h}^{(\ell-1)}\in\mathbb{R}^{n_{\ell-1}}$ to an output $\mathbf{h}^{(\ell)}\in\mathbb{R}^{n_{\ell}}$ by an affine transformation followed by a pointwise nonlinearity $\sigma$,
 \begin{equation}
@@ -64,7 +64,7 @@ where $\eta$ is the learning rate and $\ell$ is the per-example loss from either
 
 
 
-\section{Recurrent Neural Network}
+\section{Recurrent neural network}
 
 A recurrent neural network processes sequential inputs $(\mathbf{x}_1,\mathbf{x}_2,\dots,\mathbf{x}_T)$ of variable length $T$ by maintaining a hidden state that is updated at each step and carries information forward through the sequence.  Vanilla recurrent architectures suffer from vanishing and exploding gradients when $T$ is large, because backpropagation through time involves repeated multiplication by the same weight matrix, causing gradient norms to shrink or grow exponentially with depth.  The long short-term memory (LSTM) \cite{Hochreiter_LSTM_1997} resolves this by introducing a dedicated cell state $\mathbf{c}_t\in\mathbb{R}^{d}$ that carries long-range information along an additive path, insulated from the multiplicative degradation that affects the hidden state $\mathbf{h}_t\in\mathbb{R}^{d}$.
 
