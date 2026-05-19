@@ -30,7 +30,26 @@ The chapter is organised as follows. Section~\ref{sec:vbfrnn} describes the VBF-
 \section{Vector boson scattering topology identification}
 \label{sec:vbfrnn}
 
-The physical process targeted by this analysis is the electroweak production of two vector bosons in association with two jets, $pp \to VVjj$~(EWK). This inclusive EWK process contains both VBS and non-VBS contributions: the VBS subprocess exhibits the characteristic forward-jet topology that distinguishes it from other EWK diagrams contributing to the same final state. Extracting the VBS component from the broader EWK $VVjj$ production is therefore a necessary step before searching for anomalous couplings.
+The physical process targeted by this analysis is the electroweak production of two vector bosons in association with two jets, $pp \to VVjj$~(EWK). This inclusive EWK process contains both VBS and non-VBS contributions, illustrated in Figure~\ref{fig:ewk_diagrams}: the VBS subprocess (Figure~\ref{fig:vbs_ewk}) proceeds through a genuine $VV \to VV$ scattering vertex and exhibits the characteristic forward-jet topology that distinguishes it from the non-VBS EWK diagrams (Figure~\ref{fig:novbs_ewk}), in which the vector bosons are radiated from the quark lines and contribute to the same $VVjj$ final state. Extracting the VBS component from the broader EWK $VVjj$ production is therefore a necessary step before searching for anomalous couplings.
+
+\begin{figure}[htbp]
+\centering
+\begin{subfigure}[b]{0.48\textwidth}
+\centering
+\includegraphics[width=\textwidth]{figures/vbs_ewk.png}
+\caption{}
+\label{fig:vbs_ewk}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.48\textwidth}
+\centering
+\includegraphics[width=\textwidth]{figures/novbs_ewk.png}
+\caption{}
+\label{fig:novbs_ewk}
+\end{subfigure}
+\caption{Representative diagrams for the electroweak production of two vector bosons in association with two jets, $pp \to VVjj$~(EWK). (a) The VBS subprocess, in which the two incoming quarks each radiate a vector boson that subsequently scatter, $VV \to VV$, producing the two forward tagging quarks $q''$ and $q'''$ and the two final-state bosons. (b) A non-VBS EWK diagram contributing to the same final state, in which the vector bosons are radiated from the quark lines without a genuine boson scattering vertex.}
+\label{fig:ewk_diagrams}
+\end{figure}
 
 The VBF-RNN tagger was originally developed to identify the characteristic forward-jet topology of vector boson fusion and vector boson scattering processes and has been deployed in previous ATLAS measurements including the semi-leptonic VBS analysis~\cite{Antonio_VBFRNN_2023}. In this analysis the tagger is adapted and re-optimised for the fully hadronic VBS channel, where both the tagging jets and the signal jets from the hadronically decaying bosons are available as inputs.
 
