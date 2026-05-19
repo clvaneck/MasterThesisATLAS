@@ -3,7 +3,7 @@
 
 This chapter evaluates the VBF-RNN tagger introduced in Section~\ref{sec:vbfrnn} on its ability to isolate the vector boson scattering topology from the inclusive electroweak $VVjj$ production. The three RNN versions of Table~\ref{tab:vbfrnn_versions} are first compared on a common figure of merit, after which the artefacts introduced by the jet multiplicity are discussed and the response of the tagger to the different aQGC operator families is studied, finally an alternative transformer-based architecture is evaluated. The performance reported here motivates the choice of the version~3 score as both a pre-selection requirement and an input feature to the aQGC discriminant of Chapter~\ref{chap:analysismethods}.
 
-\section{Evaluation sample and figure of merit}
+\section{Event selection and evaluation}
 \label{sec:vbfrnn_eval}
 
 The tagger is evaluated on the statistically independent validation sample of electroweak $VVjj$ events described in Section~\ref{sec:vbfrnn}, using the truth-level VBS / non-VBS labels obtained from the boson- and tagging-jet matching procedure. The combined $WW$, $WZ$ and $ZZ$ final states are merged into a single sample, so that the quoted performance reflects the inclusive diboson channel relevant to the fully hadronic analysis, the channel-by-channel breakdown is given in Section~\ref{sec:vbfrnn_perf}.
@@ -119,58 +119,6 @@ The combined AUC masks some channel dependence, which Table~\ref{tab:vbfrnn_auc_
 \label{fig:vbfrnn_scores}
 \end{figure}
 
-\section{Input jet multiplicity}
-\label{sec:vbfrnn_multiplicity}
-
-The version~2 score distribution in Figure~\ref{fig:vbfrnn_scores} exhibits a localised artefact, a dip followed by a secondary peak near high score values, that is absent from the cleaner version~3 distribution. This structure is not of physical origin but reflects the number of jets actually available as input to the network. Figure~\ref{fig:vbfrnn_njets} shows the version~2 score as a function of the input-jet multiplicity. A fraction of events reach the network with only a single tagging jet, because the remaining tagging jets fall outside the tracking and calorimeter acceptance or fail reconstruction. With a single jet the network has access to none of the inter-jet observables, the dijet mass, the rapidity gap, the relative angles, that carry the VBS information, it can place such events neither at the VBS nor at the non-VBS extreme and instead defaults to an uninformative band of intermediate scores. The pile-up of this single-jet population is precisely the structure seen in the version~2 distribution. Splitting the score by input multiplicity for each aQGC operator family, Figure~\ref{fig:vbfrnn_njets_split}, confirms that the artefact originates entirely from the single-jet events: the $\geq2$-jet population is smoothly distributed and peaks at high score, while the single-jet curve is sharply confined to intermediate values for every family.
-
-This also explains why version~3 is immune to the effect. The analysis pre-selection requires at least two large-$R$ signal jets (Table~\ref{tab:analysis_selection}), so these two jets are always available as input to the six-jet tagger, the single-jet configuration that produces the artefact therefore cannot occur for version~3 by construction, independently of the additional discriminating power that the signal jets provide. The removal of the artefact is thus a second, distinct reason, alongside the AUC gain, to prefer version~3.
-
-The single-jet population responsible for the artefact is not a negligible tail. Across the aQGC operator families it accounts for $21$--$23\%$ of version~2 events (Table~\ref{tab:vbfrnn_njets_frac}), roughly one event in five, and its fraction is essentially independent of the operator. Guaranteeing a minimum input multiplicity in version~3 therefore recovers a substantial part of the sample from the uninformative intermediate-score band, which is reflected in the cleaner version~3 score distribution.
-
-\begin{figure}[htbp]
-\centering
-\includegraphics[width=0.55\textwidth]{figures/vbfrnn_njets_vs_score.png}
-\caption{Two-dimensional distribution of the number of input jets versus the VBF-RNN score for the four-jet EWK (version~2) model. Single-jet events fail to be assigned high scores and produce the artefacts visible in the version~2 score distribution of Figure~\ref{fig:vbfrnn_scores}.}
-\label{fig:vbfrnn_njets}
-\end{figure}
-
-\begin{figure}[htbp]
-\centering
-\begin{subfigure}[b]{0.32\textwidth}
-\includegraphics[width=\textwidth]{figures/vbfrnn_aqgc_v2_S_njets.png}
-\caption{Scalar}
-\end{subfigure}
-\begin{subfigure}[b]{0.32\textwidth}
-\includegraphics[width=\textwidth]{figures/vbfrnn_aqgc_v2_T_njets.png}
-\caption{Tensor}
-\end{subfigure}
-\begin{subfigure}[b]{0.32\textwidth}
-\includegraphics[width=\textwidth]{figures/vbfrnn_aqgc_v2_M_njets.png}
-\caption{Mixed}
-\end{subfigure}
-\caption{Version~2 (4 jets) VBF-RNN score for events with exactly one input jet (red) and with two or more input jets (blue), shown separately for representative scalar ($S_0$, $S_1$), tensor ($T_0$, $T_1$) and mixed ($M_0$, $M_1$) aQGC operators, within each panel the solid and dashed curves denote the two operators. Across all three families the single-jet population fails to reach high scores, confirming that the artefact in the version~2 score distribution originates entirely from low-multiplicity events.}
-\label{fig:vbfrnn_njets_split}
-\end{figure}
-
-\begin{table}[htbp]
-  \centering
-  \caption{Fraction of version~2 (4-jet) events reaching the network with exactly one input jet and with two or more input jets, for representative aQGC operators. The single-jet fraction responsible for the score artefact is $\approx\!21$--$23\%$ and is essentially independent of the operator.}
-  \label{tab:vbfrnn_njets_frac}
-  \begin{tabular}{|c|c|c|}
-    \hline
-    \textbf{Operator} & \textbf{1 input jet} & \textbf{$\geq 2$ input jets} \\
-    \hline
-    $S_0$ & 23.0\% & 77.0\% \\
-    $S_1$ & 22.8\% & 77.2\% \\
-    $M_0$ & 21.9\% & 78.1\% \\
-    $M_1$ & 23.2\% & 76.8\% \\
-    $T_0$ & 20.8\% & 79.2\% \\
-    $T_1$ & 20.6\% & 79.4\% \\
-    \hline
-  \end{tabular}
-\end{table}
-
 \section{Response to the aQGC operators}
 \label{sec:vbfrnn_aqgc}
 
@@ -272,6 +220,59 @@ The visual impression is made quantitative in Tables~\ref{tab:vbfrnn_aqgc_meansc
   \end{tabular}
 \end{table}
 
+\section{Input jet multiplicity}
+\label{sec:vbfrnn_multiplicity}
+
+The version~2 score distribution in Figure~\ref{fig:vbfrnn_scores} exhibits a localised artefact, a dip followed by a secondary peak near high score values, that is absent from the cleaner version~3 distribution. This structure is not of physical origin but reflects the number of jets actually available as input to the network. Figure~\ref{fig:vbfrnn_njets} shows the version~2 score as a function of the input-jet multiplicity. A fraction of events reach the network with only a single tagging jet, because the remaining tagging jets fall outside the tracking and calorimeter acceptance or fail reconstruction. With a single jet the network has access to none of the inter-jet observables, the dijet mass, the rapidity gap, the relative angles, that carry the VBS information, it can place such events neither at the VBS nor at the non-VBS extreme and instead defaults to an uninformative band of intermediate scores. The pile-up of this single-jet population is precisely the structure seen in the version~2 distribution. Splitting the score by input multiplicity for each aQGC operator family, Figure~\ref{fig:vbfrnn_njets_split}, confirms that the artefact originates entirely from the single-jet events: the $\geq2$-jet population is smoothly distributed and peaks at high score, while the single-jet curve is sharply confined to intermediate values for every family.
+
+This also explains why version~3 is immune to the effect. The analysis pre-selection requires at least two large-$R$ signal jets (Table~\ref{tab:analysis_selection}), so these two jets are always available as input to the six-jet tagger, the single-jet configuration that produces the artefact therefore cannot occur for version~3 by construction, independently of the additional discriminating power that the signal jets provide. The removal of the artefact is thus a second, distinct reason, alongside the AUC gain, to prefer version~3.
+
+The single-jet population responsible for the artefact is not a negligible tail. Across the aQGC operator families it accounts for $21$--$23\%$ of version~2 events (Table~\ref{tab:vbfrnn_njets_frac}), roughly one event in five, and its fraction is essentially independent of the operator. Guaranteeing a minimum input multiplicity in version~3 therefore recovers a substantial part of the sample from the uninformative intermediate-score band, which is reflected in the cleaner version~3 score distribution.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.55\textwidth]{figures/vbfrnn_njets_vs_score.png}
+\caption{Two-dimensional distribution of the number of input jets versus the VBF-RNN score for the four-jet EWK (version~2) model. Single-jet events fail to be assigned high scores and produce the artefacts visible in the version~2 score distribution of Figure~\ref{fig:vbfrnn_scores}.}
+\label{fig:vbfrnn_njets}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\begin{subfigure}[b]{0.32\textwidth}
+\includegraphics[width=\textwidth]{figures/vbfrnn_aqgc_v2_S_njets.png}
+\caption{Scalar}
+\end{subfigure}
+\begin{subfigure}[b]{0.32\textwidth}
+\includegraphics[width=\textwidth]{figures/vbfrnn_aqgc_v2_T_njets.png}
+\caption{Tensor}
+\end{subfigure}
+\begin{subfigure}[b]{0.32\textwidth}
+\includegraphics[width=\textwidth]{figures/vbfrnn_aqgc_v2_M_njets.png}
+\caption{Mixed}
+\end{subfigure}
+\caption{Version~2 (4 jets) VBF-RNN score for events with exactly one input jet (red) and with two or more input jets (blue), shown separately for representative scalar ($S_0$, $S_1$), tensor ($T_0$, $T_1$) and mixed ($M_0$, $M_1$) aQGC operators, within each panel the solid and dashed curves denote the two operators. Across all three families the single-jet population fails to reach high scores, confirming that the artefact in the version~2 score distribution originates entirely from low-multiplicity events.}
+\label{fig:vbfrnn_njets_split}
+\end{figure}
+
+\begin{table}[htbp]
+  \centering
+  \caption{Fraction of version~2 (4-jet) events reaching the network with exactly one input jet and with two or more input jets, for representative aQGC operators. The single-jet fraction responsible for the score artefact is $\approx\!21$--$23\%$ and is essentially independent of the operator.}
+  \label{tab:vbfrnn_njets_frac}
+  \begin{tabular}{|c|c|c|}
+    \hline
+    \textbf{Operator} & \textbf{1 input jet} & \textbf{$\geq 2$ input jets} \\
+    \hline
+    $S_0$ & 23.0\% & 77.0\% \\
+    $S_1$ & 22.8\% & 77.2\% \\
+    $M_0$ & 21.9\% & 78.1\% \\
+    $M_1$ & 23.2\% & 76.8\% \\
+    $T_0$ & 20.8\% & 79.2\% \\
+    $T_1$ & 20.6\% & 79.4\% \\
+    \hline
+  \end{tabular}
+\end{table}
+
+
 \section{Alternative transformer architecture}
 \label{sec:vbfrnn_transformer}
 
@@ -298,7 +299,7 @@ Given the absence of a measurable benefit, and the additional model and inferenc
 \end{table}
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.5\textwidth]{figures/vbfrnn_roc_transformer.png}
+\includegraphics[width=0.7\textwidth]{figures/vbfrnn_roc_transformer.png}
 \caption{ROC curves on the combined $WW+WZ+ZZ$ EWK validation sample, repeating the three RNN versions of Figure~\ref{fig:vbfrnn_roc} with the transformer added: version~1 ($\mathrm{AUC}=0.629$), version~2 ($\mathrm{AUC}=0.760$), version~3 ($\mathrm{AUC}=0.801$) and the six-jet transformer ($\mathrm{AUC}=0.806$). The transformer curve lies on top of the version~3 curve, confirming that the marginal AUC gain is not significant at high VBS efficiency.}
 \label{fig:vbfrnn_roc_transformer}
 \end{figure}
