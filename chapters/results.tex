@@ -306,11 +306,188 @@ Given the absence of a measurable benefit, and the additional model and inferenc
 
 
 \chapter{Estimating the aQGC sensitivity using a machine-learning discriminant}
+\label{chap:mldiscriminant_results}
+
+This chapter evaluates the MLP-based aQGC discriminants introduced in Section~\ref{sec:mldiscriminant}. The binary and multi-class architectures are first compared at the score level on the training selection, after which the kinematic correlations learnt by the network and the relative importance of the input features are examined, and the chapter closes with a sensitivity study that turns these score distributions into expected significances. The MLP discriminants were developed in parallel with the VBF-RNN tagger, so four upstream configurations are reported throughout: VBF-RNN version~2 and version~3 (Section~\ref{sec:vbfrnn}), each without and with the equal-signal-cross-section reweighting of Section~\ref{sec:mldiscriminant}. The last of these, VBF-RNN v3 combined with the cross-section reweighting, is the final configuration adopted for the analysis.
+
 \section{Event selection}
+\label{sec:event_selection}
+
+All MLP results in this chapter are obtained on the training selection of Table~\ref{tab:mlp_selection}, which requires a VBF-RNN v3 score above $0.3$ on every event and a DisCoJet score above $0.65$ on both large-$R$ jets on top of the pre-selection of Table~\ref{tab:analysis_selection}. This phase space lies close to the analysis signal region while still retaining enough events to train and evaluate a network. The event yields obtained in this selection for the two upstream VBF-RNN versions are summarised in Table~\ref{tab:mlp_yields}.
+
+Switching the upstream tagger from the four-jet version~2 to the six-jet version~3 leaves the total signal yield essentially unchanged ($+1.4\%$) but nearly doubles the total background yield ($+97.9\%$), driven by the QCD dijet component. The origin of this asymmetry is the input-multiplicity effect discussed in Section~\ref{sec:vbfrnn_multiplicity}: the six-jet network has access to the two large-$R$ signal jets that the four-jet network had to forgo, so it can score events that the four-jet network could only place in the uninformative intermediate-score band, and at the fixed working point $s_{\mathrm{VBF-RNN}}>0.3$ this acceptance gain falls predominantly on background. The cleaner v3 score shape (Figure~\ref{fig:vbfrnn_scores}) is therefore paid for in upstream background yield, which shifts the question of which configuration is best from one of inclusive AUC to one of background separation per signal event and is ultimately decided by the Asimov sensitivity reported in Section~\ref{sec:sensitivity_comparison}.
+
+A second methodological change applied during the iteration is the equal-signal-cross-section reweighting introduced in Section~\ref{sec:mldiscriminant}. The per-operator and per-channel signal cross sections span four orders of magnitude in this selection, ranging from $\mathcal{O}(10)$ weighted events for the scalar operators to $\mathcal{O}(10^4)$ for the leading tensor operators, so an unweighted optimisation would be dominated by the high-rate tensor mode and would effectively ignore the rare scalar and low-cross-section mixed contributions. The cross sections are consequently equalised during training and the correct physical cross sections restored at evaluation. The motivation for this change is most visible in the multi-class classifier, to which it is returned in Section~\ref{sec:multiclass_classification}.
+
+\begin{table}[htbp]
+  \centering
+  \caption{Signal and background event yields in the training selection (Table~\ref{tab:mlp_selection}) for the two upstream VBF-RNN versions. Going from the four-jet version~2 to the six-jet version~3 the total signal yield is essentially unchanged while the total background yield nearly doubles, driven by the QCD dijet component. The signal totals are summed over all aQGC operators used in this analysis.}
+  \label{tab:mlp_yields}
+  \begin{tabular}{|c|c|c|}
+    \hline
+    \textbf{Sample} & \textbf{VBF-RNN v2} & \textbf{VBF-RNN v3} \\
+    \hline
+    Total aQGC signal & $10\,189.4$ & $10\,331.0$ \\
+    \hline
+    QCD dijet         & $189\,587.4$ & $376\,182.3$ \\
+    $V+$jets          & $6\,168.5$   & $12\,279.4$ \\
+    $t\bar{t}$        & $2\,113.0$   & $3\,139.2$ \\
+    QCD $VV$          & $340.5$      & $713.5$ \\
+    EWK $VVjj$        & $109.7$      & $149.5$ \\
+    \hline
+    Total background  & $198\,319.1$ & $392\,463.8$ \\
+    \hline
+  \end{tabular}
+\end{table}
+
 \section{Binary classification}
+\label{sec:binary_classification}
+
+The MLP is trained as a binary signal-versus-background classifier on the training selection of Section~\ref{sec:event_selection}. Each event is scored $s\in[0,1]$ approximating the posterior $P(\mathrm{signal}\,|\,\mathbf{x})$, and the final discriminant used for sensitivity estimation is the logit $\ln[p/(1-p)]$ that approaches the log-likelihood-ratio under the Neyman--Pearson lemma, as already introduced in Section~\ref{sec:mldiscriminant}. Two complementary training strategies are evaluated, specialised models trained on a single operator family at a time and a single global model trained jointly on the scalar, mixed and tensor families, and each is reported on the four upstream configurations introduced above. The inclusive AUCs are summarised in Table~\ref{tab:binary_auc}, while the score and ROC shapes for the final v3 + equal-$\sigma$ configuration are shown in Figures~\ref{fig:binary_spec_scores}--\ref{fig:binary_global_score}.
+
 \subsection{Specialised model}
+\label{sec:binary_specialised}
+
+Three independent classifiers are trained, on $\mathcal{O}_{S,0}+\mathcal{O}_{S,1}$, $\mathcal{O}_{M,0}+\mathcal{O}_{M,1}$ and $\mathcal{O}_{T,0}+\mathcal{O}_{T,1}$ respectively. On the final configuration they reach AUCs of $0.994$, $0.992$ and $0.992$ when probed with the lowest-index operator of each family. The score distributions in Figure~\ref{fig:binary_spec_scores} share a common pattern: signal peaks sharply at $s\approx1$, background at $s\approx0$, with a clean bimodal separation that is qualitatively very similar across the three operator families despite their different polarisation structure. The corresponding ROC curves of Figure~\ref{fig:binary_spec_roc} sit close to the top-left corner in each case.
+
+Tracing the iteration columns of Table~\ref{tab:binary_auc} shows two effects. The change of upstream tagger from version~2 to version~3 lifts the specialised AUC by $+0.1$--$0.3\%$ across the three families, modest but uniform. The equal-signal-cross-section reweighting moves the specialised AUC by less than $\pm 0.1\%$: the specialised training mixture only spans two operators in a single family, which already share a similar effective cross section, so the rebalancing has nothing to correct and therefore no headline AUC footprint.
+
+These AUC values look near-perfect, but the AUC alone is misleading here. The signal and the QCD-dominated background are very different physical processes, and the discriminating information is concentrated at the extreme low and high ends of the score distribution where the network has no difficulty separating the two classes. Figure~\ref{fig:binary_spec_S_counts}, which repeats the scalar specialised score distribution on an absolute event scale, makes the imbalance explicit: the QCD-dominated background produces $\mathcal{O}(10^5)$ weighted events at low score, whereas the scalar signal yield is many orders of magnitude smaller, so even in the highest-score bin the absolute background exceeds the signal by a factor of $\mathcal{O}(10^2)$. AUC, which weights all thresholds equally, therefore over-states what can be inferred about the analysis sensitivity. The genuine question, whether the cleaner v3 score shape is worth the doubled background yield it accepts, is decided by the Asimov significance in Section~\ref{sec:sensitivity_comparison}.
+
+\begin{figure}[htbp]
+\centering
+\begin{subfigure}[b]{0.32\textwidth}
+\includegraphics[width=\textwidth]{figures/mlp_score_spec_S.png}
+\caption{Scalar}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.32\textwidth}
+\includegraphics[width=\textwidth]{figures/mlp_score_spec_M.png}
+\caption{Mixed}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.32\textwidth}
+\includegraphics[width=\textwidth]{figures/mlp_score_spec_T.png}
+\caption{Tensor}
+\end{subfigure}
+\caption{Normalised signal-probability distributions of the three specialised binary classifiers (trained on $\mathcal{O}_{S,0}+\mathcal{O}_{S,1}$, $\mathcal{O}_{M,0}+\mathcal{O}_{M,1}$, $\mathcal{O}_{T,0}+\mathcal{O}_{T,1}$ respectively), evaluated on the lowest-index operator of each family and the composite background, on the final v3 + equal-$\sigma$ configuration. Signal peaks at $s\approx1$ and background at $s\approx0$ for all three families.}
+\label{fig:binary_spec_scores}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\begin{subfigure}[b]{0.32\textwidth}
+\includegraphics[width=\textwidth]{figures/mlp_roc_spec_S.png}
+\caption{Scalar}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.32\textwidth}
+\includegraphics[width=\textwidth]{figures/mlp_roc_spec_M.png}
+\caption{Mixed}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.32\textwidth}
+\includegraphics[width=\textwidth]{figures/mlp_roc_spec_T.png}
+\caption{Tensor}
+\end{subfigure}
+\caption{ROC curves of the three specialised binary classifiers on the final v3 + equal-$\sigma$ configuration, evaluated on the lowest-index operator of each family. The AUCs are quoted in Table~\ref{tab:binary_auc}.}
+\label{fig:binary_spec_roc}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.55\textwidth]{figures/mlp_score_spec_S_counts.png}
+\caption{Signal-probability distribution of the scalar specialised classifier on an absolute event scale, for the final v3 + equal-$\sigma$ configuration. The QCD-dominated background produces $\mathcal{O}(10^5)$ weighted events at low score and the absolute background still exceeds the absolute signal by a factor of $\mathcal{O}(10^2)$ in the highest-score bin, illustrating that the near-unity AUC of the specialised classifier is not a sufficient figure of merit for the analysis.}
+\label{fig:binary_spec_S_counts}
+\end{figure}
+
 \subsection{Global model}
+\label{sec:binary_global}
+
+A single MLP is trained jointly on all available aQGC operators across the three families, $S(0\text{--}1) + M(0\text{--}5,\,7) + T(0\text{--}9)$. On the final configuration it reaches AUCs of $0.993$, $0.992$ and $0.991$ when probed with $S_0$, $M_0$ and $T_0$ respectively, so per family the global model loses at most $\approx 0.1\%$ AUC relative to its specialised counterpart. Carrying a single decision boundary across the entire operator space is therefore effectively free in AUC, while greatly reducing operational complexity: one trained network covers every operator hypothesis, including those that the specialised models never saw at training time.
+
+Tracing the iteration columns of Table~\ref{tab:binary_auc} now shows a clear footprint for the equal-signal-cross-section reweighting. The global $S_0$ AUC rises by $+0.3\%$ at both upstream versions, from $0.986$ to $0.989$ at v2 and from $0.990$ to $0.993$ at v3, while the $M_0$ and $T_0$ AUCs are unchanged within rounding. This is consistent with the picture that the global model is the one whose unbalanced training was dominated by the high-rate tensor operators and effectively ignored the rare scalar contribution; restoring the balance recovers the scalar classification at no cost to the mixed or tensor families.
+
+The score distribution for the final configuration, Figure~\ref{fig:binary_global_score}, makes the operator-inclusive behaviour explicit: $S_0$, $M_0$ and $T_0$ peak together near $s\approx1$ and lie close enough to one another that a single score generalises well across the three families. The absolute-scale counterpart, Figure~\ref{fig:binary_global_counts}, repeats the AUC caveat already encountered for the specialised models: even on the inclusive signal mixture the background-to-signal ratio in every bin is at least $\mathcal{O}(10^2)$ and reaches $\mathcal{O}(10^4)$ at low score, so the inclusive AUC is not a useful proxy for the expected sensitivity. As for the specialised models, the genuine performance comparison is deferred to Section~\ref{sec:sensitivity_comparison}.
+
+\begin{figure}[htbp]
+\centering
+\begin{subfigure}[b]{0.48\textwidth}
+\includegraphics[width=\textwidth]{figures/mlp_score_global.png}
+\caption{Normalised}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.48\textwidth}
+\includegraphics[width=\textwidth]{figures/mlp_roc_global.png}
+\caption{ROC}
+\end{subfigure}
+\caption{Global binary classifier on the final v3 + equal-$\sigma$ configuration, evaluated on the $S_0$, $M_0$ and $T_0$ probe operators against the composite background. (a) Signal-probability distribution: all three signals peak together near $s\approx1$ and background at $s\approx0$, the three signals lying close enough that a single score generalises across the operator families. (b) Corresponding ROC curves with AUCs of $0.993$, $0.992$ and $0.991$.}
+\label{fig:binary_global_score}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.55\textwidth]{figures/mlp_score_global_counts.png}
+\caption{Signal-probability distribution of the global binary classifier on an absolute event scale, for the final v3 + equal-$\sigma$ configuration. The background-to-signal ratio is at least $\mathcal{O}(10^2)$ in every bin and reaches $\mathcal{O}(10^4)$ at low score, illustrating that the inclusive AUC is not a useful proxy for the expected sensitivity.}
+\label{fig:binary_global_counts}
+\end{figure}
+
+\begin{table}[htbp]
+  \centering
+  \caption{AUC of the binary MLP discriminants on the validation sample. The specialised rows refer to the classifier trained on the matching family ($\mathcal{O}_{S,0}+\mathcal{O}_{S,1}$ for $S_0$, etc.\ ) and evaluated on the listed probe operator, the global rows to the single classifier trained on every aQGC operator simultaneously and evaluated on the same probe operator. Four upstream configurations are reported, in the order they were iterated: VBF-RNN v2 (4 jets) without and with the equal-signal-cross-section reweighting introduced in Section~\ref{sec:mldiscriminant}, then VBF-RNN v3 (6 jets) without and with the same reweighting, the last of which is the final version adopted in this analysis.}
+  \label{tab:binary_auc}
+  \begin{tabular}{|c|c|c|c|c|c|}
+    \hline
+    \textbf{Model} & \textbf{Probe} & \textbf{v2} & \textbf{v2 + eq.\ $\sigma$} & \textbf{v3} & \textbf{v3 + eq.\ $\sigma$} \\
+    \hline
+    Specialised & $S_0$ & 0.993 & 0.993 & 0.995 & 0.994 \\
+    Specialised & $M_0$ & 0.990 & 0.989 & 0.992 & 0.992 \\
+    Specialised & $T_0$ & 0.990 & 0.990 & 0.992 & 0.992 \\
+    \hline
+    Global      & $S_0$ & 0.986 & 0.989 & 0.990 & 0.993 \\
+    Global      & $M_0$ & 0.990 & 0.989 & 0.992 & 0.992 \\
+    Global      & $T_0$ & 0.989 & 0.989 & 0.992 & 0.991 \\
+    \hline
+  \end{tabular}
+\end{table}
+
 \section{Multi-class classification}
+\label{sec:multiclass_classification}
+
+The binary classifiers of Section~\ref{sec:binary_classification} reduce every event to a single signal-versus-background score and discard any information about which operator family is responsible. The multi-class architecture introduced in Section~\ref{sec:mldiscriminant} keeps that information by replacing the single sigmoid output with a four-node softmax over $\{\,\mathrm{background},\,S,\,M,\,T\,\}$, trained on every available aQGC operator simultaneously. The behaviour of the four output nodes on the final v3 + equal-$\sigma$ configuration is shown in Figure~\ref{fig:multiclass_scores}. The background node behaves as a clean signal-versus-background discriminant, mirroring the global binary model with $S_0$, $M_0$ and $T_0$ piling up at low $\hat{y}_{\mathrm{bkg}}$ and the composite background at high $\hat{y}_{\mathrm{bkg}}$. The scalar node separates the scalar family well: $S_0$ peaks at high $\hat{y}_S$, the transverse $M_0$ and $T_0$ sit at intermediate values, and the background falls off towards low $\hat{y}_S$. The mixed and tensor nodes, however, are essentially degenerate: $M_0$ and $T_0$ peak together at the same $\hat{y}_M$ and $\hat{y}_T$ values, with $S_0$ and background sitting below in both, so neither node can reliably tell the two transverse-polarisation operator families apart from the input features used here. This is consistent with the shared transverse-mode origin of the mixed and tensor operators discussed in Chapter~\ref{chap:sm}.
+
+The equal-signal-cross-section reweighting is most consequential for this classifier. Before the reweighting the per-operator signal cross sections span four orders of magnitude, with $S_0$ contributing $\mathcal{O}(10)$ weighted events to the training selection while $T_1$ contributes $\mathcal{O}(10^4)$ (Section~\ref{sec:event_selection}). The categorical cross-entropy is averaged over events, so without rebalancing the optimiser sees the scalar and low-cross-section mixed operators as a vanishingly small contribution and learns mainly to separate background from the tensor mode. Operator-level sensitivity scans on the unbalanced training confirm the symptom: the per-operator sensitivities for the low-cross-section operators (notably $S_0$ and $S_1$) flatten out near the background-only baseline at both v2 and v3, and recover to comparable levels in the rest of the operator space once the per-operator and per-channel cross sections are balanced at training time. The improvement is uniform across the two upstream tagger versions, so the reweighting is best understood as an orthogonal training-time fix rather than a v3-specific correction. The physical cross sections are restored at evaluation, and v3 + equal-$\sigma$ is the final configuration adopted for the analysis.
+
+Even with the $M/T$ degeneracy, this architecture is potentially powerful for the analysis. The four output nodes provide four complementary discriminating directions from a single trained model, so the multi-class classifier can supply a different best-separating discriminant for each probed operator without retraining: the scalar node strongly separates $S$, the mixed and tensor nodes both separate the transverse-polarisation operators from background, and the background node provides a generic signal-versus-background score. Whether this multiplicity of discriminants translates into a sensitivity gain over the global binary classifier is decided again by the Asimov significance reported in Section~\ref{sec:sensitivity_comparison}.
+
+\begin{figure}[htbp]
+\centering
+\begin{subfigure}[b]{0.32\textwidth}
+\includegraphics[width=\textwidth]{figures/mlp_mc_bkg.png}
+\caption{Background node}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.32\textwidth}
+\includegraphics[width=\textwidth]{figures/mlp_mc_S.png}
+\caption{Scalar node}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.32\textwidth}
+\includegraphics[width=\textwidth]{figures/mlp_mc_M.png}
+\caption{Mixed node}
+\end{subfigure}
+
+\medskip
+
+\begin{subfigure}[b]{0.32\textwidth}
+\includegraphics[width=\textwidth]{figures/mlp_mc_T.png}
+\caption{Tensor node}
+\end{subfigure}
+\caption{Multi-class classifier output for the four softmax nodes on the final v3 + equal-$\sigma$ configuration, evaluated on the $S_0$, $M_0$ and $T_0$ probe operators and the composite background. The background node (a) acts as a clean signal-versus-background discriminant. The scalar node (b) separates $S_0$ from $M_0$, $T_0$ and background. The mixed and tensor nodes (c, d) are essentially degenerate, with $M_0$ and $T_0$ peaking together at the same values and $S_0$ and background sitting below, indicating that the network cannot reliably tell the two transverse-polarisation families apart from the input features used here.}
+\label{fig:multiclass_scores}
+\end{figure}
+
 \section{Correlation studies}
 \section{Feature ranking}
 \section{Sensitivity comparison}
+\label{sec:sensitivity_comparison}
