@@ -551,26 +551,7 @@ The confusion matrix is, however, not the best gauge of performance for this ana
 
 The MLP discriminants of the previous sections each take the twelve event-level input features defined in Section~\ref{sec:mldiscriminant}: the transverse momentum, pseudorapidity, azimuthal angle and invariant mass of each of the two leading large-$R$ signal jets, the VBF-RNN version~3 score, and three multiplicity variables, the number of RNN tagging jets, the total number of small-$R$ jets and the number of large-$R$ jets. These inputs do not contribute equally to the learnt decision boundary. Quantifying their relative contribution serves two purposes: it provides a physical cross-check that the network keys on the kinematic handles expected to carry the aQGC information, and it identifies redundant inputs that carry little or no weight and could in principle be dropped.
 
-\subsection{Permutation importance}
-\label{sec:fr_method}
-
-The relative importance of the input features is assessed with \emph{permutation importance}, a model-agnostic procedure that probes how strongly a trained network relies on each feature without retraining it. Let $f$ denote the trained discriminant and let $A_0$ be a performance metric evaluated on the validation sample $\mathcal{D}=\{(\mathbf{x}_i,y_i)\}_{i=1}^{N}$; throughout this section the metric is the AUC introduced in Section~\ref{sec:vbfrnn_eval}. For a given input feature $j$, a perturbed sample $\mathcal{D}^{\pi_j}$ is built by randomly permuting the values of that feature across the $N$ validation events,
-\begin{equation}
-  x^{(j)}_i \;\longrightarrow\; x^{(j)}_{\pi(i)},
-  \qquad \pi\ \text{a random permutation of}\ \{1,\dots,N\},
-\end{equation}
-while every other feature and the labels are left untouched. The permutation destroys any association between feature $j$ and the label but leaves its marginal distribution intact, so the network is evaluated on inputs that remain individually realistic but in which feature $j$ has been rendered uninformative. Re-evaluating the frozen network on $\mathcal{D}^{\pi_j}$ yields a degraded metric $A_j$, and the importance of the feature is the resulting drop
-\begin{equation}
-  \Delta A_j \;=\; A_0 - A_j \;\ge\; 0,
-\end{equation}
-which is large for a feature the decision boundary depends on and consistent with zero for one the network ignores. To compare features on a common scale the drops are normalised to unit sum,
-\begin{equation}
-  I_j \;=\; \frac{\Delta A_j}{\sum_{k}\Delta A_k},
-  \label{eq:rel_importance}
-\end{equation}
-and $I_j$ is quoted below as the relative feature importance. The same information is shown graphically by the ROC curves of the perturbed networks: each ``without feature $X$'' curve is the ROC obtained on the corresponding $\mathcal{D}^{\pi_j}$, and the area under it is $A_j$.
-
-Two properties of the method matter for the interpretation of the rankings. First, because the network is never retrained, $I_j$ measures the reliance of \emph{this particular trained model} on feature $j$ rather than the intrinsic separating power of the variable: a feature that is informative but whose information is also carried by a correlated partner can be permuted with little metric loss, and is then assigned a low importance. Permutation importance therefore tends to share, and partly mask, the importance of correlated inputs, an effect examined further in the correlation study of Section~\ref{sec:correlation_studies}. Second, the procedure is stochastic through the choice of permutation $\pi$; the values quoted here are averaged over repeated permutations so that the residual scatter is small compared with the differences between features.
+The relative contribution of each input is quantified with the permutation importance method introduced in Section~\ref{sec:permutation_importance}: each feature is rendered uninformative in turn by randomly permuting its values across the validation sample, and the resulting drop in performance measures how strongly the trained network relies on it. The performance metric is the AUC defined in Section~\ref{sec:vbfrnn_eval}, and the relative feature importance $I_j$ of Equation~\ref{eq:rel_importance} is the per-feature AUC drop normalised to unit sum. Where a ROC curve is shown, each ``without feature $X$'' curve is the ROC obtained on the corresponding permuted sample $\mathcal{D}^{\pi_j}$, its area being the degraded metric $A_j$. Because the network is not retrained, a feature whose information is also carried by a correlated partner can be permuted with little loss and is then assigned a low importance; this correlated-feature masking is examined further in the correlation studies of Section~\ref{sec:correlation_studies}.
 
 \subsection{Specialised models}
 \label{sec:fr_specialised}

@@ -117,3 +117,26 @@ In practice $H$ independent attention heads are computed in parallel on lower-di
 Each head can attend to different structural features of the sequence simultaneously.  The attention block is followed by a position-wise feedforward network applied identically at each position, together forming a transformer encoder layer.  Residual connections and layer normalisation \cite{Ba_LayerNorm_2016} stabilise training.
 
 The key distinction from recurrent architectures is that equation \eqref{eq:attention} computes interactions between every pair of positions $(i,j)$ in a single matrix operation, with no sequential dependency.  The computational cost of the attention step scales as $\mathcal{O}(T^{2}d_{k})$, so the architecture is most advantageous when $T$ is large enough that the rich pairwise interaction structure justifies this cost.  In particle physics applications, where a jet or event can be represented as a sequence of $\mathcal{O}(10^2)$ or more constituent particles or detector objects, the transformer's ability to capture long-range correlations across the full sequence in a single layer gives it a structural advantage over recurrent models that propagate information step by step and may lose distant context.  A classification token appended to the sequence, or a pooling operation over the final hidden states, extracts a fixed-length representation to which a sigmoid or softmax head is applied.
+
+\section{Permutation importance}
+\label{sec:permutation_importance}
+
+Once a network is trained it is often necessary to quantify how much each input feature contributes to its predictions, both as a cross-check that the model relies on the variables expected to be discriminating and to identify redundant inputs that could be dropped. A simple, model-agnostic way to do this is \emph{permutation importance}, which probes how strongly a trained model depends on each feature without retraining it.
+
+Let $f$ denote the trained model and let $A_0$ be a scalar performance metric evaluated on a labelled evaluation sample $\mathcal{D}=\{(\mathbf{x}_i,y_i)\}_{i=1}^{N}$, such as the classification accuracy or the area under the ROC curve. For a given input feature $j$, a perturbed sample $\mathcal{D}^{\pi_j}$ is built by randomly permuting the values of that feature across the $N$ evaluation events,
+\begin{equation}
+  x^{(j)}_i \;\longrightarrow\; x^{(j)}_{\pi(i)},
+  \qquad \pi\ \text{a random permutation of}\ \{1,\dots,N\},
+\end{equation}
+while every other feature and the labels are left untouched. The permutation destroys any association between feature $j$ and the label but leaves its marginal distribution intact, so the model is evaluated on inputs that remain individually realistic but in which feature $j$ has been rendered uninformative. Re-evaluating the frozen model on $\mathcal{D}^{\pi_j}$ yields a degraded metric $A_j$, and the importance of the feature is the resulting drop
+\begin{equation}
+  \Delta A_j \;=\; A_0 - A_j \;\ge\; 0,
+\end{equation}
+which is large for a feature the decision boundary depends on and consistent with zero for one the model ignores. To compare features on a common scale the drops are normalised to unit sum,
+\begin{equation}
+  I_j \;=\; \frac{\Delta A_j}{\sum_{k}\Delta A_k},
+  \label{eq:rel_importance}
+\end{equation}
+and $I_j$ is referred to as the relative feature importance.
+
+Two properties of the method matter for the interpretation of the resulting rankings. First, because the model is never retrained, $I_j$ measures the reliance of that particular trained model on feature $j$ rather than the intrinsic separating power of the variable: a feature that is informative but whose information is also carried by a correlated partner can be permuted with little metric loss, and is then assigned a low importance. Permutation importance therefore tends to share, and partly mask, the importance of correlated inputs. Second, the procedure is stochastic through the choice of permutation $\pi$; in practice it is repeated over several permutations and the resulting importances averaged, so that the residual scatter is small compared with the differences between features.
