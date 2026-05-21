@@ -575,35 +575,31 @@ Two properties of the method matter for the interpretation of the rankings. Firs
 \subsection{Specialised models}
 \label{sec:fr_specialised}
 
-The permutation importance of the three specialised binary classifiers is given in Table~\ref{tab:fr_specialised} and the corresponding perturbed-network ROC curves in Figure~\ref{fig:fr_roc_spec}. All three models behave the same way at the coarsest level: the large-$R$ signal-jet kinematics dominate, while the two azimuthal angles $\phi$ carry no importance whatsoever and the pseudorapidities and the small-$R$/large-$R$ jet multiplicities contribute at most a per cent each. The vanishing $\phi$ importance is expected from the azimuthal symmetry of the detector, which makes the $\phi$ distributions flat for both signal and background (Figure~\ref{fig:input_distributions}); these inputs could be dropped from the discriminant with no loss of performance.
+The permutation importance of the three specialised binary classifiers is shown in Figure~\ref{fig:fr_rank_spec} and the corresponding perturbed-network ROC curves in Figure~\ref{fig:fr_roc_spec}. All three models behave the same way at the coarsest level: the large-$R$ signal-jet kinematics dominate, while the two azimuthal angles $\phi$ carry no importance whatsoever and the pseudorapidities and the small-$R$/large-$R$ jet multiplicities contribute at most a per cent each. The vanishing $\phi$ importance is expected from the azimuthal symmetry of the detector, which makes the $\phi$ distributions flat for both signal and background (Figure~\ref{fig:input_distributions}); these inputs could be dropped from the discriminant with no loss of performance.
 
 The informative variable dependence lies in how the importance is distributed among the signal-jet kinematics, and it tracks the polarisation structure of the operator families (Chapter~\ref{chap:sm}). For the scalar classifier the two signal-jet masses dominate, jointly carrying $54\%$ of the importance, with the leading-jet $p_T$ third at $18\%$. For the mixed and tensor classifiers the ordering is reversed: the leading signal-jet $p_T$ alone carries $45\%$ and $57\%$ respectively, and the jet masses are demoted. The transverse-polarisation mixed and tensor operators enhance the high-energy tail of the diboson system strongly, so the leading-jet $p_T$ becomes the single most powerful handle, whereas the longitudinal scalar operators produce a milder $p_T$ enhancement and the discrimination leans instead on the boson-jet mass, which peaks in the $W/Z$ mass window for signal. The VBF-RNN score is a modest contributor ($11\%$ for the scalar model, $2$--$3\%$ for the transverse families): it is itself a strong tagger, but the training selection already requires a score above $0.3$, so the surviving events are RNN-enriched and the residual discrimination the score can still provide is correspondingly reduced.
 
 Table~\ref{tab:fr_specialised_auc} shows that the classifiers are robust to the loss of any single feature: the baseline AUC of $0.991$--$0.994$ falls by at most $\approx0.02$ for the most important input and is unchanged to three decimals when a $\phi$ variable is removed. The largest single drop is for the leading-jet $p_T$ in the tensor model ($0.991\to0.933$) and for the leading-jet mass in the scalar model ($0.994\to0.972$), consistent with the importance ordering.
 
-\begin{table}[htbp]
-  \centering
-  \caption{Relative permutation importance $I_j$, Equation~\ref{eq:rel_importance}, of the twelve input features for the three specialised binary classifiers on the v3 + equal-$\sigma$ configuration, in per cent. Each column sums to $100\%$ up to rounding. The baseline AUCs are $0.994$ (scalar), $0.991$ (mixed) and $0.991$ (tensor).}
-  \label{tab:fr_specialised}
-  \begin{tabular}{|l|c|c|c|}
-    \hline
-    \textbf{Feature} & \textbf{Scalar} & \textbf{Mixed} & \textbf{Tensor} \\
-    \hline
-    Leading signal-jet $p_T$       & 18 & 45 & 57 \\
-    Leading signal-jet mass        & 31 & 23 & 16 \\
-    Leading signal-jet $\eta$      & 1  & $<1$ & 1 \\
-    Leading signal-jet $\phi$      & 0  & 0  & 0 \\
-    Sub-leading signal-jet $p_T$   & 8  & 3  & 3 \\
-    Sub-leading signal-jet mass    & 23 & 16 & 11 \\
-    Sub-leading signal-jet $\eta$  & 1  & $<1$ & 1 \\
-    Sub-leading signal-jet $\phi$  & 0  & 0  & 0 \\
-    VBF-RNN score                  & 11 & 3  & 2 \\
-    Number of RNN jets             & 7  & 8  & 8 \\
-    Number of jets                 & 1  & 1  & 1 \\
-    Number of large-$R$ jets       & $<1$ & 1 & 1 \\
-    \hline
-  \end{tabular}
-\end{table}
+\begin{figure}[htbp]
+\centering
+\begin{subfigure}[b]{0.32\textwidth}
+\includegraphics[width=\textwidth]{figures/fr_rank_spec_S.png}
+\caption{Scalar}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.32\textwidth}
+\includegraphics[width=\textwidth]{figures/fr_rank_spec_M.png}
+\caption{Mixed}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.32\textwidth}
+\includegraphics[width=\textwidth]{figures/fr_rank_spec_T.png}
+\caption{Tensor}
+\end{subfigure}
+\caption{Relative permutation importance $I_j$, Equation~\ref{eq:rel_importance}, of the twelve input features for the three specialised binary classifiers on the v3 + equal-$\sigma$ configuration, ordered by decreasing importance. The bars in each panel sum to unity. The scalar classifier is driven by the two signal-jet masses, the mixed and tensor classifiers by the leading signal-jet $p_T$, and the azimuthal angles $\phi$ carry no weight.}
+\label{fig:fr_rank_spec}
+\end{figure}
 
 \begin{table}[htbp]
   \centering
@@ -647,28 +643,37 @@ Table~\ref{tab:fr_specialised_auc} shows that the classifiers are robust to the 
 \subsection{Global model}
 \label{sec:fr_global}
 
-The global binary classifier is trained jointly on all aQGC operators across the three families. Its permutation importance, Table~\ref{tab:fr_global}, is intermediate between the scalar and the transverse specialised models: the leading signal-jet $p_T$ is the single most important feature at $41\%$, but the two jet masses together still account for $39\%$. This reflects the composition of the joint training set, $S(0\text{--}1)+M(0\text{--}5,\,7)+T(0\text{--}9)$, which is numerically dominated by transverse operators, so the $p_T$-driven transverse behaviour prevails, while the equal-signal-cross-section reweighting restores the scalar contribution and keeps the jet masses relevant, in line with the discussion of Section~\ref{sec:binary_global}. The remaining inputs follow the specialised pattern: the number of RNN jets contributes $8\%$, the VBF-RNN score and the sub-leading $p_T$ about $4\%$ each, and the $\eta$, $\phi$ and small-/large-$R$ multiplicity variables are negligible. As for the specialised models the classifier is robust to the loss of any single input: the baseline AUC of $0.991$ degrades by at most $0.036$, when the leading signal-jet $p_T$ is permuted, and is unchanged when a $\phi$ variable is removed (Figure~\ref{fig:fr_roc_global}).
+The global binary classifier is trained jointly on all aQGC operators across the three families. Its permutation importance, Figure~\ref{fig:fr_rank_global}, is intermediate between the scalar and the transverse specialised models: the leading signal-jet $p_T$ is the single most important feature at $41\%$, but the two jet masses together still account for $39\%$. This reflects the composition of the joint training set, $S(0\text{--}1)+M(0\text{--}5,\,7)+T(0\text{--}9)$, which is numerically dominated by transverse operators, so the $p_T$-driven transverse behaviour prevails, while the equal-signal-cross-section reweighting restores the scalar contribution and keeps the jet masses relevant, in line with the discussion of Section~\ref{sec:binary_global}. The remaining inputs follow the specialised pattern: the number of RNN jets contributes $8\%$, the VBF-RNN score and the sub-leading $p_T$ about $4\%$ each, and the $\eta$, $\phi$ and small-/large-$R$ multiplicity variables are negligible. As for the specialised models the classifier is robust to the loss of any single input: the baseline AUC of $0.991$ degrades by at most $0.036$, when the leading signal-jet $p_T$ is permuted, and is unchanged when a $\phi$ variable is removed (Table~\ref{tab:fr_global_auc} and Figure~\ref{fig:fr_roc_global}).
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.7\textwidth]{figures/fr_rank_global.png}
+\caption{Relative permutation importance $I_j$, Equation~\ref{eq:rel_importance}, of the twelve input features for the global binary classifier on the v3 + equal-$\sigma$ configuration, ordered by decreasing importance. The bars sum to unity. The ranking is intermediate between the scalar and transverse specialised models, with the leading signal-jet $p_T$ dominant and the two jet masses jointly comparable to it.}
+\label{fig:fr_rank_global}
+\end{figure}
 
 \begin{table}[htbp]
   \centering
-  \caption{Relative permutation importance $I_j$ of the twelve input features for the global binary classifier on the v3 + equal-$\sigma$ configuration, in per cent, together with the validation AUC obtained when each feature is permuted in turn. The baseline AUC with all features is $0.991$.}
-  \label{tab:fr_global}
-  \begin{tabular}{|l|c|c|}
+  \caption{Validation AUC of the global binary classifier with all features and with each feature permuted in turn. The baseline AUC with all features is $0.991$. The classifier is robust, the largest single drop being for the leading signal-jet $p_T$.}
+  \label{tab:fr_global_auc}
+  \begin{tabular}{|l|c|}
     \hline
-    \textbf{Feature} & \textbf{Importance (\%)} & \textbf{AUC, feature permuted} \\
+    \textbf{Configuration} & \textbf{AUC} \\
     \hline
-    Leading signal-jet $p_T$       & 41 & 0.955 \\
-    Leading signal-jet mass        & 23 & 0.971 \\
-    Leading signal-jet $\eta$      & 1  & 0.990 \\
-    Leading signal-jet $\phi$      & 0  & 0.991 \\
-    Sub-leading signal-jet $p_T$   & 4  & 0.988 \\
-    Sub-leading signal-jet mass    & 16 & 0.977 \\
-    Sub-leading signal-jet $\eta$  & 1  & 0.991 \\
-    Sub-leading signal-jet $\phi$  & 0  & 0.991 \\
-    VBF-RNN score                  & 4  & 0.987 \\
-    Number of RNN jets             & 8  & 0.984 \\
-    Number of jets                 & 1  & 0.990 \\
-    Number of large-$R$ jets       & 1  & 0.990 \\
+    All features                    & 0.991 \\
+    \hline
+    $-$ Leading signal-jet $p_T$     & 0.955 \\
+    $-$ Leading signal-jet mass      & 0.971 \\
+    $-$ Leading signal-jet $\eta$    & 0.990 \\
+    $-$ Leading signal-jet $\phi$    & 0.991 \\
+    $-$ Sub-leading signal-jet $p_T$ & 0.988 \\
+    $-$ Sub-leading signal-jet mass  & 0.977 \\
+    $-$ Sub-leading signal-jet $\eta$ & 0.991 \\
+    $-$ Sub-leading signal-jet $\phi$ & 0.991 \\
+    $-$ VBF-RNN score                & 0.987 \\
+    $-$ Number of RNN jets           & 0.984 \\
+    $-$ Number of jets               & 0.990 \\
+    $-$ Number of large-$R$ jets     & 0.990 \\
     \hline
   \end{tabular}
 \end{table}
@@ -685,57 +690,49 @@ The global binary classifier is trained jointly on all aQGC operators across the
 
 For the multi-class classifier the permutation importance is evaluated separately for each pair of classes: the validation sample is restricted to the two classes in question and the metric $A_0$ in Equation~\ref{eq:rel_importance} is the corresponding one-versus-one AUC. The six pairs split naturally into the three signal-versus-background tasks and the three inter-signal tasks, and the two groups behave very differently.
 
-The signal-versus-background rankings, Table~\ref{tab:fr_mc_bkg}, reproduce the specialised and global results almost exactly: the scalar-versus-background axis is driven by the jet masses, the mixed- and tensor-versus-background axes by the leading signal-jet $p_T$, and the one-versus-one AUCs ($0.994$, $0.991$, $0.991$) match those of the dedicated binary classifiers. This is a strong consistency check that the four-node softmax learns the same signal-versus-background physics as the binary models while additionally providing the operator-family information.
+The signal-versus-background rankings, Figure~\ref{fig:fr_rank_mc_bkg}, reproduce the specialised and global results almost exactly: the scalar-versus-background axis is driven by the jet masses, the mixed- and tensor-versus-background axes by the leading signal-jet $p_T$, and the one-versus-one AUCs ($0.994$, $0.991$, $0.991$) match those of the dedicated binary classifiers (Figure~\ref{fig:fr_roc_mc_bkg}). This is a strong consistency check that the four-node softmax learns the same signal-versus-background physics as the binary models while additionally providing the operator-family information.
 
-The inter-signal tasks, Table~\ref{tab:fr_mc_sig}, are a different matter. Their baseline AUCs are much lower, $0.841$ for tensor versus scalar, $0.804$ for mixed versus scalar and only $0.602$ for tensor versus mixed, the last being the feature-ranking manifestation of the mixed/tensor degeneracy already seen in the output node distributions (Figure~\ref{fig:multiclass_scores}) and the confusion matrix (Figure~\ref{fig:multiclass_cm}). The variable dependence also changes: the jet masses, which dominate the signal-versus-background separation, lose almost all importance, because the two transverse families share essentially the same boson content and the mass therefore cannot tell them apart. Discrimination shifts onto the leading signal-jet $p_T$ together with the sub-leading-jet $p_T$ and the number of large-$R$ jets. For the scalar-versus-transverse tasks a dominant handle still exists, the leading-jet $p_T$ carrying $40$--$47\%$, but for tensor versus mixed the importance profile is essentially flat: the leading-jet $p_T$ falls to $29\%$ and the jet multiplicities ($16\%$ and $14\%$ for the number of RNN and large-$R$ jets) and even the pseudorapidities ($\approx10\%$ each) become comparably important. A flat ranking with no dominant feature is exactly what is expected when two classes are nearly inseparable, and Table~\ref{tab:fr_mc_auc} confirms it quantitatively: removing the leading-jet $p_T$ lowers the tensor-versus-mixed AUC only from $0.602$ to $0.570$, so the modest residual separation is spread thinly across many weak handles rather than concentrated in any one of them. As in every other model the $\phi$ variables remain uninformative throughout.
+The inter-signal tasks, Figure~\ref{fig:fr_rank_mc_sig}, are a different matter. Their baseline AUCs are much lower (Figure~\ref{fig:fr_roc_mc_sig}), $0.841$ for tensor versus scalar, $0.804$ for mixed versus scalar and only $0.602$ for tensor versus mixed, the last being the feature-ranking manifestation of the mixed/tensor degeneracy already seen in the output node distributions (Figure~\ref{fig:multiclass_scores}) and the confusion matrix (Figure~\ref{fig:multiclass_cm}). The variable dependence also changes: the jet masses, which dominate the signal-versus-background separation, lose almost all importance, because the two transverse families share essentially the same boson content and the mass therefore cannot tell them apart. Discrimination shifts onto the leading signal-jet $p_T$ together with the sub-leading-jet $p_T$ and the number of large-$R$ jets. For the scalar-versus-transverse tasks a dominant handle still exists, the leading-jet $p_T$ carrying $40$--$47\%$, but for tensor versus mixed the importance profile is essentially flat: the leading-jet $p_T$ falls to $29\%$ and the jet multiplicities ($16\%$ and $14\%$ for the number of RNN and large-$R$ jets) and even the pseudorapidities ($\approx10\%$ each) become comparably important. A flat ranking with no dominant feature is exactly what is expected when two classes are nearly inseparable, and Table~\ref{tab:fr_mc_auc} confirms it quantitatively: removing the leading-jet $p_T$ lowers the tensor-versus-mixed AUC only from $0.602$ to $0.570$, so the modest residual separation is spread thinly across many weak handles rather than concentrated in any one of them. As in every other model the $\phi$ variables remain uninformative throughout.
 
-\begin{table}[htbp]
-  \centering
-  \caption{Relative permutation importance $I_j$ of the twelve input features for the three signal-versus-background discrimination tasks of the multi-class classifier on the v3 + equal-$\sigma$ configuration, in per cent. Columns sum to $100\%$ up to rounding. The one-versus-one baseline AUCs are $0.994$, $0.991$ and $0.991$ respectively.}
-  \label{tab:fr_mc_bkg}
-  \begin{tabular}{|l|c|c|c|}
-    \hline
-    \textbf{Feature} & \textbf{$S$ vs bkg} & \textbf{$M$ vs bkg} & \textbf{$T$ vs bkg} \\
-    \hline
-    Leading signal-jet $p_T$       & 10 & 36 & 45 \\
-    Leading signal-jet mass        & 32 & 25 & 21 \\
-    Leading signal-jet $\eta$      & 1  & 1  & 1 \\
-    Leading signal-jet $\phi$      & 0  & 0  & 0 \\
-    Sub-leading signal-jet $p_T$   & 10 & 6  & 5 \\
-    Sub-leading signal-jet mass    & 24 & 18 & 15 \\
-    Sub-leading signal-jet $\eta$  & 1  & 1  & 1 \\
-    Sub-leading signal-jet $\phi$  & 0  & 0  & 0 \\
-    VBF-RNN score                  & 14 & 5  & 4 \\
-    Number of RNN jets             & 8  & 8  & 8 \\
-    Number of jets                 & 1  & 1  & 1 \\
-    Number of large-$R$ jets       & 1  & 1  & 1 \\
-    \hline
-  \end{tabular}
-\end{table}
+\begin{figure}[htbp]
+\centering
+\begin{subfigure}[b]{0.32\textwidth}
+\includegraphics[width=\textwidth]{figures/fr_rank_mc_SvB.png}
+\caption{Scalar vs background}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.32\textwidth}
+\includegraphics[width=\textwidth]{figures/fr_rank_mc_MvB.png}
+\caption{Mixed vs background}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.32\textwidth}
+\includegraphics[width=\textwidth]{figures/fr_rank_mc_TvB.png}
+\caption{Tensor vs background}
+\end{subfigure}
+\caption{Relative permutation importance $I_j$, Equation~\ref{eq:rel_importance}, of the twelve input features for the three signal-versus-background tasks of the multi-class classifier on the v3 + equal-$\sigma$ configuration, ordered by decreasing importance. The bars in each panel sum to unity. The rankings reproduce those of the dedicated binary classifiers: jet masses drive the scalar axis, the leading signal-jet $p_T$ the transverse axes.}
+\label{fig:fr_rank_mc_bkg}
+\end{figure}
 
-\begin{table}[htbp]
-  \centering
-  \caption{Relative permutation importance $I_j$ of the twelve input features for the three inter-signal discrimination tasks of the multi-class classifier on the v3 + equal-$\sigma$ configuration, in per cent. Columns sum to $100\%$ up to rounding. The one-versus-one baseline AUCs are $0.804$ ($M$ vs $S$), $0.841$ ($T$ vs $S$) and $0.602$ ($T$ vs $M$).}
-  \label{tab:fr_mc_sig}
-  \begin{tabular}{|l|c|c|c|}
-    \hline
-    \textbf{Feature} & \textbf{$M$ vs $S$} & \textbf{$T$ vs $S$} & \textbf{$T$ vs $M$} \\
-    \hline
-    Leading signal-jet $p_T$       & 40 & 47 & 29 \\
-    Leading signal-jet mass        & 2  & 2  & 1 \\
-    Leading signal-jet $\eta$      & 1  & 1  & 9 \\
-    Leading signal-jet $\phi$      & 0  & 0  & 0 \\
-    Sub-leading signal-jet $p_T$   & 18 & 17 & 7 \\
-    Sub-leading signal-jet mass    & 4  & 4  & 2 \\
-    Sub-leading signal-jet $\eta$  & 2  & 2  & 10 \\
-    Sub-leading signal-jet $\phi$  & 0  & 0  & 0 \\
-    VBF-RNN score                  & 12 & 11 & 11 \\
-    Number of RNN jets             & 2  & 3  & 16 \\
-    Number of jets                 & $<1$ & $<1$ & 1 \\
-    Number of large-$R$ jets       & 20 & 12 & 14 \\
-    \hline
-  \end{tabular}
-\end{table}
+\begin{figure}[htbp]
+\centering
+\begin{subfigure}[b]{0.32\textwidth}
+\includegraphics[width=\textwidth]{figures/fr_rank_mc_MvS.png}
+\caption{Mixed vs scalar}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.32\textwidth}
+\includegraphics[width=\textwidth]{figures/fr_rank_mc_TvS.png}
+\caption{Tensor vs scalar}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.32\textwidth}
+\includegraphics[width=\textwidth]{figures/fr_rank_mc_TvM.png}
+\caption{Tensor vs mixed}
+\end{subfigure}
+\caption{Relative permutation importance $I_j$, Equation~\ref{eq:rel_importance}, of the twelve input features for the three inter-signal tasks of the multi-class classifier on the v3 + equal-$\sigma$ configuration, ordered by decreasing importance. The bars in each panel sum to unity. The jet masses lose their importance relative to the signal-versus-background tasks, and for tensor versus mixed (right) the profile is essentially flat, with no dominant feature.}
+\label{fig:fr_rank_mc_sig}
+\end{figure}
 
 \begin{table}[htbp]
   \centering
