@@ -323,23 +323,23 @@ A second methodological change applied during the iteration is the equal-signal-
 
 \begin{table}[htbp]
   \centering
-  \caption{Event yields in the training selection (Table~\ref{tab:mlp_selection}) for the two upstream VBF-RNN versions. The signal columns report the three representative probe operators ($S_0$, $M_0$, $T_0$) used as references in the rest of this chapter rather than a sum over the full aQGC operator basis. Going from the four-jet version~2 to the six-jet version~3 the signal yields per probe operator are essentially unchanged while the total background yield nearly doubles, driven by the QCD dijet component.}
+  \caption{Event yields in the training selection (Table~\ref{tab:mlp_selection}) for the two upstream VBF-RNN versions. The signal columns report the three representative probe operators ($S_0$, $M_0$, $T_0$) used as references in the rest of this chapter rather than a sum over the full aQGC operator basis. Going from the four-jet version~2 to the six-jet version~3 the signal yields per probe operator are essentially unchanged while the total background yield nearly doubles, driven by the QCD dijet component. The final column gives the relative difference $(\mathrm{v3}-\mathrm{v2})/\mathrm{v2}$.}
   \label{tab:mlp_yields}
-  \begin{tabular}{|c|c|c|}
+  \begin{tabular}{|c|c|c|c|}
     \hline
-    \textbf{Sample} & \textbf{VBF-RNN v2} & \textbf{VBF-RNN v3} \\
+    \textbf{Sample} & \textbf{VBF-RNN v2} & \textbf{VBF-RNN v3} & \textbf{Rel.\ difference} \\
     \hline
-    $S_0$ & $14.8$    & $15.6$ \\
-    $M_0$ & $265.9$   & $279.5$ \\
-    $T_0$ & $9\,908.7$ & $10\,036.0$ \\
+    $S_0$ & $14.8$    & $15.6$ & $+5.4\%$ \\
+    $M_0$ & $265.9$   & $279.5$ & $+5.1\%$ \\
+    $T_0$ & $9\,908.7$ & $10\,036.0$ & $+1.3\%$ \\
     \hline
-    QCD dijet         & $189\,587.4$ & $376\,182.3$ \\
-    $V+$jets          & $6\,168.5$   & $12\,279.4$ \\
-    $t\bar{t}$        & $2\,113.0$   & $3\,139.2$ \\
-    QCD $VV$          & $340.5$      & $713.5$ \\
-    EWK $VVjj$        & $109.7$      & $149.5$ \\
+    QCD dijet         & $189\,587.4$ & $376\,182.3$ & $+98.4\%$ \\
+    $V+$jets          & $6\,168.5$   & $12\,279.4$ & $+99.1\%$ \\
+    $t\bar{t}$        & $2\,113.0$   & $3\,139.2$ & $+48.6\%$ \\
+    QCD $VV$          & $340.5$      & $713.5$ & $+109.5\%$ \\
+    EWK $VVjj$        & $109.7$      & $149.5$ & $+36.3\%$ \\
     \hline
-    Total background  & $198\,319.1$ & $392\,463.8$ \\
+    Total background  & $198\,319.1$ & $392\,463.8$ & $+97.9\%$ \\
     \hline
   \end{tabular}
 \end{table}
@@ -482,19 +482,19 @@ The threshold-level cross-check of Figure~\ref{fig:binary_global_cm} confirms th
 
 \begin{table}[htbp]
   \centering
-  \caption{AUC of the binary MLP discriminants on the validation sample. The specialised rows refer to the classifier trained on the matching family ($\mathcal{O}_{S,0}+\mathcal{O}_{S,1}$ for $S_0$, etc.\ ) and evaluated on the listed probe operator, the global rows to the single classifier trained on every aQGC operator simultaneously and evaluated on the same probe operator. Four upstream configurations are reported, in the order they were iterated: VBF-RNN v2 (4 jets) without and with the equal-signal-cross-section reweighting introduced in Section~\ref{sec:mldiscriminant}, then VBF-RNN v3 (6 jets) without and with the same reweighting, the last of which is the final version adopted in this analysis.}
+  \caption{AUC of the binary MLP discriminants on the validation sample. The specialised rows refer to the classifier trained on the matching family ($\mathcal{O}_{S,0}+\mathcal{O}_{S,1}$ for $S_0$, etc.\ ) and evaluated on the listed probe operator, the global rows to the single classifier trained on every aQGC operator simultaneously and evaluated on the same probe operator. Four upstream configurations are reported, in the order they were iterated: VBF-RNN v2 (4 jets) without and with the equal-signal-cross-section reweighting introduced in Section~\ref{sec:mldiscriminant}, then VBF-RNN v3 (6 jets) without and with the same reweighting, the last of which is the final version adopted in this analysis. The final column gives the relative gain in AUC from the v2 baseline to the final v3 + equal-$\sigma$ configuration.}
   \label{tab:binary_auc}
-  \begin{tabular}{|c|c|c|c|c|c|}
+  \begin{tabular}{|c|c|c|c|c|c|c|}
     \hline
-    \textbf{Model} & \textbf{Probe} & \textbf{v2} & \textbf{v2 + eq.\ $\sigma$} & \textbf{v3} & \textbf{v3 + eq.\ $\sigma$} \\
+    \textbf{Model} & \textbf{Probe} & \textbf{v2} & \textbf{v2 + eq.\ $\sigma$} & \textbf{v3} & \textbf{v3 + eq.\ $\sigma$} & \textbf{Rel.\ gain} \\
     \hline
-    Specialised & $S_0$ & 0.993 & 0.993 & 0.995 & 0.994 \\
-    Specialised & $M_0$ & 0.990 & 0.989 & 0.992 & 0.992 \\
-    Specialised & $T_0$ & 0.990 & 0.990 & 0.992 & 0.992 \\
+    Specialised & $S_0$ & 0.993 & 0.993 & 0.995 & 0.994 & $+0.1\%$ \\
+    Specialised & $M_0$ & 0.990 & 0.989 & 0.992 & 0.992 & $+0.2\%$ \\
+    Specialised & $T_0$ & 0.990 & 0.990 & 0.992 & 0.992 & $+0.2\%$ \\
     \hline
-    Global      & $S_0$ & 0.986 & 0.989 & 0.990 & 0.993 \\
-    Global      & $M_0$ & 0.990 & 0.989 & 0.992 & 0.992 \\
-    Global      & $T_0$ & 0.989 & 0.989 & 0.992 & 0.991 \\
+    Global      & $S_0$ & 0.986 & 0.989 & 0.990 & 0.993 & $+0.7\%$ \\
+    Global      & $M_0$ & 0.990 & 0.989 & 0.992 & 0.992 & $+0.2\%$ \\
+    Global      & $T_0$ & 0.989 & 0.989 & 0.992 & 0.991 & $+0.2\%$ \\
     \hline
   \end{tabular}
 \end{table}
@@ -588,19 +588,19 @@ Table~\ref{tab:fr_specialised_auc} shows that the classifiers are robust to the 
 
 \begin{table}[htbp]
   \centering
-  \caption{Validation AUC of the three specialised binary classifiers with all features and with the most important features permuted in turn. Removing a $\phi$ variable leaves the AUC unchanged to three decimals and is omitted.}
+  \caption{Validation AUC of the three specialised binary classifiers with all features and with the most important features permuted in turn. Removing a $\phi$ variable leaves the AUC unchanged to three decimals and is omitted. Each AUC column is followed by the relative loss in AUC with respect to the all-features baseline of that classifier.}
   \label{tab:fr_specialised_auc}
-  \begin{tabular}{|l|c|c|c|}
+  \begin{tabular}{|l|c|c|c|c|c|c|}
     \hline
-    \textbf{Configuration} & \textbf{Scalar} & \textbf{Mixed} & \textbf{Tensor} \\
+    \textbf{Configuration} & \textbf{Scalar} & \textbf{Rel.\ loss} & \textbf{Mixed} & \textbf{Rel.\ loss} & \textbf{Tensor} & \textbf{Rel.\ loss} \\
     \hline
-    All features                   & 0.994 & 0.991 & 0.991 \\
+    All features                   & 0.994 & --- & 0.991 & --- & 0.991 & --- \\
     \hline
-    $-$ Leading signal-jet $p_T$    & 0.981 & 0.947 & 0.933 \\
-    $-$ Leading signal-jet mass     & 0.972 & 0.969 & 0.975 \\
-    $-$ Sub-leading signal-jet mass & 0.977 & 0.975 & 0.980 \\
-    $-$ VBF-RNN score               & 0.986 & 0.988 & 0.989 \\
-    $-$ Number of RNN jets          & 0.989 & 0.983 & 0.984 \\
+    $-$ Leading signal-jet $p_T$    & 0.981 & $1.3\%$ & 0.947 & $4.4\%$ & 0.933 & $5.9\%$ \\
+    $-$ Leading signal-jet mass     & 0.972 & $2.2\%$ & 0.969 & $2.2\%$ & 0.975 & $1.6\%$ \\
+    $-$ Sub-leading signal-jet mass & 0.977 & $1.7\%$ & 0.975 & $1.6\%$ & 0.980 & $1.1\%$ \\
+    $-$ VBF-RNN score               & 0.986 & $0.8\%$ & 0.988 & $0.3\%$ & 0.989 & $0.2\%$ \\
+    $-$ Number of RNN jets          & 0.989 & $0.5\%$ & 0.983 & $0.8\%$ & 0.984 & $0.7\%$ \\
     \hline
   \end{tabular}
 \end{table}
@@ -619,26 +619,26 @@ The global binary classifier is trained jointly on all aQGC operators across the
 
 \begin{table}[htbp]
   \centering
-  \caption{Validation AUC of the global binary classifier with all features and with each feature permuted in turn. The baseline AUC with all features is $0.991$. The classifier is robust, the largest single drop being for the leading signal-jet $p_T$.}
+  \caption{Validation AUC of the global binary classifier with all features and with each feature permuted in turn. The baseline AUC with all features is $0.991$. The classifier is robust, the largest single drop being for the leading signal-jet $p_T$. The final column gives the relative loss in AUC with respect to the all-features baseline.}
   \label{tab:fr_global_auc}
-  \begin{tabular}{|l|c|}
+  \begin{tabular}{|l|c|c|}
     \hline
-    \textbf{Configuration} & \textbf{AUC} \\
+    \textbf{Configuration} & \textbf{AUC} & \textbf{Rel.\ loss} \\
     \hline
-    All features                    & 0.991 \\
+    All features                    & 0.991 & --- \\
     \hline
-    $-$ Leading signal-jet $p_T$     & 0.955 \\
-    $-$ Leading signal-jet mass      & 0.971 \\
-    $-$ Leading signal-jet $\eta$    & 0.990 \\
-    $-$ Leading signal-jet $\phi$    & 0.991 \\
-    $-$ Sub-leading signal-jet $p_T$ & 0.988 \\
-    $-$ Sub-leading signal-jet mass  & 0.977 \\
-    $-$ Sub-leading signal-jet $\eta$ & 0.991 \\
-    $-$ Sub-leading signal-jet $\phi$ & 0.991 \\
-    $-$ VBF-RNN score                & 0.987 \\
-    $-$ Number of RNN jets           & 0.984 \\
-    $-$ Number of jets               & 0.990 \\
-    $-$ Number of large-$R$ jets     & 0.990 \\
+    $-$ Leading signal-jet $p_T$     & 0.955 & $3.6\%$ \\
+    $-$ Leading signal-jet mass      & 0.971 & $2.0\%$ \\
+    $-$ Leading signal-jet $\eta$    & 0.990 & $0.1\%$ \\
+    $-$ Leading signal-jet $\phi$    & 0.991 & $0.0\%$ \\
+    $-$ Sub-leading signal-jet $p_T$ & 0.988 & $0.3\%$ \\
+    $-$ Sub-leading signal-jet mass  & 0.977 & $1.4\%$ \\
+    $-$ Sub-leading signal-jet $\eta$ & 0.991 & $0.0\%$ \\
+    $-$ Sub-leading signal-jet $\phi$ & 0.991 & $0.0\%$ \\
+    $-$ VBF-RNN score                & 0.987 & $0.4\%$ \\
+    $-$ Number of RNN jets           & 0.984 & $0.7\%$ \\
+    $-$ Number of jets               & 0.990 & $0.1\%$ \\
+    $-$ Number of large-$R$ jets     & 0.990 & $0.1\%$ \\
     \hline
   \end{tabular}
 \end{table}
@@ -709,19 +709,19 @@ The inter-signal tasks, Table~\ref{tab:fr_rank_mc_sig}, are a different matter. 
 
 \begin{table}[htbp]
   \centering
-  \caption{One-versus-one baseline AUC of the six multi-class discrimination tasks and the AUC obtained when the single most important feature of each task is permuted. The signal-versus-background tasks are near-perfect and robust, whereas the inter-signal tasks, in particular tensor versus mixed, are both weaker and, in the tensor-versus-mixed case, not concentrated in any single feature.}
+  \caption{One-versus-one baseline AUC of the six multi-class discrimination tasks and the AUC obtained when the single most important feature of each task is permuted. The signal-versus-background tasks are near-perfect and robust, whereas the inter-signal tasks, in particular tensor versus mixed, are both weaker and, in the tensor-versus-mixed case, not concentrated in any single feature. The final column gives the relative loss of the permuted AUC with respect to the baseline AUC.}
   \label{tab:fr_mc_auc}
-  \begin{tabular}{|l|c|c|c|}
+  \begin{tabular}{|l|c|c|c|c|}
     \hline
-    \textbf{Task} & \textbf{Baseline AUC} & \textbf{Most important feature} & \textbf{AUC, permuted} \\
+    \textbf{Task} & \textbf{Baseline AUC} & \textbf{Most important feature} & \textbf{AUC, permuted} & \textbf{Rel.\ loss} \\
     \hline
-    Scalar vs background & 0.994 & Leading signal-jet mass  & 0.976 \\
-    Mixed vs background  & 0.991 & Leading signal-jet $p_T$ & 0.964 \\
-    Tensor vs background & 0.991 & Leading signal-jet $p_T$ & 0.957 \\
+    Scalar vs background & 0.994 & Leading signal-jet mass  & 0.976 & $1.8\%$ \\
+    Mixed vs background  & 0.991 & Leading signal-jet $p_T$ & 0.964 & $2.7\%$ \\
+    Tensor vs background & 0.991 & Leading signal-jet $p_T$ & 0.957 & $3.4\%$ \\
     \hline
-    Mixed vs scalar      & 0.804 & Leading signal-jet $p_T$ & 0.673 \\
-    Tensor vs scalar     & 0.841 & Leading signal-jet $p_T$ & 0.671 \\
-    Tensor vs mixed      & 0.602 & Leading signal-jet $p_T$ & 0.570 \\
+    Mixed vs scalar      & 0.804 & Leading signal-jet $p_T$ & 0.673 & $16.3\%$ \\
+    Tensor vs scalar     & 0.841 & Leading signal-jet $p_T$ & 0.671 & $20.2\%$ \\
+    Tensor vs mixed      & 0.602 & Leading signal-jet $p_T$ & 0.570 & $5.3\%$ \\
     \hline
   \end{tabular}
 \end{table}
