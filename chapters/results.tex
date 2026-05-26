@@ -782,3 +782,274 @@ The leading signal-jet $\eta$ provides the counter-example. Figure~\ref{fig:corr
 
 \section{Sensitivity comparison}
 \label{sec:sensitivity_comparison}
+
+The AUC values, ROC curves, output-node distributions and confusion matrices of the previous sections establish that the binary and multi-class discriminants all separate aQGC signal from QCD background cleanly, but they do not by themselves rank the three model types as analysis discriminants. The reason was given repeatedly in those sections: the inclusive AUC weights every operating point of the discriminant equally, while the analysis only ever uses the high-score tail of the discriminant where the signal-to-background ratio approaches order unity. The metric that probes precisely that regime is the binned Asimov significance $Z_A$ defined in Section~\ref{sec:mldiscriminant}. The following subsections evaluate it operator by operator, separately for the four iterations of the upstream configuration: VBF-RNN version~2 (4-jet input) and version~3 (6-jet input), each without and with the equal-signal-cross-section reweighting of Section~\ref{sec:mldiscriminant}. To enable a meaningful comparison between operators that differ in cross section by up to two orders of magnitude, every Asimov significance is reported both as an absolute number and normalised to the corresponding $m_{JJ}$-only baseline $Z_A^{m_{JJ}}$, computed on the same training selection and with the same minimum-background-yield binning prescription.
+
+Section~\ref{sec:sens_discriminants} first inspects the per-bin shape of the four candidate discriminants on the final v3~+~equal-$\sigma$ configuration. The three remaining subsections, organised by operator family, then present the per-operator significance heatmaps on that configuration together with tables that quantify how each model gains or loses absolute significance going from v2 to v3~+~equal-$\sigma$. Section~\ref{sec:sens_iteration} summarises the cross-family observations and clarifies what the comparison does, and does not, allow to be concluded.
+
+\subsection{Final discriminant distributions}
+\label{sec:sens_discriminants}
+
+Before quoting numerical significances it is useful to see the binned templates that go into them. Figure~\ref{fig:sens_disc_mjj} shows the $m_{JJ}$-only baseline for the lowest-index operator of each family, $S_0$, $M_0$ and $T_0$, on the v3 training selection. The QCD-dominated background falls steeply with $m_{JJ}$, while the aQGC signal is approximately flat and extends far beyond the background tail. The Asimov significance, quoted in each panel title, varies by four orders of magnitude across the three operators, from $Z_A^{m_{JJ}}=0.051$ for the scalar $S_0$ to $Z_A^{m_{JJ}}=55$ for the tensor $T_0$. This spread directly reflects the physical signal cross-sections in the training selection and sets the reference against which the multivariate discriminants are measured.
+
+\begin{figure}[htbp]
+\centering
+\begin{subfigure}[b]{0.32\textwidth}
+\includegraphics[width=\textwidth]{figures/sensitivity/sens_disc_mjj_S0.png}
+\caption{$S_0$}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.32\textwidth}
+\includegraphics[width=\textwidth]{figures/sensitivity/sens_disc_mjj_M0.png}
+\caption{$M_0$}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.32\textwidth}
+\includegraphics[width=\textwidth]{figures/sensitivity/sens_disc_mjj_T0.png}
+\caption{$T_0$}
+\end{subfigure}
+\caption{$m_{JJ}$-only baseline templates on the v3 training selection for the lowest-index operator of each family, $S_0$, $M_0$ and $T_0$. The QCD-dominated background (blue) falls steeply with $m_{JJ}$, while the aQGC signal (orange) is approximately flat and extends beyond the background tail. The Asimov significance quoted in each title spans four orders of magnitude, $Z_A^{m_{JJ}}=0.051$, $1.671$ and $55.106$ respectively, and sets the per-operator reference against which the multivariate discriminants are normalised in the subsequent figures and tables.}
+\label{fig:sens_disc_mjj}
+\end{figure}
+
+Figures~\ref{fig:sens_disc_spec}--\ref{fig:sens_disc_mc} show the binned templates of the three multivariate discriminants on the v3~+~equal-$\sigma$ configuration for the same three probe operators. The horizontal axis is the log-likelihood-ratio discriminant defined in Section~\ref{sec:mldiscriminant}: $\ln[p/(1-p)]$ for the binary classifiers (Figures~\ref{fig:sens_disc_spec} and~\ref{fig:sens_disc_global}) and $\ln[p_s/p_b]$ for the multi-class node corresponding to the family of the probed operator (Figure~\ref{fig:sens_disc_mc}). All three discriminants share the same qualitative shape: the background follows a wide, near-Gaussian distribution centred slightly below zero, while the signal piles up in the high-score tail with $\mathcal{O}(10^2)$--$\mathcal{O}(10^3)$ weighted events per bin at the largest scores. The binning is re-optimised per operator under the minimum-background-yield rule of Section~\ref{sec:mldiscriminant}, which is why the right-most bin of each panel typically contains the signal pile-up: it is the widest bin the optimisation produces, set by the falling background tail. The visible step at $\ln[p/(1-p)]=+10$ in the binary panels and at the upper edge of the multi-class panels reflects the score-clipping applied to avoid numerical issues when the network output saturates at $p\to 1$.
+
+The signal-to-background ratio per bin is what ultimately drives $Z_A$. In every panel the highest-score bin contains comparable signal and background, $S/B\sim 1$, with $S$ even exceeding $B$ for $T_0$ in both the specialised and global binary panels. This is the regime in which the $s/\sqrt{b}$ approximation breaks down and the full Asimov expression of Section~\ref{sec:mldiscriminant} is required: it is also the regime in which most of the integrated Asimov significance is built up. By contrast, the multi-class panels show a slightly less compact tail than the binary ones, the signal pile-up sitting one to two bins lower in $\ln[p_s/p_b]$ than the corresponding binary logit. This is a direct, visual reflection of the $p_b\neq 1-p_s$ effect discussed in Section~\ref{sec:mldiscriminant}: the multi-class discriminant must share its probability budget with the two unrelated signal classes, and the resulting log-ratio is therefore less sharply peaked than the binary logit on the same event.
+
+\begin{figure}[htbp]
+\centering
+\begin{subfigure}[b]{0.32\textwidth}
+\includegraphics[width=\textwidth]{figures/sensitivity/sens_disc_spec_S0.png}
+\caption{$S_0$ ($\mathcal{O}_{S,0}+\mathcal{O}_{S,1}$)}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.32\textwidth}
+\includegraphics[width=\textwidth]{figures/sensitivity/sens_disc_spec_M0.png}
+\caption{$M_0$ ($\mathcal{O}_{M,0}+\mathcal{O}_{M,1}$)}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.32\textwidth}
+\includegraphics[width=\textwidth]{figures/sensitivity/sens_disc_spec_T0.png}
+\caption{$T_0$ ($\mathcal{O}_{T,0}+\mathcal{O}_{T,1}$)}
+\end{subfigure}
+\caption{Specialised binary discriminant $\ln[p/(1-p)]$ on the v3~+~equal-$\sigma$ configuration, for the three lowest-index probe operators. Each panel uses the specialised classifier trained on the matching family. The signal piles up at large logit with $\mathcal{O}(10^3)$ weighted events in the highest-score bin for $T_0$, and the Asimov significance quoted in each title reaches $Z_A=197.7$, $16.1$ and $1.5$ for $T_0$, $M_0$ and $S_0$ respectively.}
+\label{fig:sens_disc_spec}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\begin{subfigure}[b]{0.32\textwidth}
+\includegraphics[width=\textwidth]{figures/sensitivity/sens_disc_global_S0.png}
+\caption{$S_0$}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.32\textwidth}
+\includegraphics[width=\textwidth]{figures/sensitivity/sens_disc_global_M0.png}
+\caption{$M_0$}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.32\textwidth}
+\includegraphics[width=\textwidth]{figures/sensitivity/sens_disc_global_T0.png}
+\caption{$T_0$}
+\end{subfigure}
+\caption{Global binary discriminant $\ln[p/(1-p)]$ on the v3~+~equal-$\sigma$ configuration, for the three lowest-index probe operators. A single classifier trained jointly on all aQGC operators is evaluated on each probe operator. The signal pile-up at the upper end of the score axis matches that of the specialised classifier within rounding for the higher-cross-section probes $M_0$ and $T_0$, and is suppressed for $S_0$ because the scalar family contributes the smallest physical cross section to the inclusive training mixture.}
+\label{fig:sens_disc_global}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\begin{subfigure}[b]{0.32\textwidth}
+\includegraphics[width=\textwidth]{figures/sensitivity/sens_disc_mc_S0.png}
+\caption{$S_0$ (scalar node)}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.32\textwidth}
+\includegraphics[width=\textwidth]{figures/sensitivity/sens_disc_mc_M0.png}
+\caption{$M_0$ (mixed node)}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.32\textwidth}
+\includegraphics[width=\textwidth]{figures/sensitivity/sens_disc_mc_T0.png}
+\caption{$T_0$ (tensor node)}
+\end{subfigure}
+\caption{Multi-class discriminant $\ln[p_s/p_b]$ on the v3~+~equal-$\sigma$ configuration, for the three lowest-index probe operators. The signal-class node $s$ matching the family of the probed operator is used in each case, with the multi-class output node $p_b$ in the denominator. The signal pile-up sits at slightly lower scores than for the binary classifiers because the softmax output spreads probability over four classes, so $p_b<1-p_s$ in general (Section~\ref{sec:mldiscriminant}).}
+\label{fig:sens_disc_mc}
+\end{figure}
+
+\subsection{Scalar-type operators}
+\label{sec:sens_scalar}
+
+The scalar family has the smallest signal cross section of the three: at the v3 training selection the inclusive cut-and-count significance for $S_0$ is $0.025$ and the $m_{JJ}$-only fit produces $Z_A^{m_{JJ}}=0.051$, both well below unity. Any meaningful discovery sensitivity must therefore come from the multivariate discriminant, which makes this family the most informative test of the three model types and the most sensitive to the equal-$\sigma$ reweighting.
+
+\begin{figure}[htbp]
+\centering
+\begin{subfigure}[b]{0.95\textwidth}
+\includegraphics[width=\textwidth]{figures/sensitivity/sens_hm_abs_S.png}
+\caption{Absolute Asimov significance $Z_A$.}
+\end{subfigure}
+
+\medskip
+
+\begin{subfigure}[b]{0.95\textwidth}
+\includegraphics[width=\textwidth]{figures/sensitivity/sens_hm_normmjj_S.png}
+\caption{Normalised to the $m_{JJ}$ baseline, $Z_A / Z_A^{m_{JJ}}$.}
+\end{subfigure}
+
+\medskip
+
+\begin{subfigure}[b]{0.6\textwidth}
+\includegraphics[width=\textwidth]{figures/sensitivity/sens_hm_normspec_S.png}
+\caption{Normalised to the specialised classifier, $Z_A / Z_A^{\mathrm{spec}}$.}
+\end{subfigure}
+\caption{Per-operator Asimov significance for the scalar family on the v3~+~equal-$\sigma$ configuration. Rows: probed operator ($S_0$, $S_1$). Columns: inclusive cut-and-count, $m_{JJ}$-only fit, $p_T$ of the leading signal jet, specialised binary classifier ($\mathcal{O}_{S,0}+\mathcal{O}_{S,1}$), global binary classifier, multi-class classifier. The bottom panel drops the three non-multivariate columns. The multivariate discriminants improve over $m_{JJ}$ alone by factors of $21$--$30$, and the multi-class classifier reaches $0.81$--$0.83$ of the specialised classifier on the same operators.}
+\label{fig:sens_hm_S}
+\end{figure}
+
+Figure~\ref{fig:sens_hm_S} shows the per-operator significance heatmaps for the scalar family on the v3~+~equal-$\sigma$ configuration. The absolute-$Z$ heatmap quantifies the picture of the previous subsection: the specialised binary classifier reaches $Z_A=1.47$ on $S_0$ and $0.35$ on $S_1$, the global binary classifier $1.08$ and $0.25$, and the multi-class classifier $1.22$ and $0.29$. None of the three architectures is close to a $5\sigma$ discovery on its own in the QUAD-only signal model, but the relative ranking is meaningful: the specialised classifier is the strongest on this family, the multi-class classifier sits in second place, and the global binary classifier in third. The same ranking appears in the relative-to-$m_{JJ}$ panel, where the specialised classifier reaches $Z_A/Z_A^{m_{JJ}}=28.6$ on $S_0$ and $30.0$ on $S_1$, the multi-class classifier $23.8$ and $24.4$, and the global classifier $21.0$ and $21.5$. The factor-of-$30$ improvement over the $m_{JJ}$ baseline is the largest of the three families and reflects exactly the small absolute-cross-section, large-information-gain regime of the scalar operators.
+
+The relative-to-specialised heatmap of Figure~\ref{fig:sens_hm_S}(c) shows that the global binary classifier loses $\sim$$27$--$29\%$ of the specialised significance on this family, and the multi-class classifier $\sim$$17$--$19\%$. The global classifier is hit by the operator-mixture imbalance discussed in Section~\ref{sec:binary_global}: when the network is trained on every operator simultaneously, the high-cross-section tensor and mixed operators dominate the gradient and the rare scalar operators receive too little training weight. The equal-$\sigma$ reweighting partially compensates for this, but the residual gap remains visible here. The multi-class classifier mitigates the problem because its softmax already balances the three signal categories at the top level, leaving the within-category imbalance to be addressed by the equal-$\sigma$ reweighting alone.
+
+The reweighting itself is most dramatically illustrated by the v2 to v3~+~equal-$\sigma$ comparison in Table~\ref{tab:sens_gain_S}. The specialised classifier gains $9$--$10\%$ in absolute $Z_A$, but the global and multi-class classifiers gain $30$--$40\%$. The specialised gain is essentially the upstream-tagger contribution alone; the much larger global and multi-class gains are dominated by the reweighting, because for those architectures the scalar family was being suppressed at training time. The same effect explains why the global and multi-class classifiers approach the specialised classifier so much more closely on v3~+~equal-$\sigma$ than they do on the v2 baseline.
+
+\begin{table}[htbp]
+  \centering
+  \caption{Absolute Asimov significance $Z_A$ for the scalar-type operators, comparing the v2 upstream baseline to the final v3~+~equal-$\sigma$ configuration. The relative change $\Delta=[Z_A(\text{v3+eq})-Z_A(\text{v2})]/Z_A(\text{v2})$ is given in percent. The specialised gain is dominated by the upstream-tagger change, the global and multi-class gains by the equal-signal-cross-section reweighting that restores training weight to the rare scalar family.}
+  \label{tab:sens_gain_S}
+  \begin{tabular}{|c|cc|c|cc|c|cc|c|}
+    \hline
+    & \multicolumn{3}{c|}{\textbf{Specialised}} & \multicolumn{3}{c|}{\textbf{Global}} & \multicolumn{3}{c|}{\textbf{Multi-class}} \\
+    \textbf{Op.} & $Z_A^\text{v2}$ & $Z_A^\text{v3+eq}$ & $\Delta$ & $Z_A^\text{v2}$ & $Z_A^\text{v3+eq}$ & $\Delta$ & $Z_A^\text{v2}$ & $Z_A^\text{v3+eq}$ & $\Delta$ \\
+    \hline
+    $S_0$ & 1.353 & 1.468 & $+8.5\%$ & 0.808 & 1.077 & $+33.3\%$ & 0.939 & 1.223 & $+30.2\%$ \\
+    $S_1$ & 0.321 & 0.354 & $+10.3\%$ & 0.185 & 0.253 & $+36.8\%$ & 0.214 & 0.287 & $+34.1\%$ \\
+    \hline
+  \end{tabular}
+\end{table}
+
+\subsection{Mixed-type operators}
+\label{sec:sens_mixed}
+
+The mixed family covers seven operators with physical cross sections spanning roughly two orders of magnitude. The $m_{JJ}$-only baseline on the v3 selection ranges from $Z_A^{m_{JJ}}=1.67$ for $M_0$ down to $0.054$ for $M_7$, again well below the discovery threshold for every operator except possibly $M_0$.
+
+\begin{figure}[htbp]
+\centering
+\begin{subfigure}[b]{0.95\textwidth}
+\includegraphics[width=\textwidth]{figures/sensitivity/sens_hm_abs_M.png}
+\caption{Absolute Asimov significance $Z_A$.}
+\end{subfigure}
+
+\medskip
+
+\begin{subfigure}[b]{0.95\textwidth}
+\includegraphics[width=\textwidth]{figures/sensitivity/sens_hm_normmjj_M.png}
+\caption{Normalised to the $m_{JJ}$ baseline, $Z_A / Z_A^{m_{JJ}}$.}
+\end{subfigure}
+
+\medskip
+
+\begin{subfigure}[b]{0.6\textwidth}
+\includegraphics[width=\textwidth]{figures/sensitivity/sens_hm_normspec_M.png}
+\caption{Normalised to the specialised classifier, $Z_A / Z_A^{\mathrm{spec}}$.}
+\end{subfigure}
+\caption{Per-operator Asimov significance for the mixed family on the v3~+~equal-$\sigma$ configuration. Layout as in Figure~\ref{fig:sens_hm_S}. The absolute significances track the operator cross-section ordering across nearly two orders of magnitude. The specialised and global binary classifiers are essentially equivalent here, both within $\sim$$5\%$ of each other on every operator, while the multi-class classifier sits at $76$--$82\%$ of the specialised significance.}
+\label{fig:sens_hm_M}
+\end{figure}
+
+Figure~\ref{fig:sens_hm_M} shows the corresponding heatmaps. The absolute significance tracks the operator cross-section ordering: $M_0$ reaches $Z_A=16.1$ on the specialised classifier, $M_2$ reaches $8.7$, the remaining operators are in the $0.8$--$2.3$ range. The normalised-to-$m_{JJ}$ heatmap is the most operator-uniform of the three families: the specialised and global classifiers improve over $m_{JJ}$ alone by a near-constant factor of $9$--$15$ across the seven operators, with the multi-class classifier following at $7$--$11$. The narrow spread of the normalised values across operators reflects the fact that the operator-to-operator differences within the mixed family are mostly a matter of overall cross section, not of kinematic shape.
+
+The relative-to-specialised panel reveals a structural difference from the scalar family. The global binary classifier sits within $1\%$ of the specialised classifier on every mixed operator, and even slightly above it for some (up to $+1\%$). The mixed family is large enough that its operators are well-represented in the global training mixture, and the equal-$\sigma$ reweighting then makes the global model essentially indistinguishable from the dedicated specialised model. The multi-class classifier loses $\sim$$18$--$24\%$ of the specialised significance, somewhat more than on the scalar family but with a similar pattern: the loss is largest for the rarest operators ($M_3$, $M_7$) where the mixed-tensor degeneracy in the input features (Section~\ref{sec:multiclass_classification}) is most consequential. The mixed/tensor confusion of Figure~\ref{fig:multiclass_cm} does not propagate one-to-one into the Asimov significance, because the analysis never asks ``mixed or tensor?''; it asks ``mixed-signal-like or background?'', and the multi-class $\ln[p_M/p_b]$ discriminant answers that question independently of how it might split the same events between $p_M$ and $p_T$.
+
+Table~\ref{tab:sens_gain_M} quantifies the v2 to v3~+~equal-$\sigma$ change. The specialised classifier is essentially flat across the seven operators, $-3\%$ to $+1\%$, the global classifier gains $2$--$7\%$, and the multi-class classifier gains $15$--$26\%$. The pattern is the same as for the scalar family but at a smaller amplitude: the equal-$\sigma$ reweighting is most consequential for the architectures that most strongly mix operators at training time, and least consequential for the specialised model that is already trained on a uniform two-operator mixture.
+
+\begin{table}[htbp]
+  \centering
+  \caption{Absolute Asimov significance $Z_A$ for the mixed-type operators, comparing v2 to v3~+~equal-$\sigma$. Layout as in Table~\ref{tab:sens_gain_S}.}
+  \label{tab:sens_gain_M}
+  \begin{tabular}{|c|cc|c|cc|c|cc|c|}
+    \hline
+    & \multicolumn{3}{c|}{\textbf{Specialised}} & \multicolumn{3}{c|}{\textbf{Global}} & \multicolumn{3}{c|}{\textbf{Multi-class}} \\
+    \textbf{Op.} & $Z_A^\text{v2}$ & $Z_A^\text{v3+eq}$ & $\Delta$ & $Z_A^\text{v2}$ & $Z_A^\text{v3+eq}$ & $\Delta$ & $Z_A^\text{v2}$ & $Z_A^\text{v3+eq}$ & $\Delta$ \\
+    \hline
+    $M_0$ & 16.059 & 16.065 & $+0.0\%$  & 15.747 & 16.148 & $+2.5\%$ & 11.472 & 13.160 & $+14.7\%$ \\
+    $M_1$ &  2.269 &  2.249 & $-0.9\%$  &  2.136 &  2.193 & $+2.7\%$ &  1.394 &  1.685 & $+20.9\%$ \\
+    $M_2$ &  8.968 &  8.734 & $-2.6\%$  &  8.672 &  8.884 & $+2.4\%$ &  5.878 &  6.887 & $+17.2\%$ \\
+    $M_3$ &  0.939 &  0.935 & $-0.4\%$  &  0.870 &  0.928 & $+6.7\%$ &  0.537 &  0.678 & $+26.3\%$ \\
+    $M_4$ &  2.268 &  2.259 & $-0.4\%$  &  2.106 &  2.226 & $+5.7\%$ &  1.327 &  1.629 & $+22.8\%$ \\
+    $M_5$ &  1.215 &  1.231 & $+1.3\%$  &  1.129 &  1.202 & $+6.5\%$ &  0.726 &  0.897 & $+23.6\%$ \\
+    $M_7$ &  0.824 &  0.820 & $-0.5\%$  &  0.767 &  0.789 & $+2.9\%$ &  0.492 &  0.595 & $+20.9\%$ \\
+    \hline
+  \end{tabular}
+\end{table}
+
+\subsection{Tensor-type operators}
+\label{sec:sens_tensor}
+
+The tensor family covers the widest dynamic range, ten operators with physical cross sections spanning more than two orders of magnitude. It is also the family with by far the largest absolute significances: on the v3~+~equal-$\sigma$ configuration the specialised classifier reaches $Z_A=197.7$ on $T_0$ and $205.7$ on $T_1$, with $T_4$ and $T_7$ at the low end at $Z_A=6.6$ and $5.9$. The $m_{JJ}$-only baseline already reaches $Z_A^{m_{JJ}}=55$ on $T_0$, the only operator across the three families on which a non-multivariate fit alone would be in the discovery regime.
+
+\begin{figure}[htbp]
+\centering
+\begin{subfigure}[b]{0.95\textwidth}
+\includegraphics[width=\textwidth]{figures/sensitivity/sens_hm_abs_T.png}
+\caption{Absolute Asimov significance $Z_A$.}
+\end{subfigure}
+
+\medskip
+
+\begin{subfigure}[b]{0.95\textwidth}
+\includegraphics[width=\textwidth]{figures/sensitivity/sens_hm_normmjj_T.png}
+\caption{Normalised to the $m_{JJ}$ baseline, $Z_A / Z_A^{m_{JJ}}$.}
+\end{subfigure}
+
+\medskip
+
+\begin{subfigure}[b]{0.6\textwidth}
+\includegraphics[width=\textwidth]{figures/sensitivity/sens_hm_normspec_T.png}
+\caption{Normalised to the specialised classifier, $Z_A / Z_A^{\mathrm{spec}}$.}
+\end{subfigure}
+\caption{Per-operator Asimov significance for the tensor family on the v3~+~equal-$\sigma$ configuration. Layout as in Figure~\ref{fig:sens_hm_S}. The absolute significances reach the largest values of the three families, with $Z_A=197.7$ for the specialised classifier on $T_0$ and $Z_A^{m_{JJ}}=55.1$ for the same operator. The relative-to-$m_{JJ}$ improvement of the multivariate discriminants is therefore the largest in absolute terms but the smallest in ratio, $3.3$--$12$ across operators.}
+\label{fig:sens_hm_T}
+\end{figure}
+
+The relative-to-$m_{JJ}$ panel of Figure~\ref{fig:sens_hm_T} shows that the multivariate gain over the baseline is smaller in ratio than for the other two families: the specialised classifier improves over $m_{JJ}$ by a factor of $3.6$ on $T_0$ and rising to $\sim$$12$ on the rarer operators ($T_4$, $T_7$), with the global classifier essentially equivalent ($+1$--$15\%$ above specialised) and the multi-class classifier at $0.92$--$0.96$ of the specialised level. The smaller ratio is a direct consequence of the larger $m_{JJ}$ baseline: the tensor operators populate the high-mass tail more strongly than the scalar and mixed operators, so the $m_{JJ}$-only fit already extracts much of the discriminating information and the headroom for the MLP to add on top of it is correspondingly smaller. The absolute gain, however, is the largest of the three families, $Z_A$ rises from $55$ on $m_{JJ}$ to $200$ on the MLP for $T_0$.
+
+The most important observation from the relative-to-specialised panel is that on the v3~+~equal-$\sigma$ configuration the multi-class classifier finally tracks the binary models closely on the tensor family, $0.92$--$0.96$, after being severely degraded on every earlier iteration. On the v3-only configuration (no reweighting) the corresponding multi-class column drops to $0.55$--$0.82$, depending on the operator. The largest single gain therefore is for the multi-class classifier on the lowest-cross-section tensor operators: $T_4$ rises from a multi-class/specialised ratio of $0.55$ at v3 to $0.92$ at v3~+~equal-$\sigma$, $T_7$ from $0.55$ to $0.92$, $T_9$ from $0.55$ to $0.94$. The equal-$\sigma$ reweighting, addressing the cross-section spread \emph{within} the tensor category at training time, is exactly the fix needed to allow the multi-class classifier to compete with the dedicated binary models.
+
+Table~\ref{tab:sens_gain_T} quantifies the v2 to v3~+~equal-$\sigma$ change for the tensor family. Unlike the scalar and mixed families, the specialised classifier here \emph{loses} a few percent of absolute $Z_A$ on going from v2 to v3~+~equal-$\sigma$, the loss being largest ($-13\%$ to $-14\%$) for the rare $T_4$ and $T_7$ operators. The cause is the larger background admitted by the v3 selection, which the specialised classifier, trained on only two tensor operators and therefore not benefiting from the equal-$\sigma$ rebalancing, cannot fully recover from. The global binary classifier is essentially flat on the same comparison, $-2$ to $+2\%$, and the multi-class classifier \emph{gains} $2$--$17\%$, again with the largest gains on the rarest operators. The three trends taken together identify the equal-$\sigma$ reweighting as the dominant change between v2 and v3~+~equal-$\sigma$ for any architecture that mixes operators at training time, and the upstream tagger choice as essentially neutral in absolute significance.
+
+\begin{table}[htbp]
+  \centering
+  \caption{Absolute Asimov significance $Z_A$ for the tensor-type operators, comparing v2 to v3~+~equal-$\sigma$. Layout as in Table~\ref{tab:sens_gain_S}. The specialised classifier loses a few percent of absolute significance going from v2 to v3~+~equal-$\sigma$ because the v3 selection admits more background; the global classifier is flat; the multi-class classifier gains $2$--$17\%$ as the equal-$\sigma$ reweighting restores training weight to the rare tensor operators.}
+  \label{tab:sens_gain_T}
+  \begin{tabular}{|c|cc|c|cc|c|cc|c|}
+    \hline
+    & \multicolumn{3}{c|}{\textbf{Specialised}} & \multicolumn{3}{c|}{\textbf{Global}} & \multicolumn{3}{c|}{\textbf{Multi-class}} \\
+    \textbf{Op.} & $Z_A^\text{v2}$ & $Z_A^\text{v3+eq}$ & $\Delta$ & $Z_A^\text{v2}$ & $Z_A^\text{v3+eq}$ & $\Delta$ & $Z_A^\text{v2}$ & $Z_A^\text{v3+eq}$ & $\Delta$ \\
+    \hline
+    $T_0$ & 205.99 & 197.73 & $-4.0\%$  & 204.19 & 200.99 & $-1.6\%$ & 185.39 & 188.10 & $+1.5\%$ \\
+    $T_1$ & 213.96 & 205.73 & $-3.8\%$  & 211.94 & 208.81 & $-1.5\%$ & 191.70 & 195.52 & $+2.0\%$ \\
+    $T_2$ &  66.49 &  62.22 & $-6.4\%$  &  65.51 &  64.33 & $-1.8\%$ &  55.57 &  58.13 & $+4.6\%$ \\
+    $T_3$ &  77.08 &  72.41 & $-6.1\%$  &  75.93 &  74.62 & $-1.7\%$ &  64.90 &  67.79 & $+4.5\%$ \\
+    $T_4$ &   7.59 &   6.55 & $-13.7\%$ &   7.41 &   7.54 & $+1.8\%$ &   5.22 &   6.04 & $+15.7\%$ \\
+    $T_5$ &  46.50 &  43.32 & $-6.8\%$  &  46.06 &  46.17 & $+0.2\%$ &  37.79 &  40.70 & $+7.7\%$ \\
+    $T_6$ &  19.23 &  17.25 & $-10.3\%$ &  19.02 &  19.27 & $+1.3\%$ &  14.60 &  16.06 & $+10.0\%$ \\
+    $T_7$ &   6.91 &   5.92 & $-14.3\%$ &   6.70 &   6.75 & $+0.8\%$ &   4.71 &   5.46 & $+15.8\%$ \\
+    $T_8$ &  34.69 &  32.06 & $-7.6\%$  &  34.76 &  35.20 & $+1.3\%$ &  27.89 &  30.66 & $+9.9\%$ \\
+    $T_9$ &  10.75 &   9.46 & $-12.1\%$ &  10.66 &  10.84 & $+1.7\%$ &   7.62 &   8.91 & $+17.0\%$ \\
+    \hline
+  \end{tabular}
+\end{table}
+
+\subsection{Comparison across upstream configurations}
+\label{sec:sens_iteration}
+
+The three per-family scans, taken together, allow several cross-family observations on the iteration v2 $\to$ v3~+~equal-$\sigma$.
+
+The \emph{upstream tagger change}, from VBF-RNN v2 (4-jet input) to v3 (6-jet input), is essentially neutral in absolute Asimov significance for any binary architecture: the specialised classifier on the tensor family loses a few percent, on the mixed family is flat to within rounding, and on the scalar family gains $9$--$10\%$. The pattern is consistent with the v3 selection admitting more inclusive background events than v2, which (i) tightens the per-bin background statistics, helping the rare-signal scalar operators, and (ii) slightly degrades the highest-$Z_A$ tensor operators where the absolute background was already small enough at v2 to fully resolve the signal tail. The same pattern is visible in the $m_{JJ}$-only baseline: $Z_A^{m_{JJ}}$ for $T_0$ falls from $72.1$ at v2 to $55.1$ at v3, and the $Z_A^{m_{JJ}}$ on $S_0$ falls from $0.075$ to $0.051$. The large relative-to-$m_{JJ}$ gains seen for v3 in the normalised heatmaps are therefore mostly a baseline effect: the multivariate discriminants get the credit for the suppressed baseline as much as for a genuine increase in their own absolute significance.
+
+The \emph{equal-$\sigma$ reweighting} is, by contrast, the dominant change for any architecture that mixes operators at training time. The global binary classifier gains $30$--$40\%$ on the scalar family, $2$--$7\%$ on the mixed family, and is essentially flat on the tensor family; the multi-class classifier gains $30$--$34\%$, $15$--$26\%$, and $2$--$17\%$ on the same three families. In every case the gain is largest on the rarest operators, exactly as expected from the cross-section diagnostic of Section~\ref{sec:mldiscriminant}: when the loss is dominated by the high-cross-section operators of each category, the rare operators are effectively absent from the optimisation and the trained network is sub-optimal on them. The equal-$\sigma$ reweighting redistributes the training weight uniformly within each category, restoring sensitivity to the rare operators without measurable harm to the abundant ones. The specialised classifier, trained on only two operators of a single family that already have similar effective cross sections, has nothing to rebalance and is correspondingly insensitive to the reweighting.
+
+The three architectures finish the iteration in the following positions on v3~+~equal-$\sigma$. The specialised classifier is the strongest of the three on every probed operator, reaching $Z_A=1.5$ ($S_0$), $16$ ($M_0$) and $198$ ($T_0$) on the lowest-index probes. The global binary classifier is within $\pm 5\%$ of the specialised classifier on the mixed and tensor families and $\sim$$27\%$ below on the scalar family. The multi-class classifier sits at $0.81$--$0.83$ of the specialised on the scalar family, $0.76$--$0.82$ on the mixed family, and $0.92$--$0.96$ on the tensor family.
+
+Which of the three is adopted as the final analysis discriminant is not decided in this thesis. The specialised classifier achieves the largest absolute $Z_A$ on every operator but requires three independently trained networks and never extrapolates to operators outside the training pair, the global binary classifier provides a single model covering all $19$ probed operators at the cost of $\sim$$5\%$ on the larger families and $\sim$$27\%$ on the scalar family, and the multi-class classifier additionally exposes the operator-family identity in its output but pays a further $\sim$$5\%$ on the tensor family, $\sim$$18$--$24\%$ on the mixed family and $\sim$$17$--$19\%$ on the scalar family. The trade-off between absolute sensitivity, model coverage, operator-family identification and operational simplicity, as well as the response of each architecture to the experimental systematic uncertainties that are not treated in this thesis, must inform the final choice in the analysis proper.
+
+What can be concluded from the present comparison is more specific. First, every multivariate discriminant studied here outperforms the $m_{JJ}$-only baseline by between $3.3$ and $30$ in $Z_A$ depending on the operator, with the largest gains on the small-cross-section scalar family and the smallest on the tensor family that already populates the high-$m_{JJ}$ tail strongly. Second, the equal-$\sigma$ reweighting is essential for any classifier that mixes operators at training time: without it the multi-class classifier in particular fails by a factor of two on the rare tensor operators and by $\sim$$30\%$ on the scalar family, and the global binary classifier loses $30$--$40\%$ on the scalar family. Third, the choice of upstream tagger between v2 and v3 is approximately neutral in absolute $Z_A$ and is therefore driven by the orthogonal physics considerations of Sections~\ref{sec:vbfrnn_perf} and~\ref{sec:vbfrnn_aqgc} rather than by the sensitivity comparison reported here.
