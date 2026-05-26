@@ -27,7 +27,7 @@ Standardisation ensures that features with different physical scales contribute 
 \subsection{Binary classification}
 \label{sec:binary}
 
-In binary classification the network produces a single output score $\hat{y}\in(0,1)$ interpreted as the probability $P(y=1\mid\mathbf{x})$ that the input belongs to the positive class.  This is achieved by taking the final layer to have a single unit with the sigmoid activation
+In binary classification the network produces a single output score $\hat{y}\in(0,1)$ interpreted as the probability $P(y=1\mid\mathbf{x})$ that the input belongs to the positive class.  This score is produced by taking the final layer to have a single unit with the sigmoid activation
 \begin{equation}
 \sigma(z) = \frac{1}{1+e^{-z}},
 \end{equation}
@@ -47,7 +47,7 @@ When the target space has $K>2$ mutually exclusive classes, the output layer is 
 \hat{y}_{k} = \frac{e^{z_{k}}}{\sum_{j=1}^{K}e^{z_{j}}}, \qquad k=1,\dots,K,
 \label{eq:softmax}
 \end{equation}
-where $z_k$ are the pre-activations of the final layer.  By construction $\hat{y}_k\in(0,1)$ and $\sum_k\hat{y}_k=1$, so the output vector forms a valid discrete probability distribution over the $K$ classes.  The softmax is the multi-class generalisation of the sigmoid: for $K=2$ it reduces to equation \eqref{eq:bce} up to reparametrisation.  The corresponding loss is the categorical cross-entropy,
+where $z_k$ are the pre-activations of the final layer.  By construction $\hat{y}_k\in(0,1)$ and $\sum_k\hat{y}_k=1$, so the output vector forms a valid discrete probability distribution over the $K$ classes.  The softmax is the multi-class generalisation of the sigmoid: for $K=2$ it reduces to Equation~\eqref{eq:bce} up to reparametrisation.  The corresponding loss is the categorical cross-entropy,
 \begin{equation}
 \mathcal{L}_{\mathrm{CCE}} = -\frac{1}{N}\sum_{i=1}^{N}\sum_{k=1}^{K} y_{ik}\log\hat{y}_{ik},
 \label{eq:cce}
@@ -83,16 +83,16 @@ The cell state and hidden state are then updated by
 \mathbf{c}_{t} &= \mathbf{f}_{t}\odot\mathbf{c}_{t-1} + \mathbf{i}_{t}\odot\tilde{\mathbf{c}}_{t}, \label{eq:lstm_cell}\\[3pt]
 \mathbf{h}_{t} &= \mathbf{o}_{t}\odot\tanh(\mathbf{c}_{t}), \label{eq:lstm_hidden}
 \end{align}
-where $\odot$ denotes elementwise multiplication.  The forget gate $\mathbf{f}_t$ controls what fraction of the previous cell state is retained, when its entries are close to one the cell state is preserved unchanged across the step, allowing gradients to flow back through equation \eqref{eq:lstm_cell} without attenuation.  The input gate $\mathbf{i}_t$ controls how much of the candidate update $\tilde{\mathbf{c}}_t$ is written into the cell state and the output gate $\mathbf{o}_t$ determines what portion of the updated cell state is exposed as the hidden state.  The gating structure is illustrated in Figure~\ref{fig:lstm_cell}.
+where $\odot$ denotes elementwise multiplication.  The forget gate $\mathbf{f}_t$ controls what fraction of the previous cell state is retained, when its entries are close to one the cell state is preserved unchanged across the step, allowing gradients to flow back through Equation~\eqref{eq:lstm_cell} without attenuation.  The input gate $\mathbf{i}_t$ controls how much of the candidate update $\tilde{\mathbf{c}}_t$ is written into the cell state and the output gate $\mathbf{o}_t$ determines what portion of the updated cell state is exposed as the hidden state.  The gating structure is illustrated in Figure~\ref{fig:lstm_cell}.
 
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=0.65\textwidth]{figures/LSTMcell.png}
-  \caption{LSTM cell showing three consecutive time steps.  The expanded cell shows the internal gating structure: the forget gate, input gate, candidate cell update and output gate each receive the concatenation of the previous hidden state $\mathbf{h}_{t-1}$ and the current input $\mathbf{x}_t$.  The cell state $\mathbf{c}_t$ flows along the horizontal additive path (upper horizontal line), enabling long-range gradient propagation, the hidden state $\mathbf{h}_t$ is derived from it via the output gate and a $\tanh$ squashing, as described by equations~\eqref{eq:lstm_cell} and~\eqref{eq:lstm_hidden}. ~\cite{Olah_LSTM_2015}.}
+  \caption{LSTM cell showing three consecutive time steps.  The expanded cell shows the internal gating structure: the forget gate, input gate, candidate cell update and output gate each receive the concatenation of the previous hidden state $\mathbf{h}_{t-1}$ and the current input $\mathbf{x}_t$.  The cell state $\mathbf{c}_t$ flows along the horizontal additive path (upper horizontal line), enabling long-range gradient propagation. The hidden state $\mathbf{h}_t$ is derived from it via the output gate and a $\tanh$ squashing, as described by Equations~\eqref{eq:lstm_cell} and~\eqref{eq:lstm_hidden}~\cite{Olah_LSTM_2015}.}
   \label{fig:lstm_cell}
 \end{figure}
 
-After processing all $T$ steps, the final hidden state $\mathbf{h}_T$ encodes a summary of the entire input sequence.  A classification head applied to $\mathbf{h}_T$ produces the output probabilities via sigmoid for binary classification or softmax for the multi-class case, as described in sections \ref{sec:binary} and \ref{sec:multiclass}.  All weight matrices $\{W_f, W_i, W_o, W_c\}$ and bias vectors $\{b_f, b_i, b_o, b_c\}$ are shared across all $T$ steps, so the same learned function is applied regardless of sequence length, making the LSTM naturally suited to inputs such as collections of reconstructed particles or jets where the multiplicity varies event by event.
+After processing all $T$ steps, the final hidden state $\mathbf{h}_T$ encodes a summary of the entire input sequence.  A classification head applied to $\mathbf{h}_T$ produces the output probabilities via sigmoid for binary classification or softmax for the multi-class case, as described in Sections~\ref{sec:binary} and~\ref{sec:multiclass}.  All weight matrices $\{W_f, W_i, W_o, W_c\}$ and bias vectors $\{b_f, b_i, b_o, b_c\}$ are shared across all $T$ steps, so the same learned function is applied regardless of sequence length, making the LSTM naturally suited to inputs such as collections of reconstructed particles or jets where the multiplicity varies event by event.
 
 \section{Transformer architecture}
 
@@ -116,7 +116,7 @@ In practice $H$ independent attention heads are computed in parallel on lower-di
 \end{equation}
 Each head can attend to different structural features of the sequence simultaneously.  The attention block is followed by a position-wise feedforward network applied identically at each position, together forming a transformer encoder layer.  Residual connections and layer normalisation \cite{Ba_LayerNorm_2016} stabilise training.
 
-The key distinction from recurrent architectures is that equation \eqref{eq:attention} computes interactions between every pair of positions $(i,j)$ in a single matrix operation, with no sequential dependency.  The computational cost of the attention step scales as $\mathcal{O}(T^{2}d_{k})$, so the architecture is most advantageous when $T$ is large enough that the rich pairwise interaction structure justifies this cost.  In particle physics applications, where a jet or event can be represented as a sequence of $\mathcal{O}(10^2)$ or more constituent particles or detector objects, the transformer's ability to capture long-range correlations across the full sequence in a single layer gives it a structural advantage over recurrent models that propagate information step by step and may lose distant context.  A classification token appended to the sequence, or a pooling operation over the final hidden states, extracts a fixed-length representation to which a sigmoid or softmax head is applied.
+The key distinction from recurrent architectures is that Equation~\eqref{eq:attention} computes interactions between every pair of positions $(i,j)$ in a single matrix operation, with no sequential dependency.  The computational cost of the attention step scales as $\mathcal{O}(T^{2}d_{k})$, so the architecture is most advantageous when $T$ is large enough that the rich pairwise interaction structure justifies this cost.  In particle physics applications, where a jet or event can be represented as a sequence of $\mathcal{O}(10^2)$ or more constituent particles or detector objects, the transformer's ability to capture long-range correlations across the full sequence in a single layer gives it a structural advantage over recurrent models that propagate information step by step and may lose distant context.  A classification token appended to the sequence, or a pooling operation over the final hidden states, extracts a fixed-length representation to which a sigmoid or softmax head is applied.
 
 \section{Permutation importance}
 \label{sec:permutation_importance}
