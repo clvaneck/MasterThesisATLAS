@@ -11,11 +11,13 @@ A multi-layer perceptron (MLP) is a directed acyclic graph of parametric transfo
 \end{equation}
 The input is $\mathbf{h}^{(0)}=\mathbf{x}$ and the final layer produces the network output $\hat{\mathbf{y}}=\mathbf{h}^{(L)}$.  The parameters $\theta=\{W^{(\ell)},\mathbf{b}^{(\ell)}\}_{\ell=1}^{L}$ are learned by minimising a loss functional over a training dataset.
 
-A common nonlinearity for hidden layers is the rectified linear unit,
+A common nonlinearity for hidden layers is the rectified linear unit~\cite{Nair:2010relu},
 \begin{equation}
 \mathrm{ReLU}(z) = \max(0,z),
 \end{equation}
 which preserves positive activations unchanged and maps negative ones to zero.  Its piecewise-linear form avoids the vanishing-gradient problem that afflicts saturating activations such as $\tanh$, while remaining a universal approximator when composed across multiple layers \cite{Hornik_Universal_1989}.
+
+A standard regulariser used throughout this thesis is \emph{dropout}~\cite{Srivastava:2014dropout}. During training, each hidden unit is set to zero with probability $p$ independently for every example, and the surviving activations are rescaled by $1/(1-p)$ so that the expected output magnitude is preserved. The procedure prevents co-adaptation of hidden units and approximates an exponentially large ensemble of subnetworks. At evaluation time the full network is used with all units active.
 \subsection{Input normalisation}
 \label{sec:normalisation}
 
@@ -140,3 +142,12 @@ which is large for a feature the decision boundary depends on and consistent wit
 and $I_j$ is referred to as the relative feature importance.
 
 Two properties of the method matter for the interpretation of the resulting rankings. First, because the model is never retrained, $I_j$ measures the reliance of that particular trained model on feature $j$ rather than the intrinsic separating power of the variable: a feature that is informative but whose information is also carried by a correlated partner can be permuted with little metric loss, and is then assigned a low importance. Permutation importance therefore tends to share, and partly mask, the importance of correlated inputs. Second, the procedure is stochastic through the choice of permutation $\pi$; in practice it is repeated over several permutations and the resulting importances averaged, so that the residual scatter is small compared with the differences between features.
+
+\section{Distance correlation decorrelation}
+\label{sec:disco}
+
+A standard requirement on a classifier used in a physics analysis is that its output be statistically independent of an observable that the downstream analysis needs to keep available, such as a jet mass on which background sidebands are defined. The \emph{distance correlation} (DisCo) of two random variables $X$ and $Y$, $\mathrm{dCor}(X,Y)\in[0,1]$, is zero if and only if $X$ and $Y$ are independent, in contrast to the linear Pearson correlation which only detects monotonic dependence. Adding the empirical distance correlation between the classifier output and the protected observable to the training loss as a penalty,
+\begin{equation}
+\mathcal{L} = \mathcal{L}_{\text{class}} + \lambda\,\mathrm{dCor}^{2}\!\big(\hat{y},m\big),
+\end{equation}
+drives the trained classifier towards outputs that are statistically independent of $m$ while still discriminating the signal from the background~\cite{Kasieczka:2020DisCo}. The strength of the decorrelation is controlled by the hyperparameter $\lambda$, which is tuned to balance the classification loss against the residual sculpting of the protected observable.
