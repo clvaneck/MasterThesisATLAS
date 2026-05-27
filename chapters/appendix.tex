@@ -1,10 +1,6 @@
 \appendix
-\chapter{Supplementary figures}
-\label{app:supplementary}
 
-This appendix collects the plots that supplement the main results of Chapter~\ref{chap:mldiscriminant_results} on the final v3~+~equal-$\sigma$ configuration. The training-iteration history of the MLP, the per-operator $m_{JJ}$ baselines and the per-operator multivariate templates on the non-final upstream configurations are not reproduced here, since they are summarised by the AUC table, the heatmap columns and the $\Delta$ columns of Tables~\ref{tab:sens_gain_S}, \ref{tab:sens_gain_M} and \ref{tab:sens_gain_T} in the main text.
-
-\section{Confusion matrices on the final configuration}
+\chapter{Confusion matrices on the final configuration}
 \label{app:confusionmatrices}
 
 Figure~\ref{fig:app_cm} reproduces the test-sample confusion matrices for each MLP architecture on the v3~+~equal-$\sigma$ configuration. The three specialised classifiers and the global binary classifier complement the multi-class confusion matrix already reported in Section~\ref{sec:multiclass_classification} (Figure~\ref{fig:multiclass_cm}).
@@ -41,7 +37,7 @@ Figure~\ref{fig:app_cm} reproduces the test-sample confusion matrices for each M
 \label{fig:app_cm}
 \end{figure}
 
-\section{Feature-ranking plots per classifier}
+\chapter{Feature-ranking plots per classifier}
 \label{app:featureranking}
 
 The permutation feature-importance results discussed in Section~\ref{sec:feature_ranking} are summarised per classifier in the following figures. Both the normalised importance ranking and the per-feature ROC curve are shown for each trained model.
@@ -174,7 +170,7 @@ The permutation feature-importance results discussed in Section~\ref{sec:feature
 \label{fig:app_fr_mc_roc}
 \end{figure}
 
-\section{Discriminant correlations with additional input variables}
+\chapter{Discriminant correlations with additional input variables}
 \label{app:correlations}
 
 Figures~\ref{fig:app_corr_binary} and~\ref{fig:app_corr_mc} extend the correlation study of Section~\ref{sec:correlation_studies} to the remaining input variables not covered in the main text: the diboson invariant mass $m_{JJ}$, the VBF-RNN score, the sub-leading signal-jet $p_T$ and the two signal-jet pseudorapidities.
@@ -253,7 +249,7 @@ Figures~\ref{fig:app_corr_binary} and~\ref{fig:app_corr_mc} extend the correlati
 \label{fig:app_corr_mc}
 \end{figure}
 
-\section{Per-operator multivariate discriminant templates on the final configuration}
+\chapter{Per-operator multivariate discriminant templates on the final configuration}
 \label{app:templates_v3eq}
 
 The following figures show the binned multivariate discriminant templates for every probed operator not displayed in Section~\ref{sec:sens_discriminants}, on the v3~+~equal-$\sigma$ configuration. Each panel uses the same hatched $30\%$ Gaussian background uncertainty band as the main-text discriminant figures.
