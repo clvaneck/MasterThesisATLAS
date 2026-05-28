@@ -7,33 +7,33 @@ Figure~\ref{fig:app_cm} reproduces the test-sample confusion matrices for each M
 
 \begin{figure}[htbp]
 \centering
-\begin{subfigure}[b]{0.32\textwidth}
+\begin{subfigure}[b]{0.38\textwidth}
 \includegraphics[width=\textwidth]{ConfusionMatrices-vbfrnn-v3-equal-signal-crosssection/CM_test_weighted_specialisedscalar.png}
 \caption{Specialised scalar.}
 \end{subfigure}
 \hfill
-\begin{subfigure}[b]{0.32\textwidth}
+\begin{subfigure}[b]{0.38\textwidth}
 \includegraphics[width=\textwidth]{ConfusionMatrices-vbfrnn-v3-equal-signal-crosssection/CM_test_weighted_specialisedmixed.png}
 \caption{Specialised mixed.}
 \end{subfigure}
 \hfill
-\begin{subfigure}[b]{0.32\textwidth}
+\begin{subfigure}[b]{0.38\textwidth}
 \includegraphics[width=\textwidth]{ConfusionMatrices-vbfrnn-v3-equal-signal-crosssection/CM_test_weighted_specialisedtensor.png}
 \caption{Specialised tensor.}
 \end{subfigure}
 
 \medskip
 
-\begin{subfigure}[b]{0.45\textwidth}
+\begin{subfigure}[b]{0.38\textwidth}
 \includegraphics[width=\textwidth]{ConfusionMatrices-vbfrnn-v3-equal-signal-crosssection/CM_test_weighted_globalbinary.png}
 \caption{Global binary.}
 \end{subfigure}
 \hfill
-\begin{subfigure}[b]{0.45\textwidth}
+\begin{subfigure}[b]{0.38\textwidth}
 \includegraphics[width=\textwidth]{ConfusionMatrices-vbfrnn-v3-equal-signal-crosssection/CM_test_weighted_multiclass.png}
 \caption{Multi-class.}
 \end{subfigure}
-\caption{Weighted test-sample confusion matrices for the five MLP discriminants on the v3~+~equal-$\sigma$ configuration.}
+\caption{Confusion matrices for the five MLP discriminants on the v3~+~equal-$\sigma$ version.}
 \label{fig:app_cm}
 \end{figure}
 
@@ -44,51 +44,51 @@ The permutation feature-importance results discussed in Section~\ref{sec:feature
 
 \begin{figure}[H]
 \centering
-\begin{subfigure}[b]{0.48\textwidth}
+\begin{subfigure}[b]{0.40\textwidth}
 \includegraphics[width=\textwidth]{FeatureRanking-vbfrnn-v3-equal-signal-crosssection/SpecialisedScalar/plot_FR_Rank_norm.png}
 \caption{Scalar, importance.}
 \end{subfigure}
 \hfill
-\begin{subfigure}[b]{0.48\textwidth}
+\begin{subfigure}[b]{0.40\textwidth}
 \includegraphics[width=\textwidth]{FeatureRanking-vbfrnn-v3-equal-signal-crosssection/SpecialisedScalar/plot_FR_ROC.png}
 \caption{Scalar, ROC.}
 \end{subfigure}
 
 \medskip
 
-\begin{subfigure}[b]{0.48\textwidth}
+\begin{subfigure}[b]{0.40\textwidth}
 \includegraphics[width=\textwidth]{FeatureRanking-vbfrnn-v3-equal-signal-crosssection/SpecialisedMixed/plot_FR_Rank_norm.png}
 \caption{Mixed, importance.}
 \end{subfigure}
 \hfill
-\begin{subfigure}[b]{0.48\textwidth}
+\begin{subfigure}[b]{0.40\textwidth}
 \includegraphics[width=\textwidth]{FeatureRanking-vbfrnn-v3-equal-signal-crosssection/SpecialisedMixed/plot_FR_ROC.png}
 \caption{Mixed, ROC.}
 \end{subfigure}
 
 \medskip
 
-\begin{subfigure}[b]{0.48\textwidth}
+\begin{subfigure}[b]{0.40\textwidth}
 \includegraphics[width=\textwidth]{FeatureRanking-vbfrnn-v3-equal-signal-crosssection/SpecialisedTensor/plot_FR_Rank_norm.png}
 \caption{Tensor, importance.}
 \end{subfigure}
 \hfill
-\begin{subfigure}[b]{0.48\textwidth}
+\begin{subfigure}[b]{0.40\textwidth}
 \includegraphics[width=\textwidth]{FeatureRanking-vbfrnn-v3-equal-signal-crosssection/SpecialisedTensor/plot_FR_ROC.png}
 \caption{Tensor, ROC.}
 \end{subfigure}
-\caption{Permutation feature importance and per-feature ROC curves for the three specialised binary classifiers on the v3~+~equal-$\sigma$ configuration.}
+\caption{Permutation importance for the three specialised binary classifiers using v3~+~equal-$\sigma$}
 \label{fig:app_fr_specialised}
 \end{figure}
 
 \begin{figure}[H]
 \centering
-\begin{subfigure}[b]{0.48\textwidth}
+\begin{subfigure}[b]{0.40\textwidth}
 \includegraphics[width=\textwidth]{FeatureRanking-vbfrnn-v3-equal-signal-crosssection/GlobalBinary/plot_FR_Rank_norm.png}
 \caption{Importance.}
 \end{subfigure}
 \hfill
-\begin{subfigure}[b]{0.48\textwidth}
+\begin{subfigure}[b]{0.40\textwidth}
 \includegraphics[width=\textwidth]{FeatureRanking-vbfrnn-v3-equal-signal-crosssection/GlobalBinary/plot_FR_ROC.png}
 \caption{ROC.}
 \end{subfigure}
@@ -170,86 +170,83 @@ The permutation feature-importance results discussed in Section~\ref{sec:feature
 \label{fig:app_fr_mc_roc}
 \end{figure}
 
-\chapter{Discriminant correlations with additional input variables}
+\chapter{Discriminant correlations}
 \label{app:correlations}
-
-Figures~\ref{fig:app_corr_binary} and~\ref{fig:app_corr_mc} extend the correlation study of Section~\ref{sec:correlation_studies} to the remaining input variables not covered in the main text: the diboson invariant mass $m_{JJ}$, the VBF-RNN score, the sub-leading signal-jet $p_T$ and the two signal-jet pseudorapidities.
-
 \begin{figure}[htbp]
 \centering
-\begin{subfigure}[b]{0.48\textwidth}
+\begin{subfigure}[b]{0.38\textwidth}
 \includegraphics[width=\textwidth]{combined_var_disc-vbfrnn-v3-equal-signal-crosssection/binary_combined_JJ_M_NOSYS.png}
 \caption{$m_{JJ}$.}
 \end{subfigure}
 \hfill
-\begin{subfigure}[b]{0.48\textwidth}
+\begin{subfigure}[b]{0.38\textwidth}
 \includegraphics[width=\textwidth]{combined_var_disc-vbfrnn-v3-equal-signal-crosssection/binary_combined_RNNScore_NOSYS.png}
 \caption{VBF-RNN score.}
 \end{subfigure}
 
 \medskip
 
-\begin{subfigure}[b]{0.48\textwidth}
+\begin{subfigure}[b]{0.38\textwidth}
 \includegraphics[width=\textwidth]{combined_var_disc-vbfrnn-v3-equal-signal-crosssection/binary_combined_SigJet1_pT_NOSYS.png}
 \caption{Leading $p_T$.}
 \end{subfigure}
 \hfill
-\begin{subfigure}[b]{0.48\textwidth}
+\begin{subfigure}[b]{0.38\textwidth}
 \includegraphics[width=\textwidth]{combined_var_disc-vbfrnn-v3-equal-signal-crosssection/binary_combined_SigJet2_pT_NOSYS.png}
 \caption{Sub-leading $p_T$.}
 \end{subfigure}
 
 \medskip
 
-\begin{subfigure}[b]{0.48\textwidth}
+\begin{subfigure}[b]{0.38\textwidth}
 \includegraphics[width=\textwidth]{combined_var_disc-vbfrnn-v3-equal-signal-crosssection/binary_combined_SigJet1_eta_NOSYS.png}
 \caption{Leading $\eta$.}
 \end{subfigure}
 \hfill
-\begin{subfigure}[b]{0.48\textwidth}
+\begin{subfigure}[b]{0.38\textwidth}
 \includegraphics[width=\textwidth]{combined_var_disc-vbfrnn-v3-equal-signal-crosssection/binary_combined_SigJet2_eta_NOSYS.png}
 \caption{Sub-leading $\eta$.}
 \end{subfigure}
-\caption{Two-dimensional distribution of the global binary discriminant against the six labelled event-level variables on the v3~+~equal-$\sigma$ configuration. The distributions combine the background and signal samples.}
+\caption{2D distribution of the global binary discriminant using the v3~+~equal-$\sigma$ version.}
 \label{fig:app_corr_binary}
 \end{figure}
 
 \begin{figure}[htbp]
 \centering
-\begin{subfigure}[b]{0.48\textwidth}
+\begin{subfigure}[b]{0.38\textwidth}
 \includegraphics[width=\textwidth]{combined_var_disc-vbfrnn-v3-equal-signal-crosssection/mc01_combined_JJ_M_NOSYS.png}
 \caption{$m_{JJ}$.}
 \end{subfigure}
 \hfill
-\begin{subfigure}[b]{0.48\textwidth}
+\begin{subfigure}[b]{0.38\textwidth}
 \includegraphics[width=\textwidth]{combined_var_disc-vbfrnn-v3-equal-signal-crosssection/mc01_combined_RNNScore_NOSYS.png}
 \caption{VBF-RNN score.}
 \end{subfigure}
 
 \medskip
 
-\begin{subfigure}[b]{0.48\textwidth}
+\begin{subfigure}[b]{0.38\textwidth}
 \includegraphics[width=\textwidth]{combined_var_disc-vbfrnn-v3-equal-signal-crosssection/mc01_combined_SigJet1_pT_NOSYS.png}
 \caption{Leading $p_T$.}
 \end{subfigure}
 \hfill
-\begin{subfigure}[b]{0.48\textwidth}
+\begin{subfigure}[b]{0.38\textwidth}
 \includegraphics[width=\textwidth]{combined_var_disc-vbfrnn-v3-equal-signal-crosssection/mc01_combined_SigJet2_pT_NOSYS.png}
 \caption{Sub-leading $p_T$.}
 \end{subfigure}
 
 \medskip
 
-\begin{subfigure}[b]{0.48\textwidth}
+\begin{subfigure}[b]{0.38\textwidth}
 \includegraphics[width=\textwidth]{combined_var_disc-vbfrnn-v3-equal-signal-crosssection/mc01_combined_SigJet1_eta_NOSYS.png}
 \caption{Leading $\eta$.}
 \end{subfigure}
 \hfill
-\begin{subfigure}[b]{0.48\textwidth}
+\begin{subfigure}[b]{0.38\textwidth}
 \includegraphics[width=\textwidth]{combined_var_disc-vbfrnn-v3-equal-signal-crosssection/mc01_combined_SigJet2_eta_NOSYS.png}
 \caption{Sub-leading $\eta$.}
 \end{subfigure}
-\caption{Two-dimensional distribution of the multi-class scalar-node discriminant against the six labelled event-level variables on the v3~+~equal-$\sigma$ configuration.}
+\caption{2D distribution of the multi-class discriminant using the v3~+~equal-$\sigma$ version.}
 \label{fig:app_corr_mc}
 \end{figure}
 
