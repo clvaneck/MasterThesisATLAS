@@ -157,9 +157,9 @@ As an alternative to the recurrent architecture, a transformer encoder was also 
 
 While the VBF-RNN identifies the characteristic topology of VBS events, the primary goal of this analysis is to maximise sensitivity to anomalous quartic gauge couplings. The discriminating information between aQGC signal and background is distributed across several event-level observables, motivating the use of an MLP to combine them optimally into a single discriminant.
 
-To define a training selection that moves the phase space close to the analysis signal region, a dedicated boson tagger is applied to the large-$R$ jets. The DisCoJet tagger is an ATLAS machine learning based classifier trained to identify large-$R$ jets consistent with hadronic $W$ or $Z$ boson decays using jet substructure observables. A key property of DisCoJet is that it is explicitly decorrelated from the jet mass: during training, the distance correlation (DisCo) technique~\cite{Kasieczka:2020DisCo} adds a penalty term to the loss that minimises the statistical dependence between the tagger score and the jet mass. This decorrelation ensures that the tagger score does not sculpt the jet mass distribution, preserving the latter as a useful observable in the analysis.
+To define a training selection that moves the phase space close to the analysis signal region, a dedicated boson tagger is applied to the large-$R$ jets. The DisCoJet tagger is a machine learning based classifier trained to identify large-$R$ jets consistent with hadronic $W$ or $Z$ boson decays using jet substructure observables. A key property of DisCoJet is that it is explicitly decorrelated from the jet mass: during training, the distance correlation (DisCo) technique~\cite{Kasieczka:2020DisCo} adds a penalty term to the loss that minimises the statistical dependence between the tagger score and the jet mass. This decorrelation ensures that the tagger score does not sculpt the jet mass distribution, preserving the latter as a useful observable in the analysis.
 
-A training selection is defined to bring the phase space close to the analysis signal region without yet defining it exactly. It requires a VBF-RNN v3 score above 0.3 and a DisCoJet score above 0.65 for both large-$R$ jets, as summarised in Table~\ref{tab:mlp_selection}. The MLP-based discriminant is trained and evaluated within this selection.
+A training selection is defined to bring the phase space close to the analysis signal region without yet defining it exactly. It requires a VBF-RNN score above 0.3 and a DisCoJet score above 0.65 for both large-$R$ jets, as summarised in Table~\ref{tab:mlp_selection}. The MLP-based discriminant is trained and evaluated within this selection.
 
 \begin{table}[htbp]
   \centering
@@ -169,7 +169,7 @@ A training selection is defined to bring the phase space close to the analysis s
     \hline
     \textbf{Stage} & \textbf{Requirements} \\
     \hline
-    Training selection & VBF-RNN v3 score $> 0.3$ \\
+    Training selection & VBF-RNN score $> 0.3$\\
                             & DisCoJet score $> 0.65$ for both large-$R$ jets \\
     \hline
   \end{tabular}
