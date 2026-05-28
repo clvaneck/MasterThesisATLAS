@@ -247,19 +247,15 @@ The MLP takes twelve event-level features as input: the transverse momentum, pse
 
 The background sample represents the full expected composition in the training selection, dominated by QCD dijet production ($\sim\!96\%$), with subdominant contributions from $V$+jets ($\sim\!3\%$), $t\bar{t}$ ($\sim\!1\%$), QCD diboson and electroweak $VV$+$jj$ production. Only the pure-EFT quadratic contribution to the signal cross section is used during training, as the linear interference term between the SM and EFT amplitudes is neglected in this analysis. To avoid the training being dominated by operators with large production cross sections, the aQGC signal samples are reweighted during training so that each operator contributes equally, effectively equalising their cross sections. The correct physical cross sections are restored when evaluating sensitivity.
 
-\subsection{Binary classifier}
+\subsection{Binary and multi-class classifiers}
 
 The binary classifier is an MLP with a single sigmoid output node, trained to assign a score $s \in [0,1]$ representing the probability that an event originates from aQGC signal. As discussed in Chapter~\ref{chap:ml}, the sigmoid activation together with the binary cross-entropy loss drives the network output towards the true posterior $P(y=1 \mid \mathbf{x})$.
 
 Two variants of the binary classifier are trained. Specialised models are trained on a single operator family at a time, pairing the two lowest-index operators within each family: $\mathcal{O}_{S,0}+\mathcal{O}_{S,1}$, $\mathcal{O}_{M,0}+\mathcal{O}_{M,1}$, or $\mathcal{O}_{T,0}+\mathcal{O}_{T,1}$. A global model is trained on an ensemble of all available operators spanning the scalar, mixed and tensor families, $S(0\text{--}1) + M(0\text{--}5,\,7) + T(0\text{--}9)$, providing broad sensitivity across the full operator space without requiring a separate model for each operator.
 
-\subsection{Multi-class classifier}
-
 The binary approach assigns a single signal probability without distinguishing between operator families. Since the three operator families produce distinct kinematic signatures, as discussed in Chapter~\ref{chap:sm}, a natural extension is to train a single model that simultaneously identifies both the presence of aQGC signal and its operator family.
 
 The multi-class classifier extends the output layer to $K=4$ nodes corresponding to background, scalar, mixed and tensor classes. A softmax activation is applied to produce a valid probability distribution $(\hat{y}_1,\dots,\hat{y}_K)$ over the four classes and the network is trained by minimising the categorical cross-entropy loss, following the multi-class formulation described in Chapter~\ref{chap:ml}. The network is trained on all available operators across all three families simultaneously, with class balancing applied to account for the differing numbers of operators per family.
-
-\subsection{Architecture and training hyperparameters}
 
 Both the binary and multi-class MLPs share a feed-forward architecture of fully connected hidden layers with ReLU activations, followed by an output layer whose form is dictated by the classification task: a single sigmoid node for the binary classifier and four softmax nodes for the multi-class classifier. The two networks differ in width, depth and dropout. The multi-class classifier is wider and uses slightly stronger dropout to control overfitting on the more granular labelling task, while the binary classifier is deeper but narrower. The complete set of architecture and training hyperparameters is given in Table~\ref{tab:mlp_hyperparams}.
 
