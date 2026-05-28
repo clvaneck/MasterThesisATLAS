@@ -5,18 +5,16 @@ The A Toroidal LHC ApparatuS (ATLAS) experiment~\cite{Aad:2008zzm} is the larges
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.7\textwidth]{figures/Detector.png}
+    \includegraphics[width=0.65\textwidth]{figures/Detector.png}
     \caption{Schematic overview of the ATLAS detector, showing the inner detector, calorimeter systems and muon spectrometer arranged concentrically around the interaction point~\cite{ATLAS:detector-schematic}.}
     \label{fig:atlas_detector}
 \end{figure}
 
 \section{Large Hadron Collider}
-The Large Hadron Collider (LHC)~\cite{Evans:2008zzb} is a 27~km circular proton-proton accelerator near Geneva, where superconducting dipole magnets producing fields of 8.3~T guide two counter-rotating beams to collide at several interaction points, including ATLAS. Each beam consists of bunches of order $10^{11}$ protons separated by 25~ns. Run~1 (from 2010 to 2012) delivered approximately 25~fb$^{-1}$ at $\sqrt{s} = 7$ and 8~TeV. Run~2 (from 2015 to 2018) provided about 140~fb$^{-1}$ at $\sqrt{s} = 13$~TeV. This analysis uses Run~2 data and the corresponding simulated events.
+The Large Hadron Collider (LHC)~\cite{Evans:2008zzb} is a 27~km circular proton-proton accelerator near Geneva, where superconducting dipole magnets producing fields of 8.3~T guide two counter-rotating beams to collide at several interaction points, including ATLAS. Each beam consists of bunches of order $10^{11}$ protons separated by 25~ns. Run~1 (from 2010 to 2012) delivered approximately 25~fb$^{-1}$ at $\sqrt{s} = 7$ and 8~TeV. Run~2 (from 2015 to 2018) provided about 140~fb$^{-1}$ at $\sqrt{s} = 13$~TeV. This analysis uses Run~2 data and the corresponding simulated events, with the addition of Run-3 data in the future.
 
 \section{Inner detector}
 The inner detector reconstructs charged-particle trajectories within $|\eta| < 2.5$ and operates inside a 2~T solenoidal field aligned with the beam axis. The resulting curvature of charged tracks gives access to the transverse momentum via $r = p_\mathrm{T}/(qB)$, so that $p_\mathrm{T}$ is inversely proportional to the track curvature $\kappa = 1/r$. Three subsystems contribute: the silicon pixel detector at the innermost radii, the surrounding Semiconductor Tracker (SCT) and the Transition Radiation Tracker (TRT). The proximity of these layers to the interaction point enables vertex reconstruction and discrimination between tracks from the primary hard scatter and those from additional pile-up interactions.
-
-The current inner detector is being replaced by the Inner Tracker (ITk)~\cite{ATLAS:ITkPixelTDR} for the High Luminosity LHC (HL-LHC), which will operate at higher instantaneous luminosities and pile-up. The ITk is an all-silicon detector of pixel and strip layers. During this thesis, I contributed to the testing setup for the ITk cooling capillary system, which is critical for maintaining stable silicon-sensor operating temperatures under the increased load of the HL-LHC.
 
 \section{Calorimeter system}
 Surrounding the inner detector, the calorimeter system measures particle energies by absorbing them and sampling the resulting electromagnetic and hadronic showers, with coverage extending to $|\eta| < 4.9$. The electromagnetic calorimeter is optimised for electrons and photons, which deposit their energy through bremsstrahlung and pair production and provides a pseudorapidity resolution of $\Delta\eta \approx 0.025$. Strongly interacting particles typically traverse the electromagnetic calorimeter with only partial energy loss and are absorbed in the hadronic calorimeter, which has a coarser resolution of $\Delta\eta \approx 0.1$ due to the larger fluctuations of hadronic showers. Energy deposits in both systems are combined into localised topological clusters that serve as inputs for higher-level object reconstruction.
