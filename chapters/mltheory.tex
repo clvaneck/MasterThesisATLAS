@@ -105,7 +105,7 @@ The key distinction from recurrent architectures is that Equation~\eqref{eq:atte
 
 \section{Permutation importance}
 \label{sec:permutation_importance}
-To identify which input features drive the model's predictions without retraining, we can use permutation importance. Let $f$ be the trained model and $A_0$ a scalar performance metric (e.g.\ AUC) evaluated on $\mathcal{D}=\{(\mathbf{x}_i,y_i)\}_{i=1}^{N}$. For feature $j$, its values are randomly permuted across events,
+To identify which input features drive the model's predictions without retraining, we can use permutation importance~\cite{Breiman:2001RF}. Let $f$ be the trained model and $A_0$ a scalar performance metric (e.g.\ AUC) evaluated on $\mathcal{D}=\{(\mathbf{x}_i,y_i)\}_{i=1}^{N}$. For feature $j$, its values are randomly permuted across events,
 \begin{equation}
   x^{(j)}_i \;\longrightarrow\; x^{(j)}_{\pi(i)},
 \end{equation}
