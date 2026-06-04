@@ -51,7 +51,7 @@ The physical process targeted by this analysis is the electroweak production of 
 \label{fig:ewk_diagrams}
 \end{figure}
 
-The VBF-RNN tagger was originally developed to identify the characteristic forward-jet topology of vector boson fusion and vector boson scattering processes and has been deployed in previous ATLAS measurements including the semi-leptonic VBS analysis~\cite{Antonio_VBFRNN_2023}. In this analysis the tagger is adapted and re-optimised for the fully hadronic VBS channel, where both the tagging jets and the signal jets from the hadronically decaying bosons are available as inputs.
+The VBF-RNN tagger was originally developed to identify the characteristic forward-jet topology of vector boson fusion and vector boson scattering processes and has been deployed in previous ATLAS measurements including the semi-leptonic VBS analysis~\cite{ATLAS:semileptonicVBS:2025}. In this analysis the tagger is adapted and re-optimised for the fully hadronic VBS channel, where both the tagging jets and the signal jets from the hadronically decaying bosons are available as inputs.
 
 The classification task is formulated as a supervised binary problem: each event is assigned a label $y = 1$ if it originates from a VBS process and $y = 0$ if it originates from a non-VBS EWK process. To define these labels at the truth level, jets in the training sample are matched to their underlying hard-scatter particles. Boson matching is performed using a $\Delta R$ criterion of $\Delta R < 1.0$ for large-$R$ jets and $\Delta R < 0.4$ for small-$R$ jets. Jets are identified by a subtraction strategy: a jet is labelled as a VBS tagging jet if it is not boson-matched, not gluon-initiated and not consistent with pileup.
 

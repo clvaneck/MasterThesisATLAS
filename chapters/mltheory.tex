@@ -9,7 +9,11 @@ A multi-layer perceptron (MLP) is a feedforward neural network organised into $L
 \begin{equation}
 \mathbf{h}^{(\ell)} = \sigma\!\left(W^{(\ell)}\mathbf{h}^{(\ell-1)} + \mathbf{b}^{(\ell)}\right), \qquad W^{(\ell)}\in\mathbb{R}^{n_{\ell}\times n_{\ell-1}},\quad \mathbf{b}^{(\ell)}\in\mathbb{R}^{n_{\ell}}.
 \end{equation}
-The input is $\mathbf{h}^{(0)}=\mathbf{x}$ and the final layer produces the network output $\hat{\mathbf{y}}=\mathbf{h}^{(L)}$.  The parameters $\theta=\{W^{(\ell)},\mathbf{b}^{(\ell)}\}_{\ell=1}^{L}$ are learned by minimising a loss functional over a training dataset. Before training, input features are standardised to zero mean and unit variance across the training set.
+The input is $\mathbf{h}^{(0)}=\mathbf{x}$ and the final layer produces the network output $\hat{\mathbf{y}}=\mathbf{h}^{(L)}$. Parameters are updated by stochastic gradient descent.  At each step a mini-batch $\mathcal{B}\subset\{1,\dots,N\}$ is drawn and the parameter vector updated as
+\begin{equation}
+\theta \leftarrow \theta - \eta\,\nabla_{\theta}\, \frac{1}{|\mathcal{B}|}\sum_{i\in\mathcal{B}}\ell(\hat{y}_i,y_i),
+\end{equation}
+where $\eta$ is the learning rate and $\ell$ is the per-example loss function.  The gradients are computed using backpropagation, which applies the chain rule layer by layer from the output back to the input \cite{Rumelhart_Backprop_1986}. Before training, input features are standardised to zero mean and unit variance across the training set.
 
 \subsection{Binary classification}
 \label{sec:binary}
@@ -41,17 +45,11 @@ where $z_k$ are the pre-activations of the final layer.  By construction $\hat{y
 \end{equation}
 where $y_{ik}\in\{0,1\}$ is the encoded true label ($y_{ik}=1$ if example $i$ belongs to class $k$, zero otherwise).  Only the term corresponding to the true class contributes to the sum for each example, so minimising $\mathcal{L}_{\mathrm{CCE}}$ drives the network to concentrate probability mass on the correct class.
 
-In the context of aQGC searches, the multi-class formulation is particularly natural.  Each operator family defines a distinct signal class and the softmax output $\hat{y}_k$ provides a per-event estimate of the posterior probability for operator $k$.  A single multi-class network can therefore simultaneously discriminate among all operator types, replacing the combination of multiple binary classifiers that would otherwise be required.
-
-Parameters are updated by stochastic gradient descent.  At each step a mini-batch $\mathcal{B}\subset\{1,\dots,N\}$ is drawn and the parameter vector updated as
-\begin{equation}
-\theta \leftarrow \theta - \eta\,\nabla_{\theta}\, \frac{1}{|\mathcal{B}|}\sum_{i\in\mathcal{B}}\ell(\hat{y}_i,y_i),
-\end{equation}
-where $\eta$ is the learning rate and $\ell$ is the per-example loss from either \eqref{eq:bce} or \eqref{eq:cce}.  The gradients are computed efficiently by backpropagation, which applies the chain rule layer by layer from the output back to the input \cite{Rumelhart_Backprop_1986}.
+In the context of aQGC searches, the multi-class formulation is particularly natural.  Each operator family defines a distinct signal class and the softmax output $\hat{y}_k$ provides a per-event estimate of the posterior probability for operator $k$.  A single multi-class network can therefore simultaneously discriminate among operator types and separate them from the background, replacing the combination of multiple binary classifiers that would otherwise be required.
 
 \section{Recurrent neural network}
 
-A recurrent neural network processes sequential inputs $(\mathbf{x}_1,\mathbf{x}_2,\dots,\mathbf{x}_T)$ of variable length $T$ by maintaining a hidden state that is updated at each step and carries information forward through the sequence.  Vanilla recurrent architectures suffer from vanishing and exploding gradients when $T$ is large, because backpropagation through time involves repeated multiplication by the same weight matrix, causing gradient norms to shrink or grow exponentially with depth.  The long short-term memory (LSTM) \cite{Hochreiter_LSTM_1997} resolves this by introducing a dedicated cell state $\mathbf{c}_t\in\mathbb{R}^{d}$ that carries long-range information along an additive path, insulated from the multiplicative degradation that affects the hidden state $\mathbf{h}_t\in\mathbb{R}^{d}$.
+A recurrent neural network processes sequential inputs $(\mathbf{x}_1,\mathbf{x}_2,\dots,\mathbf{x}_T)$ of variable length $T$ by maintaining a hidden state that is updated at each step and carries information forward through the sequence.  Original recurrent architectures suffered from vanishing and exploding gradients when $T$ is large, because backpropagation through time involves repeated multiplication by the same weight matrix, causing gradient norms to shrink or grow exponentially with depth.  The long short-term memory (LSTM) \cite{Hochreiter_LSTM_1997} resolves this by introducing a dedicated cell state $\mathbf{c}_t\in\mathbb{R}^{d}$ that carries long-range information along an additive path, insulated from the multiplicative degradation that affects the hidden state $\mathbf{h}_t\in\mathbb{R}^{d}$.
 
 At each step $t$ the LSTM computes three vectors from the previous hidden state $\mathbf{h}_{t-1}$ and the current input $\mathbf{x}_t$,
 \begin{align}
@@ -118,4 +116,4 @@ normalised to unit sum as
   I_j = \frac{\Delta A_j}{\sum_{k}\Delta A_k}.
   \label{eq:rel_importance}
 \end{equation}
-Two caveats apply: correlated features tend to share importance, so a redundant but informative feature may score low.
+Correlated features tend to share importance, so a redundant but informative feature may score low.
