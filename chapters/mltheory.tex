@@ -5,7 +5,7 @@ Machine learning provides a framework for constructing functions that map inputs
 
 \section{Multi-layer perceptron}
 
-A multi-layer perceptron (MLP) is a feedforward neural network organised into $L$ sequential layers.  Each layer $\ell$ maps an input vector $\mathbf{h}^{(\ell-1)}\in\mathbb{R}^{n_{\ell-1}}$ to an output $\mathbf{h}^{(\ell)}\in\mathbb{R}^{n_{\ell}}$ by a linear transformation followed by a pointwise nonlinearity $\sigma$,
+A multi-layer perceptron (MLP) is a feedforward neural network organised into $L$ sequential layers.  Each layer $\ell$ maps an input vector $\mathbf{h}^{(\ell-1)}\in\mathbb{R}^{n_{\ell-1}}$ to an output $\mathbf{h}^{(\ell)}\in\mathbb{R}^{n_{\ell}}$ by a linear transformation followed by an activation function $\sigma$,
 \begin{equation}
 \mathbf{h}^{(\ell)} = \sigma\!\left(W^{(\ell)}\mathbf{h}^{(\ell-1)} + \mathbf{b}^{(\ell)}\right), \qquad W^{(\ell)}\in\mathbb{R}^{n_{\ell}\times n_{\ell-1}},\quad \mathbf{b}^{(\ell)}\in\mathbb{R}^{n_{\ell}}.
 \end{equation}
@@ -46,7 +46,7 @@ where $z_k$ are the pre-activations of the final layer.  By construction $\hat{y
 \end{equation}
 where $y_{ik}\in\{0,1\}$ is the encoded true label ($y_{ik}=1$ if example $i$ belongs to class $k$, zero otherwise).  Only the term corresponding to the true class contributes to the sum for each example, so minimising $\mathcal{L}_{\mathrm{CCE}}$ drives the network to concentrate probability mass on the correct class.
 
-In the context of aQGC searches, the multi-class formulation is particularly natural.  Each operator family defines a distinct signal class and the softmax output $\hat{y}_k$ provides a per-event estimate of the posterior probability for operator $k$.  A single multi-class network can therefore simultaneously discriminate among operator types and separate them from the background, replacing the combination of multiple binary classifiers that would otherwise be required.
+In the context of aQGC searches, the multi-class formulation is particularly natural.  Each operator family defines a distinct signal class and the softmax output $\hat{y}_k$ provides a per-event estimate of the posterior probability for operator $k$.  A single multi-class network could therefore simultaneously discriminate among operator types and separate them from the background.
 
 \section{Recurrent neural network}
 
@@ -58,7 +58,7 @@ At each step $t$ the LSTM computes three vectors from the previous hidden state 
 \mathbf{i}_{t} &= \sigma\!\left(W_{i}\,[\mathbf{h}_{t-1},\mathbf{x}_{t}]+\mathbf{b}_{i}\right), &&\text{(input gate)}\\[3pt]
 \mathbf{o}_{t} &= \sigma\!\left(W_{o}\,[\mathbf{h}_{t-1},\mathbf{x}_{t}]+\mathbf{b}_{o}\right), &&\text{(output gate)}
 \end{align}
-where $\sigma$ is the sigmoid activation.  Each gate is a vector in $(0,1)^d$ whose entries act as soft switches.  A potential update to the cell state is computed as
+where $\sigma$ is the sigmoid activation.  Each gate is a vector in $(0,1)^d$ whose entries act as switches.  A potential update to the cell state is computed as
 \begin{equation}
 \tilde{\mathbf{c}}_{t} = \tanh\!\left(W_{c}\,[\mathbf{h}_{t-1},\mathbf{x}_{t}]+\mathbf{b}_{c}\right).
 \end{equation}
@@ -80,7 +80,7 @@ After processing all $T$ steps, the final hidden state $\mathbf{h}_T$ encodes a 
 
 \section{Transformer architecture}
 
-The transformer \cite{Vaswani_Attention_2017} abandons recurrent processing in favour of a fully parallel architecture built around the scaled dot-product attention mechanism.  Given a sequence of $T$ input vectors assembled as rows of a matrix $X\in\mathbb{R}^{T\times d}$, three linear projections produce queries, keys and values,
+The transformer \cite{Vaswani_Attention_2017} abandons recurrent processing in favour of a fully parallel architecture built around the dot-product attention mechanism.  Given a sequence of $T$ input vectors assembled as rows of a matrix $X\in\mathbb{R}^{T\times d}$, three linear projections produce queries, keys and values,
 \begin{equation}
 Q = XW^{Q},\quad K = XW^{K},\quad V = XW^{V}, \qquad W^{Q},W^{K},W^{V}\in\mathbb{R}^{d\times d_k}.
 \end{equation}
@@ -100,7 +100,7 @@ In practice $H$ independent attention heads are computed in parallel on lower-di
 \end{equation}
 Each head can attend to different structural features of the sequence simultaneously.  The attention block is followed by a position-wise feedforward network applied identically at each position, together forming a transformer encoder layer. 
 
-The key distinction from recurrent architectures is that Equation~\eqref{eq:attention} computes interactions between every pair of positions $(i,j)$ in a single matrix operation, with no sequential dependency.  The computational cost of the attention step scales as $\mathcal{O}(T^{2}d_{k})$, so the architecture is most advantageous when $T$ is large enough that the rich pairwise interaction structure justifies this cost.  In particle physics applications, where a jet or event can be represented as a sequence of $\mathcal{O}(10^2)$ or more constituent particles or detector objects, the transformer's ability to capture long-range correlations across the full sequence in a single layer gives it a structural advantage over recurrent models that propagate information step by step and may lose distant context.  A classification token appended to the sequence, or a pooling operation over the final hidden states, extracts a fixed-length representation to which a sigmoid or softmax head is applied.
+The key distinction from recurrent architectures is that Equation~\eqref{eq:attention} computes interactions between every pair of positions $(i,j)$ in a single matrix operation, with no sequential dependency.  The computational cost of the attention step scales as $\mathcal{O}(T^{2}d_{k})$, so the architecture is most advantageous when $T$ is large enough that the pairwise interaction structure justifies this cost.  In particle physics applications, where a jet or event can be represented as a sequence of $\mathcal{O}(10^2)$ or more constituent particles or detector objects, the transformer's ability to capture long-range correlations across the full sequence in a single layer gives it a structural advantage over recurrent models that propagate information step by step and may lose distant context.  A classification token appended to the sequence, or a pooling operation over the final hidden states, extracts a fixed-length representation to which a sigmoid or softmax head is applied.
 
 \section{Permutation importance}
 \label{sec:permutation_importance}
