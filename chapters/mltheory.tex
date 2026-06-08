@@ -21,6 +21,7 @@ where $\eta$ is the learning rate and $\ell$ is the per-example loss function.  
 In binary classification the network produces a single output score $\hat{y}\in(0,1)$ interpreted as the probability $P(y=1\mid\mathbf{x})$ that the input belongs to the positive class.  This score is produced by taking the final layer to have a single unit with the sigmoid activation
 \begin{equation}
 \sigma(z) = \frac{1}{1+e^{-z}},
+\label{eq:sigmoid}
 \end{equation}
 which squashes any real-valued pre-activation $z$ into the unit interval.  The corresponding loss function is the binary cross-entropy,
 \begin{equation}
@@ -38,7 +39,7 @@ When the target space has $K>2$ mutually exclusive classes, the output layer is 
 \hat{y}_{k} = \frac{e^{z_{k}}}{\sum_{j=1}^{K}e^{z_{j}}}, \qquad k=1,\dots,K,
 \label{eq:softmax}
 \end{equation}
-where $z_k$ are the pre-activations of the final layer.  By construction $\hat{y}_k\in(0,1)$ and $\sum_k\hat{y}_k=1$, so the output vector forms a valid discrete probability distribution over the $K$ classes.  For $K=2$ the softmax reduces to Equation~\eqref{eq:bce}.  The corresponding loss is the categorical cross-entropy,
+where $z_k$ are the pre-activations of the final layer.  By construction $\hat{y}_k\in(0,1)$ and $\sum_k\hat{y}_k=1$, so the output vector forms a valid discrete probability distribution over the $K$ classes.  For $K=2$ the softmax reduces to the sigmoid activation of Equation~\eqref{eq:sigmoid}.  The corresponding loss is the categorical cross-entropy,
 \begin{equation}
 \mathcal{L}_{\mathrm{CCE}} = -\frac{1}{N}\sum_{i=1}^{N}\sum_{k=1}^{K} y_{ik}\log\hat{y}_{ik},
 \label{eq:cce}
