@@ -282,7 +282,7 @@ Both the binary and multi-class MLPs are implemented in Keras~\cite{Chollet_Kera
 \end{table}
 
 \subsection{Final discriminant and significance estimation}
-\label{final_discirminant}
+\label{final_discriminant}
 The final discriminant used for sensitivity estimation is the logarithm of the likelihood ratio derived from the classifier output. This transformation is motivated by the Neyman-Pearson lemma, which guarantees that the likelihood ratio is the most powerful test statistic for a simple hypothesis test \cite{Neyman:1933wgr}. By training the classifier to approximate the posterior probabilities, the log-ratio of the outputs approximates the log-likelihood ratio and therefore approaches the optimal discriminant.
 
 For the binary classifier, the single sigmoid output $p \in [0,1]$ encodes the signal posterior, so that $p_{\mathrm{signal}} = p$ and $p_{\mathrm{background}} = 1-p$. The discriminant reduces to the logit transformation of the output score,
