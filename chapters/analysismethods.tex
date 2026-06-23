@@ -111,7 +111,7 @@ The network consists of two stacked LSTM layers. The first layer processes the j
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.5\textwidth]{figures/VBFRNN.png}
+\includegraphics[width=0.7\textwidth]{figures/VBFRNN.png}
 \caption{Illustration of the VBF-RNN architecture \cite{Antonio_VBFRNN_2023}. The input sequence of jet four-vectors is processed by two stacked LSTM layers and the final hidden state is passed to a sigmoid output node.}
 \label{fig:vbfrnn}
 \end{figure}
@@ -194,7 +194,7 @@ A training selection is defined to bring the phase space close to the analysis s
 
 \subsection{Input features and training samples}
 
-The MLP takes twelve event-level features as input: the transverse momentum, pseudorapidity, azimuthal angle and invariant mass of each of the two leading large-$R$ signal jets, the VBF-RNN score from version~3 of the tagger and three multiplicity variables: the number of tagging jets provided to the RNN, the total number of small-$R$ jets and the number of large-$R$ jets. All features are standardised to zero mean and unit variance prior to training. Normalised distributions of the input variables for representative S0, M0 and T0 aQGC signal samples and the composite background are shown in Figures~\ref{fig:input_distributions} and~\ref{fig:input_distributions_extra}.
+The MLP takes twelve event-level features as input: the transverse momentum, pseudorapidity, azimuthal angle and invariant mass of each of the two leading large-$R$ signal jets, the VBF-RNN score and three multiplicity variables: the number of tagging jets provided to the RNN, the total number of small-$R$ jets and the number of large-$R$ jets. All features are standardised to zero mean and unit variance prior to training. Normalised distributions of the input variables for representative S0, M0 and T0 aQGC signal samples and the composite background are shown in Figures~\ref{fig:input_distributions} and~\ref{fig:input_distributions_extra}.
 
 \begin{figure}[htbp]
 \centering
@@ -274,7 +274,7 @@ The binary approach assigns a single signal probability without distinguishing b
 
 The multi-class classifier extends the output layer to $K=4$ nodes corresponding to background, scalar, mixed and tensor classes. A softmax activation is applied to produce a valid probability distribution $(\hat{y}_1,\dots,\hat{y}_K)$ over the four classes and the network is trained by minimising the categorical cross-entropy loss, following the multi-class formulation described in Chapter~\ref{chap:ml}. The network is trained on all available operators across all three families simultaneously, with class balancing applied to account for the differing numbers of operators per family.
 
-Both the binary and multi-class MLPs are implemented in Keras~\cite{Chollet_Keras_2015} and share a feed-forward architecture of fully connected hidden layers with ReLU activations, followed by an output layer whose form is dictated by the classification task: a single sigmoid node for the binary classifier and four softmax nodes for the multi-class classifier. The two networks differ in width and depth. The multi-class classifier is wider and deeper compared to the binary classifier. The complete set of architecture and training hyperparameters is given in Table~\ref{tab:mlp_hyperparams}.
+Both the binary and multi-class MLPs are implemented in Keras~\cite{Chollet_Keras_2015} and share a feed-forward architecture of fully connected hidden layers with ReLU activations, followed by an output layer whose form is dictated by the classification task: a single sigmoid node for the binary classifier and four softmax nodes for the multi-class classifier. The multi-class classifier is wider and deeper compared to the binary classifier. The complete set of hyperparameters is given in Table~\ref{tab:mlp_hyperparams}.
 
 \begin{table}[htbp]
   \centering
