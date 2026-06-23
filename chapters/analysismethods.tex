@@ -30,30 +30,46 @@ The chapter is organised as follows. Section~\ref{sec:vbfrnn} describes the VBF-
 \section{Vector boson scattering topology identification}
 \label{sec:vbfrnn}
 
-The physical process targeted by this analysis is the electroweak production of two vector bosons in association with two jets, $pp \to VVjj$~(EWK). This inclusive EWK process contains both VBS and non-VBS contributions, illustrated in Figure~\ref{fig:ewk_diagrams}: the VBS subprocess (Figure~\ref{fig:vbs_ewk}) proceeds through a genuine $VV \to VV$ scattering vertex and exhibits the characteristic forward-jet topology that distinguishes it from the non-VBS EWK diagrams (Figure~\ref{fig:novbs_ewk}), in which the vector bosons are radiated from the quark lines and contribute to the same $VVjj$ final state. Extracting the VBS component from the broader EWK $VVjj$ production is therefore a necessary step before searching for anomalous couplings.
+The physical process targeted by this analysis is the electroweak production of two vector bosons in association with two jets, $pp \to VVjj$~(EWK). This inclusive EWK process is produced as a single sample that contains several distinct contributions to the same $VVjj$ final state, illustrated in Figure~\ref{fig:ewk_diagrams}. The genuine VBS subprocess (Figure~\ref{fig:vbs_ewk}) proceeds through a $VV \to VV$ scattering vertex and is the signal of interest. It is accompanied by radiative diagrams in which a vector boson is emitted directly from a quark line (Figure~\ref{fig:novbs_ewk}); the split between the genuine scattering diagrams and these radiative diagrams is not gauge invariant, so the radiative contribution cannot be isolated unambiguously and is retained together with the VBS signal. The remaining contributions arise from genuinely distinct hard processes that \emph{are} identifiable at truth level: triboson production, $pp \to VVV$ with one boson decaying hadronically (Figure~\ref{fig:vvv_ewk}), and top-associated production such as $tZq$ (Figure~\ref{fig:tzq_ewk}). These two define the non-VBS EWK background. The objective of the VBF-RNN tagger is therefore not to separate VBS from every other EWK $VVjj$ diagram, but to enrich the sample in the VBS topology by rejecting the separable triboson and top-associated contributions.
 
 \begin{figure}[htbp]
 \centering
-\begin{subfigure}[b]{0.40\textwidth}
+\begin{subfigure}[b]{0.45\textwidth}
 \centering
-\includegraphics[width=\textwidth]{figures/vbs_ewk.png}
+\includegraphics[width=\textwidth]{figures/vbs_ewk.pdf}
 \caption{}
 \label{fig:vbs_ewk}
 \end{subfigure}
 \hfill
-\begin{subfigure}[b]{0.40\textwidth}
+\begin{subfigure}[b]{0.45\textwidth}
 \centering
-\includegraphics[width=\textwidth]{figures/novbs_ewk.png}
+\includegraphics[width=\textwidth]{figures/novbs_ewk.pdf}
 \caption{}
 \label{fig:novbs_ewk}
 \end{subfigure}
-\caption{Representative diagrams for the electroweak production of two vector bosons in association with two jets, $pp \to VVjj$~(EWK). (a) The VBS subprocess, in which the two incoming quarks each radiate a vector boson that subsequently scatter, $VV \to VV$, producing the two forward tagging quarks $q''$ and $q'''$ and the two final-state bosons. (b) A non-VBS EWK diagram contributing to the same final state, in which the vector bosons are radiated from the quark lines without a genuine boson scattering vertex.}
+
+\vspace{1.5em}
+
+\begin{subfigure}[b]{0.45\textwidth}
+\centering
+\includegraphics[width=\textwidth]{figures/vvv_ewk.pdf}
+\caption{}
+\label{fig:vvv_ewk}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.45\textwidth}
+\centering
+\includegraphics[width=\textwidth]{figures/tzq_ewk.pdf}
+\caption{}
+\label{fig:tzq_ewk}
+\end{subfigure}
+\caption{Representative diagrams contributing to the inclusive electroweak $pp \to VVjj$~(EWK) sample. (a) The VBS subprocess, in which the two incoming quarks each radiate a vector boson that subsequently scatter, $VV \to VV$, producing the two forward tagging quarks and the two final-state bosons. (b) A radiative non-scattering EWK diagram, in which a vector boson is emitted from a quark line, this contribution is not separable in a gauge invariant way from the VBS amplitude and is therefore kept together with the VBS signal. (c) A triboson ($VVV$) diagram and (d) a top-associated ($tZq$) diagram, which reach the same $VVjj$ final state through distinct hard processes that are identifiable at truth level and together form the non-VBS EWK background the tagger is trained to suppress.}
 \label{fig:ewk_diagrams}
 \end{figure}
 
-The VBF-RNN tagger was originally developed to identify the characteristic forward-jet topology of vector boson fusion and vector boson scattering processes and has been deployed in previous ATLAS measurements including the semi-leptonic VBS analysis~\cite{ATLAS:semileptonicVBS:2025}. In this analysis the tagger is adapted and re-optimised for the fully hadronic VBS channel, where both the tagging jets and the signal jets from the hadronically decaying bosons are available as inputs.
+The VBF-RNN tagger was originally developed to identify the characteristic forward-jet topology of vector boson fusion and vector boson scattering processes and has been deployed in previous ATLAS measurements including the semi-leptonic VBS analysis~\cite{ATLAS:semileptonicVBS:2025}. In this analysis the tagger is adapted and re-optimised for the fully hadronic VBS channel, where both the tagging jets and the signal jets from the hadronically decaying bosons are available as inputs. The tagging-jet inputs are potential tagging jets rather than truth-identified ones: the up to four highest-$p_T$ small-$R$ PFlow jets of the event, ordered by decreasing transverse momentum so that jet~1 is the highest-$p_T$ jet, jet~2 the next-highest and so on. It is left to the network to learn which of these candidates carry the forward VBS tagging-jet topology.
 
-The classification task is formulated as a supervised binary problem: each event is assigned a label $y = 1$ if it originates from a VBS process and $y = 0$ if it originates from a non-VBS EWK process. To define these labels at the truth level, jets in the training sample are matched to their underlying hard-scatter particles. Jets are identified by a subtraction strategy: a jet is labelled as a VBS tagging jet if it is not matched to a boson, not gluon-initiated and not consistent with pileup.
+The classification task is formulated as a supervised binary problem: each event is assigned a label $y = 1$ if it belongs to the VBS signal and $y = 0$ if it belongs to the non-VBS EWK background. The labels are defined at truth level from the hard-scatter content of the event: an event containing two vector bosons and no top quarks is labelled VBS signal, while the remaining events, with more than zero top quarks ($tX$) or a number of vector bosons not equal to two ($VVV$), are labelled non-VBS EWK background. By construction the signal class therefore also absorbs the inseparable radiative EWK diagrams of Figure~\ref{fig:novbs_ewk}.
 
 Three versions of the tagger are developed for this analysis, differing in the set of jets provided as input and the training sample used and are summarised in Table~\ref{tab:vbfrnn_versions}.
 
@@ -74,7 +90,7 @@ Three versions of the tagger are developed for this analysis, differing in the s
 
 Version~1 corresponds to the configuration used in earlier analyses~\cite{Antonio_VBFRNN_2023}, trained to separate a heavy scalar resonance produced through vector boson fusion from the same resonance produced through gluon fusion (here $H\to q\bar{q}q\bar{q}$ at $m_H = 3$~TeV), using only the potential tagging jets and requiring at least one tagging jet per event. Version~2 retrains the same four jet architecture directly on the VBS versus non-VBS (EWK) classification task relevant to this analysis, again requiring at least one tagging jet per event. Version~3 extends the input to six jets by including the two large-$R$ signal jets alongside the tagging jets, giving the network access to the full reconstructed final state. Since the two signal jets are already a pre-selection requirement, the input requirement is at least one tagging jet in addition to the two signal jets.
 
-The four tagging jets constrain only the production side of the event, but the VBS and non-VBS EWK subprocesses also differ in the diboson system they produce. The genuine $VV\to VV$ scattering of the VBS subprocess yields a harder, higher-mass central diboson pair than the radiative non-VBS EWK topologies that share the same final state. Figure~\ref{fig:vbfrnn_sigjet} exposes this residual difference through the dijet invariant mass of the two large-$R$ signal jets, which retains discriminating power between the two classes that the tagging jets do not capture and which is largely statistically independent of the production-side information. The residual difference motivates the six-jet configuration of version~3.
+The four tagging jets constrain only the production side of the event, but the VBS and non-VBS EWK subprocesses also differ in the diboson system they produce. The genuine $VV\to VV$ scattering of the VBS subprocess yields a harder, higher-mass central diboson pair than the non-VBS EWK topologies that share the same final state. Figure~\ref{fig:vbfrnn_sigjet} exposes this residual difference through the dijet invariant mass of the two large-$R$ signal jets, which retains discriminating power between the two classes that the tagging jets do not capture and which is largely statistically independent of the production-side information. The residual difference motivates the six-jet configuration of version~3.
 
 \begin{figure}[htbp]
 \centering
