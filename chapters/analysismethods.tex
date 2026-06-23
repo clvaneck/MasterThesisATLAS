@@ -30,36 +30,38 @@ The chapter is organised as follows. Section~\ref{sec:vbfrnn} describes the VBF-
 \section{Vector boson scattering topology identification}
 \label{sec:vbfrnn}
 
-The physical process targeted by this analysis is the electroweak production of two vector bosons in association with two jets, $pp \to VVjj$~(EWK). This inclusive EWK process is produced as a single sample that contains several distinct contributions to the same $VVjj$ final state, illustrated in Figure~\ref{fig:ewk_diagrams}. The genuine VBS subprocess (Figure~\ref{fig:vbs_ewk}) proceeds through a $VV \to VV$ scattering vertex and is the signal of interest. It is accompanied by radiative diagrams in which a vector boson is emitted directly from a quark line (Figure~\ref{fig:novbs_ewk}); the split between the genuine scattering diagrams and these radiative diagrams is not gauge invariant, so the radiative contribution cannot be isolated unambiguously and is retained together with the VBS signal. The remaining contributions arise from genuinely distinct hard processes that \emph{are} identifiable at truth level: triboson production, $pp \to VVV$ with one boson decaying hadronically (Figure~\ref{fig:vvv_ewk}), and top-associated production such as $tZq$ (Figure~\ref{fig:tzq_ewk}). These two define the non-VBS EWK background. The objective of the VBF-RNN tagger is therefore not to separate VBS from every other EWK $VVjj$ diagram, but to enrich the sample in the VBS topology by rejecting the separable triboson and top-associated contributions.
+The physical process targeted by this analysis is the electroweak production of two vector bosons in association with two jets, $pp \to VVjj$~(EWK). This inclusive EWK process is produced as a single sample that contains several distinct contributions to the same $VVjj$ final state, illustrated in Figure~\ref{fig:ewk_diagrams}. The genuine VBS subprocess (Figure~\ref{fig:vbs_ewk}) proceeds through a $VV \to VV$ scattering vertex and is the signal of interest. It is accompanied by radiative diagrams in which a vector boson is emitted directly from a quark line (Figure~\ref{fig:novbs_ewk}), the split between the genuine scattering diagrams and these radiative diagrams is not gauge invariant, so the radiative contribution cannot be isolated and is retained together with the VBS signal. The remaining contributions arise from genuinely distinct hard processes that are identifiable at truth level: triboson production, $pp \to VVV$ with one boson decaying hadronically (Figure~\ref{fig:vvv_ewk}), and top-associated production such as $tZq$ (Figure~\ref{fig:tzq_ewk}). These two define the non-VBS EWK background.
 
 \begin{figure}[htbp]
 \centering
-\begin{subfigure}[b]{0.24\textwidth}
-\centering
-\includegraphics[width=\textwidth]{figures/vbs_ewk.pdf}
-\caption{}
-\label{fig:vbs_ewk}
+\begin{subfigure}[b]{0.43\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{figures/vbs_ewk.pdf}
+    \caption{}
+    \label{fig:vbs_ewk}
 \end{subfigure}
-\hfill
-\begin{subfigure}[b]{0.24\textwidth}
-\centering
-\includegraphics[width=\textwidth]{figures/novbs_ewk.pdf}
-\caption{}
-\label{fig:novbs_ewk}
+\quad
+\begin{subfigure}[b]{0.43\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{figures/novbs_ewk.pdf}
+    \caption{}
+    \label{fig:novbs_ewk}
 \end{subfigure}
-\hfill
-\begin{subfigure}[b]{0.24\textwidth}
-\centering
-\includegraphics[width=\textwidth]{figures/vvv_ewk.pdf}
-\caption{}
-\label{fig:vvv_ewk}
+
+\medskip
+
+\begin{subfigure}[b]{0.43\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{figures/vvv_ewk.pdf}
+    \caption{}
+    \label{fig:vvv_ewk}
 \end{subfigure}
-\hfill
-\begin{subfigure}[b]{0.24\textwidth}
-\centering
-\includegraphics[width=\textwidth]{figures/tzq_ewk.pdf}
-\caption{}
-\label{fig:tzq_ewk}
+\quad
+\begin{subfigure}[b]{0.43\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{figures/tzq_ewk.pdf}
+    \caption{}
+    \label{fig:tzq_ewk}
 \end{subfigure}
 \caption{Representative diagrams contributing to the inclusive electroweak $pp \to VVjj$~(EWK) sample. (a) The VBS subprocess, in which the two incoming quarks each radiate a vector boson that subsequently scatter, $VV \to VV$, producing the two forward tagging quarks and the two final-state bosons. (b) A radiative non-scattering EWK diagram, in which a vector boson is emitted from a quark line, this contribution is not separable in a gauge invariant way from the VBS amplitude and is therefore kept together with the VBS signal. (c) A triboson ($VVV$) diagram and (d) a top-associated ($tZq$) diagram, which reach the same $VVjj$ final state through distinct hard processes that are identifiable at truth level and together form the non-VBS EWK background the tagger is trained to suppress.}
 \label{fig:ewk_diagrams}
@@ -92,7 +94,7 @@ The four tagging jets constrain only the production side of the event, but the V
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.6\textwidth]{figures/vbfrnn_sigjet_mjj.png}
+\includegraphics[width=0.5\textwidth]{figures/vbfrnn_sigjet_mjj.png}
 \caption{Distribution of the dijet invariant mass of the two large-$R$ signal jets, for VBS (blue) and non-VBS EWK (red) $VV+jj$ events. The difference between the two distributions, shown by the ratio panel, demonstrates the additional discriminating information that motivates including the signal jets in version~3 of the tagger.}
 \label{fig:vbfrnn_sigjet}
 \end{figure}
@@ -109,7 +111,7 @@ The network consists of two stacked LSTM layers. The first layer processes the j
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[scale=0.45]{figures/VBFRNN.png}
+\includegraphics[width=0.5\textwidth]{figures/VBFRNN.png}
 \caption{Illustration of the VBF-RNN architecture \cite{Antonio_VBFRNN_2023}. The input sequence of jet four-vectors is processed by two stacked LSTM layers and the final hidden state is passed to a sigmoid output node.}
 \label{fig:vbfrnn}
 \end{figure}
