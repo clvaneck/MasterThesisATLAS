@@ -1,7 +1,7 @@
 \chapter{Discussion}
 \label{chap:discussion}
 
-The sensitivity estimates of Section~\ref{sec:sensitivity_comparison} rest on a small set of modelling simplifications that bound their interpretation. The remainder of this chapter addresses the linear-interference omission (Section~\ref{sec:disc_interference}), the absence of systematic uncertainties (Section~\ref{sec:disc_systematics}) and the deferred choice between the three discriminants (Section~\ref{sec:disc_discriminant}).
+The sensitivity estimates of Section~\ref{sec:sensitivity_comparison} rest on a set of modelling simplifications. The remainder of this chapter addresses the linear-interference omission (Section~\ref{sec:disc_interference}), the absence of systematic uncertainties (Section~\ref{sec:disc_systematics}) and the deferred choice between the three discriminants (Section~\ref{sec:disc_discriminant}).
 
 \section{Interference between the SM and BSM amplitudes}
 \label{sec:disc_interference}
@@ -18,7 +18,6 @@ A change that should be made to the analysis regardless of these family-dependen
 The Asimov significances reported in this thesis include a single per-bin Gaussian background normalisation uncertainty of $30\%$, entering Equation~\eqref{eq:zasymptotic} as $\sigma_{b,i}=0.30\,b_i$. It is, however, only a normalisation term: it captures no shape uncertainty, and none of the remaining experimental or theoretical systematics is included in the present $Z_A$.
 
 The dominant uncertainties not yet treated are the large-$R$ jet energy and mass scale and resolution, which directly distort the input features the discriminant relies on, the leading signal-jet $p_T$ and the two signal-jet masses (Section~\ref{sec:feature_ranking}). On the signal side, the renormalisation and factorisation scales, the parton distribution functions and the parton-shower matching contribute additional uncertainties that propagate as both normalisation and shape distortions. A realistic measurement would profile each of these effects as a separate nuisance parameter, replacing the single $30\%$ envelope with per-process normalisation and shape terms and adding the experimental and theoretical systematics that the present $Z_A$ omits. The model variance of the stochastic training itself is likewise not quantified: every AUC and significance comes from a single trained network rather than an ensemble over random seeds, so the few-percent $Z_A$ differences between configurations should be read as indicative rather than firmly established.
-\newpage
 \section{Choice of final analysis discriminant}
 \label{sec:disc_discriminant}
 
